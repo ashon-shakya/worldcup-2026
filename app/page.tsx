@@ -20,6 +20,9 @@ export default async function LandingPage() {
             </a>
           </div>
           <div className="flex flex-1 justify-end gap-x-6">
+            <Link href="/rules" className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600">
+              How to Play
+            </Link>
             <Link href="/login" className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600">
               Log in
             </Link>
@@ -128,6 +131,9 @@ export default async function LandingPage() {
       {/* Footer */}
       <footer className="bg-white py-12">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center text-gray-500 text-sm">
+          <p className="mb-2">
+            <Link href="/rules" className="hover:text-indigo-600 transition-colors">How to Play</Link>
+          </p>
           <p>&copy; 2026 World Cup Predictor. Not affiliated with FIFA.</p>
         </div>
       </footer>

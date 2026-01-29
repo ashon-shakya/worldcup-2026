@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LogOut, Trophy, Home, List, Menu, X } from "lucide-react";
+import { LogOut, Trophy, Home, List, Menu, X, Users, BookOpen } from "lucide-react";
 import { useState } from "react";
 import { signOut } from "next-auth/react";
 
@@ -44,6 +44,13 @@ export default function DashboardNav({ user }: { user: any }) {
                             >
                                 <Trophy className="w-4 h-4 mr-2" />
                                 Global
+                            </Link>
+                            <Link
+                                href="/dashboard/rules"
+                                className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                            >
+                                <BookOpen className="w-4 h-4 mr-2" />
+                                Rules
                             </Link>
                             {user.role === 'ADMIN' && (
                                 <Link
@@ -149,7 +156,4 @@ export default function DashboardNav({ user }: { user: any }) {
         </nav>
     );
 }
-// Helper component for Users icon
-function Users({ className, ...props }: any) {
-    return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
-}
+
