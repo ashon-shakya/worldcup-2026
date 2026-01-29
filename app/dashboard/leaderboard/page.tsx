@@ -45,7 +45,7 @@ export default async function LeaderboardPage() {
                         {leaderboard.map((user: any, index: number) => (
                             <div
                                 key={user._id}
-                                className={`flex items-center p-4 transition-colors ${getRankClass(index)} ${user._id === currentUserId ? "ring-2 ring-inset ring-indigo-500 z-10 relative" : ""}`}
+                                className={`flex items-center p-4 transition-colors rounded-2xl ${getRankClass(index)} ${user._id === currentUserId ? "ring-2 ring-inset ring-indigo-500 z-10 relative" : ""}`}
                             >
                                 <div className="flex-shrink-0 w-12 flex justify-center">
                                     {getRankIcon(index)}

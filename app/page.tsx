@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Trophy, Users, BarChart3, ShieldCheck } from "lucide-react";
+import { ArrowRight, Trophy, Users, BarChart3, ShieldCheck, BookOpen, LogIn } from "lucide-react";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
@@ -10,24 +10,24 @@ export default async function LandingPage() {
   }
 
   return (
-    <div className="bg-white">
+    <div className="min-h-screen bg-[url('/bg-2.jpg')] bg-cover bg-center bg-no-repeat bg-scroll sm:bg-fixed font-sans text-gray-100">
       {/* Header */}
-      <header className="absolute inset-x-0 top-0 z-50">
-        <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+      <header className="fixed inset-x-0 top-0 z-50 backdrop-blur-sm bg-black/10 transition-all">
+        <nav className="flex items-center justify-between p-4 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
             <a href="#" className="-m-1.5 p-1.5 flex items-center gap-2">
-              <img src="/icon.png" alt="CupQuest Logo" className="h-8 w-auto rounded-md" />
-              <span className="text-2xl font-black text-indigo-600 tracking-tighter">CupQuest</span>
+              <img src="/icon.png" alt="CupQuest Logo" className="h-8 w-auto rounded-md shadow-lg shadow-indigo-500/20" />
+              <span className="text-2xl font-black text-white tracking-tighter drop-shadow-md">CupQuest</span>
             </a>
           </div>
           <div className="flex flex-1 justify-end gap-x-6">
-            <Link href="/rules" className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600">
-              How to Play
+            <Link href="/rules" className="hidden sm:flex items-center gap-2 text-sm font-semibold leading-6 text-gray-300 hover:text-white transition-colors">
+              <BookOpen size={18} /> How to Play
             </Link>
-            <Link href="/login" className="text-sm font-semibold leading-6 text-gray-900 hover:text-indigo-600">
-              Log in
+            <Link href="/login" className="flex items-center gap-2 text-sm font-semibold leading-6 text-gray-300 hover:text-white transition-colors">
+              <LogIn size={18} /> Log in
             </Link>
-            <Link href="/signup" className="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            <Link href="/signup" className="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 hover:bg-indigo-500 hover:shadow-indigo-500/50 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
               Sign up
             </Link>
           </div>
@@ -37,28 +37,25 @@ export default async function LandingPage() {
       <main className="isolate">
         {/* Hero Section */}
         <div className="relative pt-14">
-          <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
-            <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"></div>
-          </div>
 
           <div className="py-24 sm:py-32 lg:pb-40">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
               <div className="mx-auto max-w-2xl text-center">
-                <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+                <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl drop-shadow-xl">
                   Predict the World Cup. <br />
-                  <span className="text-indigo-600">Beat your Friends.</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-orange-500 drop-shadow-sm">Beat your Friends.</span>
                 </h1>
-                <p className="mt-6 text-lg leading-8 text-gray-600">
+                <p className="mt-6 text-lg leading-8 text-white max-w-xl mx-auto drop-shadow-md font-medium">
                   Join the ultimate social prediction game for the FIFA World Cup 2026. Create private leagues, compete on global leaderboards, and prove your football knowledge.
                 </p>
                 <div className="mt-10 flex items-center justify-center gap-x-6">
                   <Link
                     href="/signup"
-                    className="rounded-full bg-indigo-600 px-6 py-3.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 flex items-center gap-2"
+                    className="rounded-full bg-indigo-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-indigo-500/40 hover:bg-indigo-500 hover:shadow-indigo-500/60 transition-all flex items-center gap-2"
                   >
                     Start Predicting <ArrowRight size={16} />
                   </Link>
-                  <Link href="#features" className="text-sm font-semibold leading-6 text-gray-900">
+                  <Link href="#features" className="text-sm font-semibold leading-6 text-gray-100 hover:text-white transition-colors drop-shadow">
                     Learn more <span aria-hidden="true">→</span>
                   </Link>
                 </div>
@@ -68,59 +65,59 @@ export default async function LandingPage() {
         </div>
 
         {/* Feature Section */}
-        <div id="features" className="mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32 bg-gray-50 rounded-3xl mb-24">
+        <div id="features" className="mx-4 sm:mx-6 lg:mx-8 xl:mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32 bg-gray-900/40 backdrop-blur-sm border border-white/10 rounded-3xl mb-24 shadow-2xl">
           <div className="mx-auto max-w-2xl lg:text-center">
-            <h2 className="text-base font-semibold leading-7 text-indigo-600">Everything you need</h2>
-            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            <h2 className="text-base font-semibold leading-7 text-amber-400 uppercase tracking-widest drop-shadow-sm">Everything you need</h2>
+            <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Platform Features
             </p>
-            <p className="mt-6 text-lg leading-8 text-gray-600">
+            <p className="mt-6 text-lg leading-8 text-gray-400">
               We provide a seamless experience so you can focus on the matches and the banter.
             </p>
           </div>
           <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
             <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
               <div className="relative pl-16">
-                <dt className="text-base font-semibold leading-7 text-gray-900">
-                  <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
+                <dt className="text-base font-semibold leading-7 text-white">
+                  <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600/80 shadow-lg shadow-indigo-500/20">
                     <Trophy className="h-6 w-6 text-white" aria-hidden="true" />
                   </div>
                   Private Leagues
                 </dt>
-                <dd className="mt-2 text-base leading-7 text-gray-600">
+                <dd className="mt-2 text-base leading-7 text-gray-400">
                   Create groups with friends, colleagues, or family. Share a simple invite code to get everyone in the game.
                 </dd>
               </div>
               <div className="relative pl-16">
-                <dt className="text-base font-semibold leading-7 text-gray-900">
-                  <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
+                <dt className="text-base font-semibold leading-7 text-white">
+                  <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600/80 shadow-lg shadow-indigo-500/20">
                     <BarChart3 className="h-6 w-6 text-white" aria-hidden="true" />
                   </div>
                   Live Scoring
                 </dt>
-                <dd className="mt-2 text-base leading-7 text-gray-600">
+                <dd className="mt-2 text-base leading-7 text-gray-400">
                   Points are updated as soon as matches finish. Track your rise (or fall) on the leaderboard in real-time.
                 </dd>
               </div>
               <div className="relative pl-16">
-                <dt className="text-base font-semibold leading-7 text-gray-900">
-                  <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
+                <dt className="text-base font-semibold leading-7 text-white">
+                  <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600/80 shadow-lg shadow-indigo-500/20">
                     <Users className="h-6 w-6 text-white" aria-hidden="true" />
                   </div>
                   Global Competition
                 </dt>
-                <dd className="mt-2 text-base leading-7 text-gray-600">
+                <dd className="mt-2 text-base leading-7 text-gray-400">
                   See how you rank against the entire world. Can you make it to the top 50 global leaderboard?
                 </dd>
               </div>
               <div className="relative pl-16">
-                <dt className="text-base font-semibold leading-7 text-gray-900">
-                  <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
+                <dt className="text-base font-semibold leading-7 text-white">
+                  <div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600/80 shadow-lg shadow-indigo-500/20">
                     <ShieldCheck className="h-6 w-6 text-white" aria-hidden="true" />
                   </div>
                   Secure & Fair
                 </dt>
-                <dd className="mt-2 text-base leading-7 text-gray-600">
+                <dd className="mt-2 text-base leading-7 text-gray-400">
                   Predictions are locked 5 minutes before kickoff. No cheating allowed.
                 </dd>
               </div>
@@ -130,10 +127,12 @@ export default async function LandingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white py-12">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center text-gray-500 text-sm">
-          <p className="mb-2">
-            <Link href="/rules" className="hover:text-indigo-600 transition-colors">How to Play</Link>
+      <footer className="bg-black/20 backdrop-blur-md py-12 border-t border-white/5">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center text-gray-100 text-sm">
+          <p className="mb-2 flex justify-center">
+            <Link href="/rules" className="flex items-center gap-2 hover:text-indigo-900 transition-colors">
+              <BookOpen size={16} /> How to Play
+            </Link>
           </p>
           <p>&copy; 2026 CupQuest. Not affiliated with FIFA.</p>
         </div>
