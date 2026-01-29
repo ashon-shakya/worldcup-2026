@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 
 export default async function MatchesSchedulePage() {
     const session = await auth();
-    if (!session || !session.user) redirect("/login");
+    if (!session || !session.user || !session.user.id) redirect("/login");
 
     const matches = await getMatches();
     const userPredictions = await getUserPredictions(session.user.id);
