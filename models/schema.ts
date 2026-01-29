@@ -20,7 +20,7 @@ const UserSchema = new Schema(
 const TeamSchema = new Schema(
     {
         name: { type: String, required: true },
-        shortName: { type: String, required: true, uppercase: true }, // ISO 3166-1 alpha-2 code (e.g. BR, FR)
+        shortName: { type: String, required: true, uppercase: true, unique: true }, // ISO 3166-1 alpha-2 code (e.g. BR, FR)
         flagUrl: { type: String }, // URL to flag image
         group: { type: String }, // e.g., "A", "B"...
     },

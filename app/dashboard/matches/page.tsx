@@ -29,7 +29,8 @@ export default async function MatchesSchedulePage() {
             <h1 className="text-3xl font-bold text-gray-900 mb-8">Match Schedule</h1>
 
             {stagesOrder.map(stage => {
-                const stageMatches = matchesByStage[stage];
+                const stageMatches = matchesByStage[stage]?.sort((a, b) => new Date(a.kickOff).getTime() - new Date(b.kickOff).getTime());
+
                 if (!stageMatches || stageMatches.length === 0) return null;
 
                 return (
@@ -60,7 +61,7 @@ export default async function MatchesSchedulePage() {
                         <div className="ml-4 flex-1 h-px bg-gray-200"></div>
                     </div>
                     <div className="space-y-4">
-                        {matchesByStage[stage].map(match => (
+                        {matchesByStage[stage].sort((a, b) => new Date(a.kickOff).getTime() - new Date(b.kickOff).getTime()).map(match => (
                             <MatchCard
                                 key={match._id}
                                 match={match}

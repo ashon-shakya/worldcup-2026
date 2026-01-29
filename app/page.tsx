@@ -39,8 +39,11 @@ export default async function LandingPage() {
         <div className="relative pt-14">
 
           <div className="py-24 sm:py-32 lg:pb-40">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="mx-auto max-w-7xl p-10 lg:px-8 bg-gray-900/40 backdrop-blur-sm border border-white/10 rounded-3xl">
               <div className="mx-auto max-w-2xl text-center">
+                <Link href="/">
+                  <img className="mx-auto h-30 w-auto rounded-xl shadow-lg shadow-indigo-500/20 mb-6 hover:opacity-80 transition-opacity" src="/icon.png" alt="CupQuest" />
+                </Link>
                 <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl drop-shadow-xl">
                   Predict the World Cup. <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-orange-500 drop-shadow-sm">Beat your Friends.</span>
@@ -71,7 +74,7 @@ export default async function LandingPage() {
             <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Platform Features
             </p>
-            <p className="mt-6 text-lg leading-8 text-gray-400">
+            <p className="mt-6 text-lg leading-8 text-gray-200">
               We provide a seamless experience so you can focus on the matches and the banter.
             </p>
           </div>
@@ -84,7 +87,7 @@ export default async function LandingPage() {
                   </div>
                   Private Leagues
                 </dt>
-                <dd className="mt-2 text-base leading-7 text-gray-400">
+                <dd className="mt-2 text-base leading-7 text-gray-200">
                   Create groups with friends, colleagues, or family. Share a simple invite code to get everyone in the game.
                 </dd>
               </div>
@@ -95,7 +98,7 @@ export default async function LandingPage() {
                   </div>
                   Live Scoring
                 </dt>
-                <dd className="mt-2 text-base leading-7 text-gray-400">
+                <dd className="mt-2 text-base leading-7 text-gray-200">
                   Points are updated as soon as matches finish. Track your rise (or fall) on the leaderboard in real-time.
                 </dd>
               </div>
@@ -106,7 +109,7 @@ export default async function LandingPage() {
                   </div>
                   Global Competition
                 </dt>
-                <dd className="mt-2 text-base leading-7 text-gray-400">
+                <dd className="mt-2 text-base leading-7 text-gray-200">
                   See how you rank against the entire world. Can you make it to the top 50 global leaderboard?
                 </dd>
               </div>
@@ -117,7 +120,7 @@ export default async function LandingPage() {
                   </div>
                   Secure & Fair
                 </dt>
-                <dd className="mt-2 text-base leading-7 text-gray-400">
+                <dd className="mt-2 text-base leading-7 text-gray-200">
                   Predictions are locked 5 minutes before kickoff. No cheating allowed.
                 </dd>
               </div>
@@ -129,7 +132,7 @@ export default async function LandingPage() {
       {/* Footer */}
       <footer className="bg-black/20 backdrop-blur-md py-12 border-t border-white/5">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center text-gray-100 text-sm">
-          <p className="mb-2 flex justify-center">
+          <p className="mb-2 flex justify-center ">
             <Link href="/rules" className="flex items-center gap-2 hover:text-indigo-900 transition-colors">
               <BookOpen size={16} /> How to Play
             </Link>

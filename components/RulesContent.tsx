@@ -1,8 +1,12 @@
 import { Trophy, Clock, Target, Shield, AlertCircle } from "lucide-react";
+import Link from "next/link";
 
 export default function RulesContent() {
     return (
         <div className="max-w-3xl mx-auto space-y-8">
+            <Link href="/">
+                <img className="mx-auto h-20 w-auto rounded-xl  mb-2 hover:opacity-80 transition-opacity" src="/icon.png" alt="CupQuest" />
+            </Link>
             <div className="text-center">
                 <h1 className="text-3xl font-bold text-gray-900">How to Play</h1>
                 <p className="mt-2 text-gray-500">Master the rules and climb the leaderboard.</p>

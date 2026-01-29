@@ -2,8 +2,9 @@
 
 import { getTeams, deleteTeam } from "@/app/actions/admin/teams";
 import TeamForm from "@/components/admin/TeamForm";
-import { Plus, Trash2 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { Plus, Trash2, Upload } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { toast } from "sonner";
 
 // Allow passing initial teams from server component if needed, but for now we fetch in client or passed as prop. 
 // Actually better to make this a Server Component that passes data to a Client List.
@@ -26,6 +27,7 @@ export default function TeamsPage() {
     const [teams, setTeams] = useState<any[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const fetchTeams = async () => {
         setIsLoading(true);
@@ -45,17 +47,67 @@ export default function TeamsPage() {
         }
     };
 
+    const handleImportClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const promise = fetch("/api/admin/teams/import", {
+            method: "POST",
+            body: formData,
+        }).then(async (res) => {
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || "Import failed");
+            return data;
+        });
+
+        toast.promise(promise, {
+            loading: "Importing teams...",
+            success: (data) => {
+                fetchTeams();
+                // Clear the input so same file can be selected again if needed
+                if (fileInputRef.current) fileInputRef.current.value = "";
+                return `Successfully imported ${data.importedCount} teams`;
+            },
+            error: (err) => {
+                return err.message;
+            }
+        });
+    };
+
     return (
         <div>
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold text-gray-900">Teams</h1>
-                <button
-                    onClick={() => setIsModalOpen(true)}
-                    className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-500"
-                >
-                    <Plus size={20} />
-                    Add Team
-                </button>
+                <div className="flex gap-2">
+                    <input
+                        type="file"
+                        accept=".csv"
+                        className="hidden"
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                    />
+                    <button
+                        onClick={handleImportClick}
+                        className="flex items-center gap-2 bg-white text-gray-700 border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50"
+                    >
+                        <Upload size={20} />
+                        Import CSV
+                    </button>
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-500"
+                    >
+                        <Plus size={20} />
+                        Add Team
+                    </button>
+                </div>
             </div>
 
             {isModalOpen && (
