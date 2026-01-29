@@ -4,10 +4,56 @@ import { User } from "@/models/schema";
 import connectToDatabase from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
-export async function getUsers() {
+export async function getUsers(options: {
+    page?: number;
+    limit?: number;
+    search?: string;
+    role?: string;
+    sort?: string;
+    order?: "asc" | "desc";
+} = {}) {
     await connectToDatabase();
-    const users = await User.find({}).sort({ createdAt: -1 });
-    return JSON.parse(JSON.stringify(users));
+
+    const {
+        page = 1,
+        limit = 10,
+        search = "",
+        role = "",
+        sort = "createdAt",
+        order = "desc",
+    } = options;
+
+    const query: any = {};
+
+    if (search) {
+        query.$or = [
+            { name: { $regex: search, $options: "i" } },
+            { email: { $regex: search, $options: "i" } },
+        ];
+    }
+
+    if (role && role !== "ALL") {
+        query.role = role;
+    }
+
+    const skip = (page - 1) * limit;
+
+    const users = await User.find(query)
+        .sort({ [sort]: order === "asc" ? 1 : -1 })
+        .skip(skip)
+        .limit(limit);
+
+    const total = await User.countDocuments(query);
+
+    return {
+        users: JSON.parse(JSON.stringify(users)),
+        pagination: {
+            total,
+            pages: Math.ceil(total / limit),
+            page,
+            limit,
+        },
+    };
 }
 
 export async function updateUserRole(userId: string, newRole: "USER" | "ADMIN") {

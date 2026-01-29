@@ -57,6 +57,14 @@ export default async function AdminLayout({
                         <Users size={20} />
                         <span>Users</span>
                     </Link>
+
+                    <Link
+                        href="/admin/settings"
+                        className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors"
+                    >
+                        <Settings size={20} />
+                        <span>Settings</span>
+                    </Link>
                 </nav>
 
                 <div className="p-4 border-t border-gray-800">

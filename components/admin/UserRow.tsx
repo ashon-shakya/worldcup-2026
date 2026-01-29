@@ -2,6 +2,7 @@
 
 import { deleteUser, updateUserRole } from "@/app/actions/admin/users";
 import { useTransition } from "react";
+import { Trash2, ShieldPlus, ShieldMinus } from "lucide-react";
 
 export default function UserRow({ user }: { user: any }) {
     const [isPending, startTransition] = useTransition();
@@ -49,16 +50,21 @@ export default function UserRow({ user }: { user: any }) {
                 <button
                     onClick={() => handleRoleChange(user.role === "ADMIN" ? "USER" : "ADMIN")}
                     disabled={isPending}
-                    className="text-indigo-600 hover:text-indigo-900 disabled:opacity-50"
+                    title={user.role === "ADMIN" ? "Demote to User" : "Promote to Admin"}
+                    className={`p-2 rounded-full transition-colors ${user.role === "ADMIN"
+                        ? "text-orange-600 hover:bg-orange-50 bg-orange-100/50"
+                        : "text-indigo-600 hover:bg-indigo-50 bg-indigo-100/50"
+                        } disabled:opacity-50`}
                 >
-                    {user.role === "ADMIN" ? "Demote" : "Promote"}
+                    {user.role === "ADMIN" ? <ShieldMinus size={18} /> : <ShieldPlus size={18} />}
                 </button>
                 <button
                     onClick={handleDelete}
                     disabled={isPending}
-                    className="text-red-600 hover:text-red-900 disabled:opacity-50 ml-4"
+                    title="Delete User"
+                    className="p-2 rounded-full text-red-600 hover:bg-red-50 bg-red-100/50 transition-colors disabled:opacity-50 ml-2"
                 >
-                    Delete
+                    <Trash2 size={18} />
                 </button>
             </td>
         </tr>

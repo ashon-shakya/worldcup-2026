@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
 import { z } from "zod";
 import connectToDatabase from "@/lib/db";
@@ -83,4 +83,8 @@ export async function signup(prevState: string | undefined, formData: FormData) 
         console.error("Signup error:", error);
         return "Failed to create user";
     }
+}
+
+export async function logout() {
+    await signOut({ redirectTo: "/login" });
 }

@@ -125,10 +125,22 @@ export default function MatchForm({ onClose }: { onClose?: () => void }) {
                 </div>
             </div>
 
+            <div className="flex items-center gap-2">
+                <input
+                    type="checkbox"
+                    id="isKnockout"
+                    name="isKnockout"
+                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                />
+                <label htmlFor="isKnockout" className="text-sm font-medium leading-6 text-gray-900">
+                    Knockout Round (Enable Penalty Predictions)
+                </label>
+            </div>
+
             <div className="flex justify-end gap-2">
                 <button type="button" onClick={onClose} className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">Cancel</button>
                 <SubmitButton />
             </div>
-        </form>
+        </form >
     );
 }

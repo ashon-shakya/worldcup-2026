@@ -31,6 +31,7 @@ export const authConfig = {
             if (user) {
                 token.id = user.id?.toString();
                 token.role = (user as any).role;
+                token.picture = user.image;
             }
             if (trigger === "update" && session) {
                 token = { ...token, ...session };
@@ -41,6 +42,7 @@ export const authConfig = {
             if (token) {
                 session.user.id = token.id as string;
                 (session.user as any).role = token.role;
+                session.user.image = token.picture as string | null | undefined;
             }
             return session;
         },

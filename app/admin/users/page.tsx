@@ -1,11 +1,32 @@
+
 import { getUsers } from "@/app/actions/admin/users";
 import UserRow from "@/components/admin/UserRow";
+import { UserTableToolbar } from "@/components/admin/UserTableToolbar";
+import Pagination from "@/components/admin/Pagination";
 import { Users } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-export default async function UsersPage() {
-    const users = await getUsers();
+interface UsersPageProps {
+    searchParams: Promise<{ [key: string]: string | undefined }>;
+}
+
+export default async function UsersPage({ searchParams }: UsersPageProps) {
+    const params = await searchParams;
+    const page = Number(params?.page) || 1;
+    const search = params?.search || "";
+    const role = params?.role || "ALL";
+    const sort = params?.sort || "createdAt";
+    const order = (params?.order as "asc" | "desc") || "desc";
+
+    const { users, pagination } = await getUsers({
+        page,
+        limit: 10,
+        search,
+        role,
+        sort,
+        order,
+    });
 
     return (
         <div className="space-y-6">
@@ -20,24 +41,39 @@ export default async function UsersPage() {
                     </p>
                 </div>
                 <div className="text-sm text-gray-500">
-                    Total Users: <span className="font-bold text-gray-900">{users.length}</span>
+                    Total Users:{" "}
+                    <span className="font-bold text-gray-900">{pagination.total}</span>
                 </div>
             </div>
+
+            <UserTableToolbar />
 
             <div className="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                         <tr>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                                scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
                                 User
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                                scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
                                 Role
                             </th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                                scope="col"
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
                                 Joined
                             </th>
-                            <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th
+                                scope="col"
+                                className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                            >
                                 Actions
                             </th>
                         </tr>
@@ -49,12 +85,13 @@ export default async function UsersPage() {
                         {users.length === 0 && (
                             <tr>
                                 <td colSpan={4} className="px-6 py-12 text-center text-gray-500">
-                                    No users found.
+                                    No users found matching your criteria.
                                 </td>
                             </tr>
                         )}
                     </tbody>
                 </table>
+                <Pagination totalPages={pagination.pages} currentPage={pagination.page} />
             </div>
         </div>
     );

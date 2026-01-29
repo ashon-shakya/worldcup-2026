@@ -4,6 +4,8 @@ import { getUserPredictions } from "@/app/actions/predictions";
 import MatchCard from "@/components/user/MatchCard";
 import { redirect } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 export default async function MatchesSchedulePage() {
     const session = await auth();
     if (!session || !session.user || !session.user.id) redirect("/login");
@@ -20,7 +22,7 @@ export default async function MatchesSchedulePage() {
         matchesByStage[match.stage].push(match);
     });
 
-    const stagesOrder = ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final"];
+    const stagesOrder = ["Final", "Semi Final", "Quarter Final", "Round of 16", "Round of 32", "Group Stage"];
 
     return (
         <div>

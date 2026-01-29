@@ -18,10 +18,10 @@ export default function RulesContent() {
                 </div>
                 <div className="p-6 space-y-6 text-gray-900">
                     <p className="text-gray-600">
-                        You can earn up to <span className="font-bold text-indigo-600">13 points</span> per match. Points are awarded based on accuracy:
+                        You can earn up to <span className="font-bold text-indigo-600">16 points</span> per match (in knockout rounds). Points are awarded based on accuracy:
                     </p>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div className="bg-green-50 p-4 rounded-lg border border-green-100">
                             <div className="font-bold text-green-700 text-lg mb-1">5 Points</div>
                             <div className="text-sm text-green-800 font-medium">Correct Home Score</div>
@@ -37,6 +37,11 @@ export default function RulesContent() {
                             <div className="text-sm text-blue-800 font-medium">Correct Outcome</div>
                             <p className="text-xs text-blue-600 mt-1">Predicting the winner or a draw correctly.</p>
                         </div>
+                        <div className="bg-purple-50 p-4 rounded-lg border border-purple-100">
+                            <div className="font-bold text-purple-700 text-lg mb-1">3 Points</div>
+                            <div className="text-sm text-purple-800 font-medium">Penalty Bonus</div>
+                            <p className="text-xs text-purple-600 mt-1">Correctly predicting if a knockout match goes to penalties.</p>
+                        </div>
                     </div>
 
                     <div className="mt-6 border-t border-gray-100 pt-6">
@@ -49,8 +54,9 @@ export default function RulesContent() {
                                 <div>
                                     <span className="font-mono font-bold">Prediction: 2-1</span> vs <span className="font-mono font-bold">Result: 2-1</span>
                                 </div>
-                                <span className="font-bold text-indigo-600">13 Pts (Perfect!)</span>
+                                <span className="font-bold text-indigo-600">13 Pts (Perfect Score + Outcome)</span>
                             </div>
+
                             <div className="flex justify-between items-center bg-gray-50 p-3 rounded">
                                 <div>
                                     <span className="font-mono font-bold">Prediction: 2-0</span> vs <span className="font-mono font-bold">Result: 1-0</span>
@@ -74,6 +80,12 @@ export default function RulesContent() {
                                     <span className="font-mono font-bold">Prediction: 1-0</span> vs <span className="font-mono font-bold">Result: 0-1</span>
                                 </div>
                                 <span className="font-bold text-gray-400">0 Pts</span>
+                            </div>
+                            <div className="flex justify-between items-center bg-purple-50 p-3 rounded">
+                                <div>
+                                    <span className="font-mono font-bold">Penalty Prediction: Yes</span> vs <span className="font-mono font-bold">Result: Yes</span>
+                                </div>
+                                <span className="font-bold text-purple-600">+3 Pts (Penalty Bonus)</span>
                             </div>
                         </div>
                     </div>

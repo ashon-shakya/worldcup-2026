@@ -3,13 +3,15 @@
 import { auth } from "@/auth";
 import { Match, Prediction } from "@/models/schema";
 import connectToDatabase from "@/lib/db";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, unstable_noStore as noStore } from "next/cache";
 import { z } from "zod";
 
 const PredictionSchema = z.object({
     matchId: z.string(),
     homeScore: z.coerce.number().min(0),
     awayScore: z.coerce.number().min(0),
+    penaltyPrediction: z.coerce.boolean().optional(),
+    predictedWinner: z.string().optional(),
 });
 
 export async function submitPrediction(prevState: any, formData: FormData) {
@@ -25,7 +27,7 @@ export async function submitPrediction(prevState: any, formData: FormData) {
         return { message: "Invalid prediction" };
     }
 
-    const { matchId, homeScore, awayScore } = parsed.data;
+    const { matchId, homeScore, awayScore, penaltyPrediction, predictedWinner } = parsed.data;
 
     try {
         await connectToDatabase();
@@ -42,6 +44,11 @@ export async function submitPrediction(prevState: any, formData: FormData) {
             return { message: "Predictions are locked for this match" };
         }
 
+        // Enforce penalty prediction only if it's a draw
+        const isDraw = homeScore === awayScore;
+        const finalPenaltyPrediction = isDraw ? !!penaltyPrediction : false;
+        const finalPredictedWinner = isDraw && finalPenaltyPrediction && predictedWinner && predictedWinner.trim() !== "" ? predictedWinner : null;
+
         // Upsert prediction
         await Prediction.findOneAndUpdate(
             { user: session.user.id, match: matchId },
@@ -49,7 +56,9 @@ export async function submitPrediction(prevState: any, formData: FormData) {
                 user: session.user.id,
                 match: matchId,
                 homeScore,
-                awayScore
+                awayScore,
+                penaltyPrediction: finalPenaltyPrediction,
+                predictedWinner: finalPredictedWinner
             },
             { upsert: true, new: true }
         );
@@ -64,6 +73,7 @@ export async function submitPrediction(prevState: any, formData: FormData) {
 }
 
 export async function getUserPredictions(userId: string) {
+    noStore();
     await connectToDatabase();
     const predictions = await Prediction.find({ user: userId });
     // Return as a map or array. Map is easier for looking up by matchId.
@@ -72,6 +82,8 @@ export async function getUserPredictions(userId: string) {
         predictionMap[p.match.toString()] = {
             homeScore: p.homeScore,
             awayScore: p.awayScore,
+            penaltyPrediction: p.penaltyPrediction,
+            predictedWinner: p.predictedWinner,
             points: p.points
         };
     });

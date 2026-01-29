@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { LogOut, Trophy, Home, List, Menu, X, Users, BookOpen } from "lucide-react";
 import { useState } from "react";
-import { signOut } from "next-auth/react";
+import { logout } from "@/app/actions/auth";
 
 export default function DashboardNav({ user }: { user: any }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -69,11 +69,17 @@ export default function DashboardNav({ user }: { user: any }) {
                             <span className="text-sm font-medium text-gray-700 hidden md:block">
                                 {user.name}
                             </span>
-                            {user.image && (
-                                <img className="h-8 w-8 rounded-full" src={user.image} alt="" />
-                            )}
+                            <Link href="/dashboard/settings">
+                                {user.image ? (
+                                    <img className="h-8 w-8 rounded-full" src={user.image} alt="Settings" />
+                                ) : (
+                                    <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold">
+                                        {user.name?.charAt(0)}
+                                    </div>
+                                )}
+                            </Link>
                             <button
-                                onClick={() => signOut({ callbackUrl: "/login" })}
+                                onClick={() => logout()}
                                 className="text-gray-400 hover:text-gray-500"
                             >
                                 <LogOut className="w-5 h-5" />
@@ -130,6 +136,20 @@ export default function DashboardNav({ user }: { user: any }) {
                         >
                             Global Leaderboard
                         </Link>
+                        <Link
+                            href="/dashboard/rules"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                        >
+                            Rules
+                        </Link>
+                        <Link
+                            href="/dashboard/settings"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                        >
+                            Settings
+                        </Link>
                     </div>
                     <div className="pt-4 pb-4 border-t border-gray-200">
                         <div className="flex items-center px-4">
@@ -145,7 +165,7 @@ export default function DashboardNav({ user }: { user: any }) {
                                 <div className="text-sm font-medium text-gray-500">{user.email}</div>
                             </div>
                             <button
-                                onClick={() => signOut({ callbackUrl: "/login" })}
+                                onClick={() => logout()}
                                 className="ml-auto flex-shrink-0 bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
                                 <LogOut className="h-6 w-6" />
@@ -157,4 +177,3 @@ export default function DashboardNav({ user }: { user: any }) {
         </nav>
     );
 }
-

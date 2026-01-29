@@ -1,7 +1,7 @@
 "use client";
 
 import { updateMatchScore } from "@/app/actions/admin/matches";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 
 function SubmitButton() {
@@ -20,6 +20,7 @@ function SubmitButton() {
 export default function ScoreModal({ match, onClose }: { match: any, onClose: () => void }) {
     const updateMatchWithId = updateMatchScore.bind(null, match._id);
     const [state, dispatch] = useActionState(updateMatchWithId, null);
+    const [showPenaltyInput, setShowPenaltyInput] = useState(match.wentToPenalties || false);
 
     useEffect(() => {
         if (state?.message === "success") {
@@ -66,6 +67,40 @@ export default function ScoreModal({ match, onClose }: { match: any, onClose: ()
                                 className="block w-20 text-center rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6"
                             />
                         </div>
+                    </div>
+
+                    <div className="space-y-4 mt-4">
+                        <div className="flex items-center justify-center gap-2">
+                            <input
+                                type="checkbox"
+                                id="wentToPenalties"
+                                name="wentToPenalties"
+                                checked={showPenaltyInput}
+                                onChange={(e) => setShowPenaltyInput(e.target.checked)}
+                                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                            />
+                            <label htmlFor="wentToPenalties" className="text-sm font-medium leading-6 text-gray-900">
+                                Went to Penalties?
+                            </label>
+                        </div>
+
+                        {showPenaltyInput && (
+                            <div>
+                                <label htmlFor="penaltyWinner" className="block text-sm font-medium leading-6 text-gray-900 mb-1 text-center">
+                                    Penalty Winner
+                                </label>
+                                <select
+                                    id="penaltyWinner"
+                                    name="penaltyWinner"
+                                    defaultValue={match.penaltyWinner?._id || match.penaltyWinner || ""}
+                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                >
+                                    <option value="">Select Winner...</option>
+                                    <option value={match.homeTeam._id}>{match.homeTeam.name}</option>
+                                    <option value={match.awayTeam._id}>{match.awayTeam.name}</option>
+                                </select>
+                            </div>
+                        )}
                     </div>
 
                     <div className="flex justify-end gap-2 mt-6">
