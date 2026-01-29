@@ -1,0 +1,5 @@
+{
+    "workbench.colorTheme": "Visual Studio Dark",
+    "terminal.integrated.suggest.enabled": true,
+    "terminal.integrated.defaultProfile.windows": "Git Bash"
+}
