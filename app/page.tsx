@@ -16,7 +16,8 @@ export default async function LandingPage() {
         <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
             <a href="#" className="-m-1.5 p-1.5 flex items-center gap-2">
-              <span className="text-2xl font-black text-indigo-600 tracking-tighter">WC2026</span>
+              <img src="/icon.png" alt="CupQuest Logo" className="h-8 w-auto rounded-md" />
+              <span className="text-2xl font-black text-indigo-600 tracking-tighter">CupQuest</span>
             </a>
           </div>
           <div className="flex flex-1 justify-end gap-x-6">
@@ -134,7 +135,7 @@ export default async function LandingPage() {
           <p className="mb-2">
             <Link href="/rules" className="hover:text-indigo-600 transition-colors">How to Play</Link>
           </p>
-          <p>&copy; 2026 World Cup Predictor. Not affiliated with FIFA.</p>
+          <p>&copy; 2026 CupQuest. Not affiliated with FIFA.</p>
         </div>
       </footer>
     </div>

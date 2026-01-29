@@ -20,8 +20,9 @@ export default async function AdminLayout({
         <div className="min-h-screen bg-gray-100 flex">
             {/* Sidebar */}
             <aside className="w-64 bg-gray-900 text-white flex flex-col fixed h-full z-40">
-                <div className="p-6 border-b border-gray-800">
-                    <h1 className="text-xl font-bold">WC2026 Admin</h1>
+                <div className="p-6 border-b border-gray-800 flex items-center gap-3">
+                    <img src="/icon.png" alt="CupQuest Logo" className="h-8 w-auto rounded-md" />
+                    <h1 className="text-xl font-bold">CupQuest Admin</h1>
                 </div>
 
                 <nav className="flex-1 p-4 space-y-2">
