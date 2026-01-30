@@ -36,7 +36,7 @@ export default async function LandingPage() {
 
       <main className="isolate">
         {/* Hero Section */}
-        <div className="relative pt-14">
+        <div className="relative pt-14 mx-4 sm:mx-6 lg:mx-8 xl:mx-auto max-w-7xl">
 
           <div className="py-24 sm:py-32 lg:pb-40">
             <div className="mx-auto max-w-7xl p-10 lg:px-8 bg-gray-900/40 backdrop-blur-sm border border-white/10 rounded-3xl">
@@ -123,6 +123,8 @@ export default async function LandingPage() {
                 <dd className="mt-2 text-base leading-7 text-gray-200">
                   Predictions are locked 5 minutes before kickoff. No cheating allowed.
                 </dd>
+
+
               </div>
             </dl>
           </div>
@@ -130,7 +132,9 @@ export default async function LandingPage() {
       </main>
 
       {/* Footer */}
+      <img className="fixed bottom-0 left-0 h-60 sm:h-80 md:h-96  w-auto z-10" src="/ronaldo.gif" alt="CupQuest" />
       <footer className="bg-black/20 backdrop-blur-md py-12 border-t border-white/5">
+
         <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center text-gray-100 text-sm">
           <p className="mb-2 flex justify-center ">
             <Link href="/rules" className="flex items-center gap-2 hover:text-indigo-900 transition-colors">

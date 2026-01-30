@@ -80,7 +80,7 @@ export default function DashboardNav({ user }: { user: any }) {
                             </Link>
                             <button
                                 onClick={() => logout()}
-                                className="text-gray-400 hover:text-gray-500"
+                                className="text-gray-400 hover:text-orange-500 cursor-pointer"
                             >
                                 <LogOut className="w-5 h-5" />
                             </button>
@@ -166,7 +166,7 @@ export default function DashboardNav({ user }: { user: any }) {
                             </div>
                             <button
                                 onClick={() => logout()}
-                                className="ml-auto flex-shrink-0 bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                className="ml-auto flex-shrink-0 bg-white p-1 rounded-full text-gray-400 hover:text-gray-500  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
                                 <LogOut className="h-6 w-6" />
                             </button>
