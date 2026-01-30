@@ -66,7 +66,7 @@ export default async function LandingPage() {
             </div>
           </div>
         </div>
-        <div className="relative bottom-0 mt-[-100px] mb-[-30px] w-full z-10 flex items-center justify-between" >
+        <div className="relative bottom-0 mt-[-100px] mb-[-30px] w-full mx-auto max-w-7xl flex items-center justify-between" >
           <img className=" h-30 sm:h-50 md:h-60  w-auto z-10" src="/ronaldo2.gif" alt="CupQuest" />
           <img className=" h-30 sm:h-50 md:h-60  w-auto z-10" src="/messi.gif" alt="CupQuest" />
           <img className=" h-30 sm:h-50 md:h-60  w-auto z-10" src="/mbappe.gif" alt="CupQuest" />
