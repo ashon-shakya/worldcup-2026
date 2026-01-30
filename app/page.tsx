@@ -38,7 +38,7 @@ export default async function LandingPage() {
         {/* Hero Section */}
         <div className="relative pt-14 mx-4 sm:mx-6 lg:mx-8 xl:mx-auto max-w-7xl">
 
-          <div className="py-24 sm:py-32 lg:pb-40">
+          <div className="py-20 sm:py-32 lg:pb-40">
             <div className="mx-auto max-w-7xl p-10 lg:px-8 bg-gray-900/40 backdrop-blur-sm border border-white/10 rounded-3xl">
               <div className="mx-auto max-w-2xl text-center">
                 <Link href="/">
@@ -66,7 +66,11 @@ export default async function LandingPage() {
             </div>
           </div>
         </div>
-
+        <div className="relative bottom-0 mt-[-100px] mb-[-30px] w-full z-10 flex items-center justify-between" >
+          <img className=" h-30 sm:h-50 md:h-60  w-auto z-10" src="/ronaldo2.gif" alt="CupQuest" />
+          <img className=" h-30 sm:h-50 md:h-60  w-auto z-10" src="/messi.gif" alt="CupQuest" />
+          <img className=" h-30 sm:h-50 md:h-60  w-auto z-10" src="/mbappe.gif" alt="CupQuest" />
+        </div>
         {/* Feature Section */}
         <div id="features" className="mx-4 sm:mx-6 lg:mx-8 xl:mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32 bg-gray-900/40 backdrop-blur-sm border border-white/10 rounded-3xl mb-24 shadow-2xl">
           <div className="mx-auto max-w-2xl lg:text-center">
@@ -132,7 +136,7 @@ export default async function LandingPage() {
       </main>
 
       {/* Footer */}
-      <img className="fixed bottom-0 left-0 h-60 sm:h-80 md:h-96  w-auto z-10" src="/ronaldo.gif" alt="CupQuest" />
+
       <footer className="bg-black/20 backdrop-blur-md py-12 border-t border-white/5">
 
         <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center text-gray-100 text-sm">

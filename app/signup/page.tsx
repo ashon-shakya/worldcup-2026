@@ -29,16 +29,17 @@ export default function SignupPage() {
                 <Home size={20} />
             </Link>
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-                <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <Link href="/">
-                        <img className="mx-auto h-16 w-auto rounded-xl shadow-lg shadow-indigo-500/20 mb-6 hover:opacity-80 transition-opacity" src="/icon.png" alt="CupQuest" />
-                    </Link>
-                    <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-white">
-                        Create an account
-                    </h2>
-                </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm glass-card p-8">
+                    <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+                        <Link href="/">
+                            <img className="mx-auto h-16 w-auto rounded-xl shadow-lg shadow-indigo-500/20 hover:opacity-80 transition-opacity" src="/icon.png" alt="CupQuest" />
+                        </Link>
+                        <h2 className="my-2 text-center text-2xl font-bold leading-9 tracking-tight text-white">
+                            Create an account
+                        </h2>
+                    </div>
+
                     <form action={dispatch} className="space-y-6">
                         <div>
                             <label
@@ -114,11 +115,11 @@ export default function SignupPage() {
                         </div>
                     </form>
 
-                    <p className="mt-10 text-center text-sm text-gray-400">
+                    <p className="mt-1 text-center text-sm text-gray-200">
                         Already a member?{" "}
                         <Link
                             href="/login"
-                            className="font-semibold leading-6 text-indigo-400 hover:text-indigo-300"
+                            className="font-semibold leading-6 text-indigo-300 hover:text-indigo-500"
                         >
                             Sign in
                         </Link>
