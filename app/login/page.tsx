@@ -4,7 +4,9 @@ import { authenticate } from "@/app/actions/auth";
 import { useActionState } from "react";
 import Link from 'next/link';
 import { useFormStatus } from "react-dom";
-import { Home } from "lucide-react";
+import { Home, AlertCircle, CheckCircle2 } from "lucide-react";
+import { resendVerificationEmail } from "@/app/actions/auth";
+import { useState } from "react";
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -21,7 +23,19 @@ function SubmitButton() {
 }
 
 export default function LoginPage() {
-    const [errorMessage, dispatch] = useActionState(authenticate, undefined);
+    const [state, dispatch] = useActionState(authenticate, undefined);
+    const [resendStatus, setResendStatus] = useState<{ success?: string; error?: string } | null>(null);
+    const [isResending, setIsResending] = useState(false);
+
+    const handleResend = async () => {
+        if (!state?.email) return;
+        setIsResending(true);
+        setResendStatus(null);
+
+        const result = await resendVerificationEmail(state.email);
+        setResendStatus(result as any);
+        setIsResending(false);
+    };
 
     return (
         <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[url('/bg-2.jpg')] bg-cover bg-center bg-no-repeat bg-scroll sm:bg-fixed">
@@ -69,6 +83,11 @@ export default function LoginPage() {
                                 >
                                     Password
                                 </label>
+                                <div className="text-sm">
+                                    <Link href="/forgot-password" className="font-semibold text-indigo-300 hover:text-indigo-500">
+                                        Forgot password?
+                                    </Link>
+                                </div>
                             </div>
                             <div className="mt-2">
                                 <input
@@ -90,8 +109,35 @@ export default function LoginPage() {
                             aria-live="polite"
                             aria-atomic="true"
                         >
-                            {errorMessage && (
-                                <p className="text-sm text-red-500">{errorMessage}</p>
+                            {state?.error && (
+                                <div className={`flex items-start gap-2 text-sm ${state.code === "VERIFY_EMAIL" ? "text-amber-400" : "text-red-500"}`}>
+                                    <AlertCircle size={16} className="mt-0.5 shrink-0" />
+                                    <div className="flex-1">
+                                        <p>{state.error}</p>
+                                        {state.code === "VERIFY_EMAIL" && (
+                                            <div className="mt-2">
+                                                <button
+                                                    type="button"
+                                                    onClick={handleResend}
+                                                    disabled={isResending || !!resendStatus?.success}
+                                                    className="text-indigo-300 hover:text-indigo-200 underline disabled:opacity-50 disabled:no-underline"
+                                                >
+                                                    {isResending ? "Sending..." : "Resend verification email"}
+                                                </button>
+                                                {resendStatus?.success && (
+                                                    <p className="text-green-400 mt-1 flex items-center gap-1">
+                                                        <CheckCircle2 size={14} /> {resendStatus.success}
+                                                    </p>
+                                                )}
+                                                {resendStatus?.error && (
+                                                    <p className="text-red-400 mt-1">
+                                                        {resendStatus.error}
+                                                    </p>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
                             )}
                         </div>
                     </form>

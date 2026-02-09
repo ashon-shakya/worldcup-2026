@@ -12,6 +12,8 @@ const UserSchema = new Schema(
         provider: { type: String, default: "credentials" },
         verificationToken: { type: String },
         verificationTokenExpires: { type: Date },
+        resetPasswordToken: { type: String },
+        resetPasswordTokenExpires: { type: Date },
     },
     { timestamps: true },
 );

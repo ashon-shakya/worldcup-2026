@@ -17,3 +17,18 @@ export const generateVerificationToken = async (email: string) => {
 
     return token;
 };
+
+export const generatePasswordResetToken = async (email: string) => {
+    await connectToDatabase();
+    const token = uuidv4();
+    const expires = new Date(new Date().getTime() + 3600 * 1000); // 1 hour
+
+    const user = await User.findOne({ email });
+    if (user) {
+        user.resetPasswordToken = token;
+        user.resetPasswordTokenExpires = expires;
+        await user.save();
+    }
+
+    return token;
+};
