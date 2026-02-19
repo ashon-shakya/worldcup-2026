@@ -5,9 +5,9 @@ import Link from 'next/link';
 export default async function VerifyEmailPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const token = searchParams.token;
+  const { token } = await searchParams;
 
   if (!token || typeof token !== "string") {
     return (
