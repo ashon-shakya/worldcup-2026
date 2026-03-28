@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\" scripts/seed.ts"
+    "seed": "ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\" scripts/seed.ts",
+    "reset": "ts-node --compiler-options \"{\\\"module\\\":\\\"commonjs\\\"}\" scripts/reset.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
