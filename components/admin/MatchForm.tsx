@@ -1,6 +1,6 @@
 "use client";
 
-import { createMatch } from "@/app/actions/admin/matches";
+import { createMatch, updateMatch } from "@/app/actions/admin/matches";
 import { getTeams } from "@/app/actions/admin/teams";
 import { useActionState, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
@@ -18,12 +18,14 @@ function SubmitButton() {
     );
 }
 
-export default function MatchForm({ onClose }: { onClose?: () => void }) {
-    const [state, dispatch] = useActionState(createMatch, null);
+export default function MatchForm({ onClose, match }: { onClose?: () => void; match?: any }) {
+    const actionToUse = match ? updateMatch.bind(null, match._id) : createMatch;
+    const [state, dispatch] = useActionState(actionToUse, null);
     const [teams, setTeams] = useState<any[]>([]);
 
     useEffect(() => {
         // Fetch teams for the dropdown
+        console.log(match)
         getTeams().then(setTeams);
     }, []);
 
@@ -45,10 +47,11 @@ export default function MatchForm({ onClose }: { onClose?: () => void }) {
                             name="homeTeam"
                             id="homeTeam"
                             required
+                            defaultValue={match?.homeTeam?._id || match?.homeTeam || ""}
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         >
                             <option value="">Select Team</option>
-                            {teams.map(t => <option key={t._id} value={t._id}>{t.name}</option>)}
+                            {teams.map(t => <option key={t._id} value={t._id} selected={t._id === match?.homeTeam?._id || t._id === match?.homeTeam}>{t.name}</option>)}
                         </select>
                     </div>
                     {state?.errors?.homeTeam && <p className="text-red-500 text-sm">{state.errors.homeTeam[0]}</p>}
@@ -63,10 +66,11 @@ export default function MatchForm({ onClose }: { onClose?: () => void }) {
                             name="awayTeam"
                             id="awayTeam"
                             required
+                            defaultValue={match?.awayTeam?._id || match?.awayTeam || ""}
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                         >
                             <option value="">Select Team</option>
-                            {teams.map(t => <option key={t._id} value={t._id}>{t.name}</option>)}
+                            {teams.map(t => <option key={t._id} value={t._id} selected={t._id === match?.awayTeam?._id || t._id === match?.awayTeam}>{t.name}</option>)}
                         </select>
                     </div>
                     {state?.errors?.awayTeam && <p className="text-red-500 text-sm">{state.errors.awayTeam[0]}</p>}
@@ -83,6 +87,7 @@ export default function MatchForm({ onClose }: { onClose?: () => void }) {
                         name="kickOff"
                         id="kickOff"
                         required
+                        defaultValue={match?.kickOff ? new Date(match.kickOff).toISOString().slice(0, 16) : ""}
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-2"
                     />
                 </div>
@@ -98,6 +103,7 @@ export default function MatchForm({ onClose }: { onClose?: () => void }) {
                         name="stage"
                         id="stage"
                         required
+                        defaultValue={match?.stage || "Group Stage"}
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     >
                         <option value="Group Stage">Group Stage</option>
@@ -120,6 +126,7 @@ export default function MatchForm({ onClose }: { onClose?: () => void }) {
                         type="text"
                         name="venue"
                         id="venue"
+                        defaultValue={match?.venue || ""}
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-2"
                     />
                 </div>
@@ -130,6 +137,7 @@ export default function MatchForm({ onClose }: { onClose?: () => void }) {
                     type="checkbox"
                     id="isKnockout"
                     name="isKnockout"
+                    defaultChecked={match?.isKnockout || false}
                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                 />
                 <label htmlFor="isKnockout" className="text-sm font-medium leading-6 text-gray-900">

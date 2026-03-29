@@ -1,6 +1,6 @@
 "use client";
 
-import { createTeam } from "@/app/actions/admin/teams";
+import { createTeam, updateTeam } from "@/app/actions/admin/teams";
 import { useActionState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
 // import { toast } from "sonner"; // Assuming sonner is installed or will be used for toasts
@@ -18,8 +18,9 @@ function SubmitButton() {
     );
 }
 
-export default function TeamForm({ onClose }: { onClose?: () => void }) {
-    const [state, dispatch] = useActionState(createTeam, null);
+export default function TeamForm({ onClose, team }: { onClose?: () => void; team?: any }) {
+    const actionToUse = team ? updateTeam.bind(null, team._id) : createTeam;
+    const [state, dispatch] = useActionState(actionToUse, null);
 
     useEffect(() => {
         if (state?.message === "success") {
@@ -40,6 +41,7 @@ export default function TeamForm({ onClose }: { onClose?: () => void }) {
                         name="name"
                         id="name"
                         required
+                        defaultValue={team?.name}
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-2"
                     />
                 </div>
@@ -57,6 +59,7 @@ export default function TeamForm({ onClose }: { onClose?: () => void }) {
                         id="shortName"
                         maxLength={2}
                         placeholder="e.g. US, BR, FR"
+                        defaultValue={team?.shortName}
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-2 uppercase"
                     />
                 </div>
@@ -73,6 +76,7 @@ export default function TeamForm({ onClose }: { onClose?: () => void }) {
                         type="text"
                         name="flagUrl"
                         id="flagUrl"
+                        defaultValue={team?.flagUrl}
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-2"
                     />
                 </div>
@@ -89,6 +93,7 @@ export default function TeamForm({ onClose }: { onClose?: () => void }) {
                         name="group"
                         id="group"
                         maxLength={1}
+                        defaultValue={team?.group}
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-2 uppercase"
                     />
                 </div>

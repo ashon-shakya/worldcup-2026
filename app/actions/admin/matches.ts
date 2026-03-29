@@ -45,6 +45,34 @@ export async function createMatch(prevState: any, formData: FormData) {
     }
 }
 
+export async function updateMatch(id: string, prevState: any, formData: FormData) {
+    const data = Object.fromEntries(formData);
+    const parsed = MatchSchema.safeParse(data);
+
+    if (!parsed.success) {
+        return { message: "Invalid input", errors: parsed.error.flatten().fieldErrors };
+    }
+
+    const { homeTeam, awayTeam, kickOff, venue, stage, isKnockout } = parsed.data;
+
+    try {
+        await connectToDatabase();
+        await Match.findByIdAndUpdate(id, {
+            homeTeam,
+            awayTeam,
+            kickOff,
+            venue,
+            stage,
+            isKnockout: isKnockout || false,
+        });
+        revalidatePath("/admin/matches");
+        return { message: "success" };
+    } catch (error) {
+        console.error("Failed to update match:", error);
+        return { message: "Failed to update match" };
+    }
+}
+
 export async function deleteMatch(id: string) {
     try {
         await connectToDatabase();
@@ -55,6 +83,19 @@ export async function deleteMatch(id: string) {
     } catch (error) {
         console.error("Failed to delete match:", error);
         return { message: "Failed to delete match" };
+    }
+}
+
+export async function deleteMatches(ids: string[]) {
+    try {
+        await connectToDatabase();
+        await Prediction.deleteMany({ match: { $in: ids } });
+        await Match.deleteMany({ _id: { $in: ids } });
+        revalidatePath("/admin/matches");
+        return { message: "success", deletedCount: ids.length };
+    } catch (error) {
+        console.error("Failed to delete matches:", error);
+        return { message: "Failed to delete matches" };
     }
 }
 

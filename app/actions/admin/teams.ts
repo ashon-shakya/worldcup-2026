@@ -38,6 +38,32 @@ export async function createTeam(prevState: any, formData: FormData) {
     }
 }
 
+export async function updateTeam(id: string, prevState: any, formData: FormData) {
+    const data = Object.fromEntries(formData);
+    const parsed = TeamSchema.safeParse(data);
+
+    if (!parsed.success) {
+        return { message: "Invalid input", errors: parsed.error.flatten().fieldErrors };
+    }
+
+    let { name, shortName, flagUrl, group } = parsed.data;
+
+    // Auto-generate flag URL if shortName is provided and flagUrl is empty
+    if (shortName && !flagUrl) {
+        flagUrl = `https://flagsapi.com/${shortName.toUpperCase()}/flat/64.png`;
+    }
+
+    try {
+        await connectToDatabase();
+        await Team.findByIdAndUpdate(id, { name, shortName, flagUrl, group });
+        revalidatePath("/admin/teams");
+        return { message: "success" };
+    } catch (error) {
+        console.error("Failed to update team:", error);
+        return { message: "Failed to update team" };
+    }
+}
+
 export async function deleteTeam(id: string) {
     try {
         await connectToDatabase();
@@ -47,6 +73,18 @@ export async function deleteTeam(id: string) {
     } catch (error) {
         console.error("Failed to delete team:", error);
         return { message: "Failed to delete team" };
+    }
+}
+
+export async function deleteTeams(ids: string[]) {
+    try {
+        await connectToDatabase();
+        await Team.deleteMany({ _id: { $in: ids } });
+        revalidatePath("/admin/teams");
+        return { message: "success", deletedCount: ids.length };
+    } catch (error) {
+        console.error("Failed to delete teams:", error);
+        return { message: "Failed to delete teams" };
     }
 }
 
