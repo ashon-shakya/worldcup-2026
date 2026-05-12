@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Brazil",
+    "shortName": "BR",
+    "group": "A",
+    "flagUrl": "https://flagcdn.com/br.svg"
+  },
+  {
+    "name": "France",
+    "shortName": "FR",
+    "group": "A",
+    "flagUrl": "https://flagcdn.com/fr.svg"
+  },
+  {
+    "name": "Argentina",
+    "shortName": "AR",
+    "group": "B",
+    "flagUrl": "https://flagcdn.com/ar.svg"
+  },
+  {
+    "name": "Germany",
+    "shortName": "DE",
+    "group": "B",
+    "flagUrl": "https://flagcdn.com/de.svg"
+  }
+]
