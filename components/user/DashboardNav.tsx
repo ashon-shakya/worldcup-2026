@@ -71,7 +71,7 @@ export default function DashboardNav({ user }: { user: any }) {
                             </span>
                             <Link href="/dashboard/settings">
                                 {user.image ? (
-                                    <img className="h-8 w-8 rounded-full" src={user.image} alt="Settings" />
+                                    <img className="h-8 w-8 rounded-full object-cover" src={user.image} alt="Settings" />
                                 ) : (
                                     <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold">
                                         {user.name?.charAt(0)}
@@ -155,7 +155,7 @@ export default function DashboardNav({ user }: { user: any }) {
                         <div className="flex items-center px-4">
                             <div className="flex-shrink-0">
                                 {user.image ? (
-                                    <img className="h-10 w-10 rounded-full" src={user.image} alt="" />
+                                    <img className="h-10 w-10 rounded-full object-cover" src={user.image} alt="" />
                                 ) : (
                                     <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold">{user.name?.charAt(0)}</div>
                                 )}

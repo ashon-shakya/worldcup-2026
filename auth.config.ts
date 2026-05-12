@@ -35,6 +35,9 @@ export const authConfig = {
             }
             if (trigger === "update" && session) {
                 token = { ...token, ...session };
+                if (session.image) {
+                    token.picture = session.image;
+                }
             }
             return token;
         },
