@@ -1,16 +1,578 @@
 [
   {
-    "homeTeam": "BR",
-    "awayTeam": "FR",
-    "kickOff": "2026-06-11T16:00:00Z",
+    "homeTeam": "MX",
+    "awayTeam": "ZA",
+    "kickOff": "2026-06-11T13:00:00-06:00",
     "stage": "Group Stage",
-    "status": "SCHEDULED"
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "KR",
+    "awayTeam": "CZ",
+    "kickOff": "2026-06-11T20:00:00-06:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "CA",
+    "awayTeam": "BA",
+    "kickOff": "2026-06-12T15:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "US",
+    "awayTeam": "PY",
+    "kickOff": "2026-06-12T18:00:00-07:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "HT",
+    "awayTeam": "SC",
+    "kickOff": "2026-06-13T21:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "AU",
+    "awayTeam": "TR",
+    "kickOff": "2026-06-13T21:00:00-07:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "BR",
+    "awayTeam": "MA",
+    "kickOff": "2026-06-13T18:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "QA",
+    "awayTeam": "CH",
+    "kickOff": "2026-06-13T12:00:00-07:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "CI",
+    "awayTeam": "EC",
+    "kickOff": "2026-06-14T19:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "DE",
+    "awayTeam": "CW",
+    "kickOff": "2026-06-14T12:00:00-05:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "NL",
+    "awayTeam": "JP",
+    "kickOff": "2026-06-14T15:00:00-05:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "SE",
+    "awayTeam": "TN",
+    "kickOff": "2026-06-14T20:00:00-06:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "SA",
+    "awayTeam": "UY",
+    "kickOff": "2026-06-15T18:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "ES",
+    "awayTeam": "CV",
+    "kickOff": "2026-06-15T12:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "IR",
+    "awayTeam": "NZ",
+    "kickOff": "2026-06-15T18:00:00-07:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "BE",
+    "awayTeam": "EG",
+    "kickOff": "2026-06-15T12:00:00-07:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "FR",
+    "awayTeam": "SN",
+    "kickOff": "2026-06-16T15:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "IQ",
+    "awayTeam": "NO",
+    "kickOff": "2026-06-16T18:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
   },
   {
     "homeTeam": "AR",
-    "awayTeam": "DE",
-    "kickOff": "2026-06-12T16:00:00Z",
+    "awayTeam": "DZ",
+    "kickOff": "2026-06-16T20:00:00-05:00",
     "stage": "Group Stage",
-    "status": "SCHEDULED"
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "AT",
+    "awayTeam": "JO",
+    "kickOff": "2026-06-16T21:00:00-07:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "GH",
+    "awayTeam": "PA",
+    "kickOff": "2026-06-17T19:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "EN",
+    "awayTeam": "HR",
+    "kickOff": "2026-06-17T15:00:00-05:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "PT",
+    "awayTeam": "CD",
+    "kickOff": "2026-06-17T12:00:00-05:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "UZ",
+    "awayTeam": "CO",
+    "kickOff": "2026-06-17T20:00:00-06:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "CZ",
+    "awayTeam": "ZA",
+    "kickOff": "2026-06-18T12:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "CH",
+    "awayTeam": "BA",
+    "kickOff": "2026-06-18T12:00:00-07:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "CA",
+    "awayTeam": "QA",
+    "kickOff": "2026-06-18T15:00:00-07:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "MX",
+    "awayTeam": "KR",
+    "kickOff": "2026-06-18T19:00:00-06:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "BR",
+    "awayTeam": "HT",
+    "kickOff": "2026-06-19T20:30:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "SC",
+    "awayTeam": "MA",
+    "kickOff": "2026-06-19T18:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "TR",
+    "awayTeam": "PY",
+    "kickOff": "2026-06-19T20:00:00-07:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "US",
+    "awayTeam": "AU",
+    "kickOff": "2026-06-19T12:00:00-07:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "DE",
+    "awayTeam": "CI",
+    "kickOff": "2026-06-20T16:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "EC",
+    "awayTeam": "CW",
+    "kickOff": "2026-06-20T19:00:00-05:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "NL",
+    "awayTeam": "SE",
+    "kickOff": "2026-06-20T12:00:00-05:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "TN",
+    "awayTeam": "JP",
+    "kickOff": "2026-06-20T22:00:00-06:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "UY",
+    "awayTeam": "CV",
+    "kickOff": "2026-06-21T18:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "ES",
+    "awayTeam": "SA",
+    "kickOff": "2026-06-21T12:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "BE",
+    "awayTeam": "IR",
+    "kickOff": "2026-06-21T12:00:00-07:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "NZ",
+    "awayTeam": "EG",
+    "kickOff": "2026-06-21T18:00:00-07:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "NO",
+    "awayTeam": "SN",
+    "kickOff": "2026-06-22T20:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "FR",
+    "awayTeam": "IQ",
+    "kickOff": "2026-06-22T17:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "AR",
+    "awayTeam": "AT",
+    "kickOff": "2026-06-22T12:00:00-05:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "JO",
+    "awayTeam": "DZ",
+    "kickOff": "2026-06-22T20:00:00-07:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "EN",
+    "awayTeam": "GH",
+    "kickOff": "2026-06-23T16:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "PA",
+    "awayTeam": "HR",
+    "kickOff": "2026-06-23T19:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "PT",
+    "awayTeam": "UZ",
+    "kickOff": "2026-06-23T12:00:00-05:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "CO",
+    "awayTeam": "CD",
+    "kickOff": "2026-06-23T20:00:00-06:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "SC",
+    "awayTeam": "BR",
+    "kickOff": "2026-06-24T18:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "MA",
+    "awayTeam": "HT",
+    "kickOff": "2026-06-24T18:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "CH",
+    "awayTeam": "CA",
+    "kickOff": "2026-06-24T12:00:00-07:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "BA",
+    "awayTeam": "QA",
+    "kickOff": "2026-06-24T12:00:00-07:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "CZ",
+    "awayTeam": "MX",
+    "kickOff": "2026-06-24T19:00:00-06:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "ZA",
+    "awayTeam": "KR",
+    "kickOff": "2026-06-24T19:00:00-06:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "CW",
+    "awayTeam": "CI",
+    "kickOff": "2026-06-25T16:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "EC",
+    "awayTeam": "DE",
+    "kickOff": "2026-06-25T16:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "JP",
+    "awayTeam": "SE",
+    "kickOff": "2026-06-25T18:00:00-05:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "TN",
+    "awayTeam": "NL",
+    "kickOff": "2026-06-25T18:00:00-05:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "TR",
+    "awayTeam": "US",
+    "kickOff": "2026-06-25T19:00:00-07:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "PY",
+    "awayTeam": "AU",
+    "kickOff": "2026-06-25T19:00:00-07:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "NO",
+    "awayTeam": "FR",
+    "kickOff": "2026-06-26T15:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "SN",
+    "awayTeam": "IQ",
+    "kickOff": "2026-06-26T15:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "EG",
+    "awayTeam": "IR",
+    "kickOff": "2026-06-26T20:00:00-07:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "NZ",
+    "awayTeam": "BE",
+    "kickOff": "2026-06-26T20:00:00-07:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "CV",
+    "awayTeam": "SA",
+    "kickOff": "2026-06-26T19:00:00-05:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "UY",
+    "awayTeam": "ES",
+    "kickOff": "2026-06-26T18:00:00-06:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "PA",
+    "awayTeam": "EN",
+    "kickOff": "2026-06-27T17:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "HR",
+    "awayTeam": "GH",
+    "kickOff": "2026-06-27T17:00:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "DZ",
+    "awayTeam": "AT",
+    "kickOff": "2026-06-27T21:00:00-05:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "JO",
+    "awayTeam": "AR",
+    "kickOff": "2026-06-27T21:00:00-05:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "CO",
+    "awayTeam": "PT",
+    "kickOff": "2026-06-27T19:30:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
+  },
+  {
+    "homeTeam": "CD",
+    "awayTeam": "UZ",
+    "kickOff": "2026-06-27T19:30:00-04:00",
+    "stage": "Group Stage",
+    "status": "SCHEDULED",
+    "isKnockout": false
   }
 ]

@@ -1,26 +1,290 @@
 [
   {
+    "name": "Mexico",
+    "shortName": "MX",
+    "group": "A",
+    "flagUrl": "https://flagcdn.com/mx.svg"
+  },
+  {
+    "name": "South Africa",
+    "shortName": "ZA",
+    "group": "A",
+    "flagUrl": "https://flagcdn.com/za.svg"
+  },
+  {
+    "name": "South Korea",
+    "shortName": "KR",
+    "group": "A",
+    "flagUrl": "https://flagcdn.com/kr.svg"
+  },
+  {
+    "name": "Czech Republic",
+    "shortName": "CZ",
+    "group": "A",
+    "flagUrl": "https://flagcdn.com/cz.svg"
+  },
+  {
+    "name": "Canada",
+    "shortName": "CA",
+    "group": "B",
+    "flagUrl": "https://flagcdn.com/ca.svg"
+  },
+  {
+    "name": "Bosnia and Herzegovina",
+    "shortName": "BA",
+    "group": "B",
+    "flagUrl": "https://flagcdn.com/ba.svg"
+  },
+  {
+    "name": "Qatar",
+    "shortName": "QA",
+    "group": "B",
+    "flagUrl": "https://flagcdn.com/qa.svg"
+  },
+  {
+    "name": "Switzerland",
+    "shortName": "CH",
+    "group": "B",
+    "flagUrl": "https://flagcdn.com/ch.svg"
+  },
+  {
     "name": "Brazil",
     "shortName": "BR",
-    "group": "A",
+    "group": "C",
     "flagUrl": "https://flagcdn.com/br.svg"
   },
   {
-    "name": "France",
-    "shortName": "FR",
-    "group": "A",
-    "flagUrl": "https://flagcdn.com/fr.svg"
+    "name": "Morocco",
+    "shortName": "MA",
+    "group": "C",
+    "flagUrl": "https://flagcdn.com/ma.svg"
   },
   {
-    "name": "Argentina",
-    "shortName": "AR",
-    "group": "B",
-    "flagUrl": "https://flagcdn.com/ar.svg"
+    "name": "Haiti",
+    "shortName": "HT",
+    "group": "C",
+    "flagUrl": "https://flagcdn.com/ht.svg"
+  },
+  {
+    "name": "Scotland",
+    "shortName": "SC",
+    "group": "C",
+    "flagUrl": "https://flagcdn.com/gb-sct.svg"
+  },
+  {
+    "name": "United States",
+    "shortName": "US",
+    "group": "D",
+    "flagUrl": "https://flagcdn.com/us.svg"
+  },
+  {
+    "name": "Paraguay",
+    "shortName": "PY",
+    "group": "D",
+    "flagUrl": "https://flagcdn.com/py.svg"
+  },
+  {
+    "name": "Australia",
+    "shortName": "AU",
+    "group": "D",
+    "flagUrl": "https://flagcdn.com/au.svg"
+  },
+  {
+    "name": "Turkey",
+    "shortName": "TR",
+    "group": "D",
+    "flagUrl": "https://flagcdn.com/tr.svg"
   },
   {
     "name": "Germany",
     "shortName": "DE",
-    "group": "B",
+    "group": "E",
     "flagUrl": "https://flagcdn.com/de.svg"
+  },
+  {
+    "name": "Curaçao",
+    "shortName": "CW",
+    "group": "E",
+    "flagUrl": "https://flagcdn.com/cw.svg"
+  },
+  {
+    "name": "Ivory Coast",
+    "shortName": "CI",
+    "group": "E",
+    "flagUrl": "https://flagcdn.com/ci.svg"
+  },
+  {
+    "name": "Ecuador",
+    "shortName": "EC",
+    "group": "E",
+    "flagUrl": "https://flagcdn.com/ec.svg"
+  },
+  {
+    "name": "Netherlands",
+    "shortName": "NL",
+    "group": "F",
+    "flagUrl": "https://flagcdn.com/nl.svg"
+  },
+  {
+    "name": "Japan",
+    "shortName": "JP",
+    "group": "F",
+    "flagUrl": "https://flagcdn.com/jp.svg"
+  },
+  {
+    "name": "Sweden",
+    "shortName": "SE",
+    "group": "F",
+    "flagUrl": "https://flagcdn.com/se.svg"
+  },
+  {
+    "name": "Tunisia",
+    "shortName": "TN",
+    "group": "F",
+    "flagUrl": "https://flagcdn.com/tn.svg"
+  },
+  {
+    "name": "Belgium",
+    "shortName": "BE",
+    "group": "G",
+    "flagUrl": "https://flagcdn.com/be.svg"
+  },
+  {
+    "name": "Egypt",
+    "shortName": "EG",
+    "group": "G",
+    "flagUrl": "https://flagcdn.com/eg.svg"
+  },
+  {
+    "name": "Iran",
+    "shortName": "IR",
+    "group": "G",
+    "flagUrl": "https://flagcdn.com/ir.svg"
+  },
+  {
+    "name": "New Zealand",
+    "shortName": "NZ",
+    "group": "G",
+    "flagUrl": "https://flagcdn.com/nz.svg"
+  },
+  {
+    "name": "Spain",
+    "shortName": "ES",
+    "group": "H",
+    "flagUrl": "https://flagcdn.com/es.svg"
+  },
+  {
+    "name": "Cape Verde",
+    "shortName": "CV",
+    "group": "H",
+    "flagUrl": "https://flagcdn.com/cv.svg"
+  },
+  {
+    "name": "Saudi Arabia",
+    "shortName": "SA",
+    "group": "H",
+    "flagUrl": "https://flagcdn.com/sa.svg"
+  },
+  {
+    "name": "Uruguay",
+    "shortName": "UY",
+    "group": "H",
+    "flagUrl": "https://flagcdn.com/uy.svg"
+  },
+  {
+    "name": "France",
+    "shortName": "FR",
+    "group": "I",
+    "flagUrl": "https://flagcdn.com/fr.svg"
+  },
+  {
+    "name": "Senegal",
+    "shortName": "SN",
+    "group": "I",
+    "flagUrl": "https://flagcdn.com/sn.svg"
+  },
+  {
+    "name": "Iraq",
+    "shortName": "IQ",
+    "group": "I",
+    "flagUrl": "https://flagcdn.com/iq.svg"
+  },
+  {
+    "name": "Norway",
+    "shortName": "NO",
+    "group": "I",
+    "flagUrl": "https://flagcdn.com/no.svg"
+  },
+  {
+    "name": "Argentina",
+    "shortName": "AR",
+    "group": "J",
+    "flagUrl": "https://flagcdn.com/ar.svg"
+  },
+  {
+    "name": "Algeria",
+    "shortName": "DZ",
+    "group": "J",
+    "flagUrl": "https://flagcdn.com/dz.svg"
+  },
+  {
+    "name": "Austria",
+    "shortName": "AT",
+    "group": "J",
+    "flagUrl": "https://flagcdn.com/at.svg"
+  },
+  {
+    "name": "Jordan",
+    "shortName": "JO",
+    "group": "J",
+    "flagUrl": "https://flagcdn.com/jo.svg"
+  },
+  {
+    "name": "Portugal",
+    "shortName": "PT",
+    "group": "K",
+    "flagUrl": "https://flagcdn.com/pt.svg"
+  },
+  {
+    "name": "DR Congo",
+    "shortName": "CD",
+    "group": "K",
+    "flagUrl": "https://flagcdn.com/cd.svg"
+  },
+  {
+    "name": "Uzbekistan",
+    "shortName": "UZ",
+    "group": "K",
+    "flagUrl": "https://flagcdn.com/uz.svg"
+  },
+  {
+    "name": "Colombia",
+    "shortName": "CO",
+    "group": "K",
+    "flagUrl": "https://flagcdn.com/co.svg"
+  },
+  {
+    "name": "England",
+    "shortName": "EN",
+    "group": "L",
+    "flagUrl": "https://flagcdn.com/gb-eng.svg"
+  },
+  {
+    "name": "Croatia",
+    "shortName": "HR",
+    "group": "L",
+    "flagUrl": "https://flagcdn.com/hr.svg"
+  },
+  {
+    "name": "Ghana",
+    "shortName": "GH",
+    "group": "L",
+    "flagUrl": "https://flagcdn.com/gh.svg"
+  },
+  {
+    "name": "Panama",
+    "shortName": "PA",
+    "group": "L",
+    "flagUrl": "https://flagcdn.com/pa.svg"
   }
 ]

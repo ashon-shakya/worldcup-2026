@@ -1,0 +1,73 @@
+homeTeam,awayTeam,kickOff,stage,status,isKnockout,venue
+MX,ZA,2026-06-11T13:00:00-06:00,Group Stage,SCHEDULED,false,Estadio Azteca - Mexico City
+KR,CZ,2026-06-11T20:00:00-06:00,Group Stage,SCHEDULED,false,Estadio Akron - Zapopan
+CA,BA,2026-06-12T15:00:00-04:00,Group Stage,SCHEDULED,false,BMO Field - Toronto
+US,PY,2026-06-12T18:00:00-07:00,Group Stage,SCHEDULED,false,SoFi Stadium - Inglewood
+HT,SC,2026-06-13T21:00:00-04:00,Group Stage,SCHEDULED,false,Gillette Stadium - Foxborough
+AU,TR,2026-06-13T21:00:00-07:00,Group Stage,SCHEDULED,false,BC Place - Vancouver
+BR,MA,2026-06-13T18:00:00-04:00,Group Stage,SCHEDULED,false,MetLife Stadium - East Rutherford
+QA,CH,2026-06-13T12:00:00-07:00,Group Stage,SCHEDULED,false,Levi's Stadium - Santa Clara
+CI,EC,2026-06-14T19:00:00-04:00,Group Stage,SCHEDULED,false,Lincoln Financial Field - Philadelphia
+DE,CW,2026-06-14T12:00:00-05:00,Group Stage,SCHEDULED,false,NRG Stadium - Houston
+NL,JP,2026-06-14T15:00:00-05:00,Group Stage,SCHEDULED,false,AT&T Stadium - Arlington
+SE,TN,2026-06-14T20:00:00-06:00,Group Stage,SCHEDULED,false,Estadio BBVA - Guadalupe
+SA,UY,2026-06-15T18:00:00-04:00,Group Stage,SCHEDULED,false,Hard Rock Stadium - Miami Gardens
+ES,CV,2026-06-15T12:00:00-04:00,Group Stage,SCHEDULED,false,Mercedes-Benz Stadium - Atlanta
+IR,NZ,2026-06-15T18:00:00-07:00,Group Stage,SCHEDULED,false,SoFi Stadium - Inglewood
+BE,EG,2026-06-15T12:00:00-07:00,Group Stage,SCHEDULED,false,Lumen Field - Seattle
+FR,SN,2026-06-16T15:00:00-04:00,Group Stage,SCHEDULED,false,MetLife Stadium - East Rutherford
+IQ,NO,2026-06-16T18:00:00-04:00,Group Stage,SCHEDULED,false,Gillette Stadium - Foxborough
+AR,DZ,2026-06-16T20:00:00-05:00,Group Stage,SCHEDULED,false,Arrowhead Stadium - Kansas City
+AT,JO,2026-06-16T21:00:00-07:00,Group Stage,SCHEDULED,false,Levi's Stadium - Santa Clara
+GH,PA,2026-06-17T19:00:00-04:00,Group Stage,SCHEDULED,false,BMO Field - Toronto
+EN,HR,2026-06-17T15:00:00-05:00,Group Stage,SCHEDULED,false,AT&T Stadium - Arlington
+PT,CD,2026-06-17T12:00:00-05:00,Group Stage,SCHEDULED,false,NRG Stadium - Houston
+UZ,CO,2026-06-17T20:00:00-06:00,Group Stage,SCHEDULED,false,Estadio Azteca - Mexico City
+CZ,ZA,2026-06-18T12:00:00-04:00,Group Stage,SCHEDULED,false,Mercedes-Benz Stadium - Atlanta
+CH,BA,2026-06-18T12:00:00-07:00,Group Stage,SCHEDULED,false,SoFi Stadium - Inglewood
+CA,QA,2026-06-18T15:00:00-07:00,Group Stage,SCHEDULED,false,BC Place - Vancouver
+MX,KR,2026-06-18T19:00:00-06:00,Group Stage,SCHEDULED,false,Estadio Akron - Zapopan
+BR,HT,2026-06-19T20:30:00-04:00,Group Stage,SCHEDULED,false,Lincoln Financial Field - Philadelphia
+SC,MA,2026-06-19T18:00:00-04:00,Group Stage,SCHEDULED,false,Gillette Stadium - Foxborough
+TR,PY,2026-06-19T20:00:00-07:00,Group Stage,SCHEDULED,false,Levi's Stadium - Santa Clara
+US,AU,2026-06-19T12:00:00-07:00,Group Stage,SCHEDULED,false,Lumen Field - Seattle
+DE,CI,2026-06-20T16:00:00-04:00,Group Stage,SCHEDULED,false,BMO Field - Toronto
+EC,CW,2026-06-20T19:00:00-05:00,Group Stage,SCHEDULED,false,Arrowhead Stadium - Kansas City
+NL,SE,2026-06-20T12:00:00-05:00,Group Stage,SCHEDULED,false,NRG Stadium - Houston
+TN,JP,2026-06-20T22:00:00-06:00,Group Stage,SCHEDULED,false,Estadio BBVA - Guadalupe
+UY,CV,2026-06-21T18:00:00-04:00,Group Stage,SCHEDULED,false,Hard Rock Stadium - Miami Gardens
+ES,SA,2026-06-21T12:00:00-04:00,Group Stage,SCHEDULED,false,Mercedes-Benz Stadium - Atlanta
+BE,IR,2026-06-21T12:00:00-07:00,Group Stage,SCHEDULED,false,SoFi Stadium - Inglewood
+NZ,EG,2026-06-21T18:00:00-07:00,Group Stage,SCHEDULED,false,BC Place - Vancouver
+NO,SN,2026-06-22T20:00:00-04:00,Group Stage,SCHEDULED,false,MetLife Stadium - East Rutherford
+FR,IQ,2026-06-22T17:00:00-04:00,Group Stage,SCHEDULED,false,Lincoln Financial Field - Philadelphia
+AR,AT,2026-06-22T12:00:00-05:00,Group Stage,SCHEDULED,false,AT&T Stadium - Arlington
+JO,DZ,2026-06-22T20:00:00-07:00,Group Stage,SCHEDULED,false,Levi's Stadium - Santa Clara
+EN,GH,2026-06-23T16:00:00-04:00,Group Stage,SCHEDULED,false,Gillette Stadium - Foxborough
+PA,HR,2026-06-23T19:00:00-04:00,Group Stage,SCHEDULED,false,BMO Field - Toronto
+PT,UZ,2026-06-23T12:00:00-05:00,Group Stage,SCHEDULED,false,NRG Stadium - Houston
+CO,CD,2026-06-23T20:00:00-06:00,Group Stage,SCHEDULED,false,Estadio Akron - Zapopan
+SC,BR,2026-06-24T18:00:00-04:00,Group Stage,SCHEDULED,false,Hard Rock Stadium - Miami Gardens
+MA,HT,2026-06-24T18:00:00-04:00,Group Stage,SCHEDULED,false,Mercedes-Benz Stadium - Atlanta
+CH,CA,2026-06-24T12:00:00-07:00,Group Stage,SCHEDULED,false,BC Place - Vancouver
+BA,QA,2026-06-24T12:00:00-07:00,Group Stage,SCHEDULED,false,Lumen Field - Seattle
+CZ,MX,2026-06-24T19:00:00-06:00,Group Stage,SCHEDULED,false,Estadio Azteca - Mexico City
+ZA,KR,2026-06-24T19:00:00-06:00,Group Stage,SCHEDULED,false,Estadio BBVA - Guadalupe
+CW,CI,2026-06-25T16:00:00-04:00,Group Stage,SCHEDULED,false,Lincoln Financial Field - Philadelphia
+EC,DE,2026-06-25T16:00:00-04:00,Group Stage,SCHEDULED,false,MetLife Stadium - East Rutherford
+JP,SE,2026-06-25T18:00:00-05:00,Group Stage,SCHEDULED,false,AT&T Stadium - Arlington
+TN,NL,2026-06-25T18:00:00-05:00,Group Stage,SCHEDULED,false,Arrowhead Stadium - Kansas City
+TR,US,2026-06-25T19:00:00-07:00,Group Stage,SCHEDULED,false,SoFi Stadium - Inglewood
+PY,AU,2026-06-25T19:00:00-07:00,Group Stage,SCHEDULED,false,Levi's Stadium - Santa Clara
+NO,FR,2026-06-26T15:00:00-04:00,Group Stage,SCHEDULED,false,Gillette Stadium - Foxborough
+SN,IQ,2026-06-26T15:00:00-04:00,Group Stage,SCHEDULED,false,BMO Field - Toronto
+EG,IR,2026-06-26T20:00:00-07:00,Group Stage,SCHEDULED,false,Lumen Field - Seattle
+NZ,BE,2026-06-26T20:00:00-07:00,Group Stage,SCHEDULED,false,BC Place - Vancouver
+CV,SA,2026-06-26T19:00:00-05:00,Group Stage,SCHEDULED,false,NRG Stadium - Houston
+UY,ES,2026-06-26T18:00:00-06:00,Group Stage,SCHEDULED,false,Estadio Akron - Zapopan
+PA,EN,2026-06-27T17:00:00-04:00,Group Stage,SCHEDULED,false,MetLife Stadium - East Rutherford
+HR,GH,2026-06-27T17:00:00-04:00,Group Stage,SCHEDULED,false,Lincoln Financial Field - Philadelphia
+DZ,AT,2026-06-27T21:00:00-05:00,Group Stage,SCHEDULED,false,Arrowhead Stadium - Kansas City
+JO,AR,2026-06-27T21:00:00-05:00,Group Stage,SCHEDULED,false,AT&T Stadium - Arlington
+CO,PT,2026-06-27T19:30:00-04:00,Group Stage,SCHEDULED,false,Hard Rock Stadium - Miami Gardens
+CD,UZ,2026-06-27T19:30:00-04:00,Group Stage,SCHEDULED,false,Mercedes-Benz Stadium - Atlanta
