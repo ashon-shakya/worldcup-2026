@@ -1,22 +1,22 @@
 
 interface EmailTemplateProps {
-    url: string;
-    subject: string;
-    previewText: string;
-    buttonText: string;
-    title: string;
-    message: string;
+  url: string;
+  subject: string;
+  previewText: string;
+  buttonText: string;
+  title: string;
+  message: string;
 }
 
 export const getEmailTemplate = ({
-    url,
-    subject,
-    previewText,
-    buttonText,
-    title,
-    message
+  url,
+  subject,
+  previewText,
+  buttonText,
+  title,
+  message
 }: EmailTemplateProps) => {
-    return `
+  return `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,7 +32,7 @@ export const getEmailTemplate = ({
     .title { font-size: 20px; font-weight: 600; color: #111827; margin-bottom: 16px; }
     .message { font-size: 16px; line-height: 24px; color: #4b5563; margin-bottom: 24px; }
     .button-container { text-align: center; margin: 32px 0; }
-    .button { background-color: #4f46e5; color: #ffffff; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; display: inline-block; transition: background-color 0.2s; }
+    .button { background-color: #4f46e5; color: #ffffff !important; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; display: inline-block; transition: background-color 0.2s; }
     .button:hover { background-color: #4338ca; }
     .footer { background-color: #f9fafb; padding: 24px; text-align: center; font-size: 14px; color: #6b7280; border-top: 1px solid #e5e7eb; }
     .link-text { color: #4f46e5; word-break: break-all; }
