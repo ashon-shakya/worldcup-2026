@@ -58,3 +58,29 @@ export const sendPasswordResetEmail = async (
         html: html,
     });
 };
+
+export const sendMatchesDigest = async (email: string, matches: Array<any>) => {
+    const subject = `Upcoming matches ~24 hours from now`;
+    const previewText = `Here's a quick list of matches starting roughly 24 hours from now.`;
+
+    const matchLines = matches.map((m) => {
+        const kick = new Date(m.kickOff).toUTCString();
+        return `${m.homeTeam.name} vs ${m.awayTeam.name} — ${kick}`;
+    }).join("<br/>\n");
+
+    const html = getEmailTemplate({
+        url: `${domain}/matches`,
+        subject,
+        previewText,
+        title: "Matches starting ~24 hours from now",
+        message: `Here are the upcoming matches starting in about 24 hours:<br/><br/>${matchLines}`,
+        buttonText: "View Matches"
+    });
+
+    await transporter.sendMail({
+        from: process.env.SMTP_FROM || '"CupQuest" <no-reply@cupquest.com>',
+        to: email,
+        subject,
+        html,
+    });
+};

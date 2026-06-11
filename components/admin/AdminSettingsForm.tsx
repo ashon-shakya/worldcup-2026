@@ -1,107 +1,181 @@
 "use client";
 
-import { updatePointSettings, PointSettings } from "@/app/actions/admin/settings";
+import {
+  updatePointSettings,
+  PointSettings,
+} from "@/app/actions/admin/settings";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 interface AdminSettingsFormProps {
-    initialSettings: PointSettings;
+  initialSettings: PointSettings;
 }
 
-export default function AdminSettingsForm({ initialSettings }: AdminSettingsFormProps) {
-    const initialState = {
-        message: "",
+export default function AdminSettingsForm({
+  initialSettings,
+}: AdminSettingsFormProps) {
+  const initialState = {
+    message: "",
+    success: false,
+  };
+
+  const [state, formAction, isPending] = useActionState(
+    async (prevState: any, formData: FormData) => {
+      const settings: PointSettings = {
+        correctScore: Number(formData.get("correctScore")),
+        correctOutcome: Number(formData.get("correctOutcome")),
+        correctPenaltyPrediction: Number(
+          formData.get("correctPenaltyPrediction"),
+        ),
+      };
+      const result = await updatePointSettings(settings);
+      if (result.message === "success") {
+        return { message: "Settings updated successfully", success: true };
+      }
+      return {
+        message: result.message || "Failed to update settings",
         success: false,
-    };
+      };
+    },
+    initialState,
+  );
 
-    const [state, formAction, isPending] = useActionState(async (prevState: any, formData: FormData) => {
-        const settings: PointSettings = {
-            correctScore: Number(formData.get("correctScore")),
-            correctOutcome: Number(formData.get("correctOutcome")),
-            correctPenaltyPrediction: Number(formData.get("correctPenaltyPrediction")),
-        };
-        const result = await updatePointSettings(settings);
-        if (result.message === "success") {
-            return { message: "Settings updated successfully", success: true };
-        }
-        return { message: result.message || "Failed to update settings", success: false };
-    }, initialState);
+  const [isSending, setIsSending] = useState(false);
 
-    useEffect(() => {
-        if (state.success) {
-            toast.success(state.message);
-        } else if (state.message) {
-            toast.error(state.message);
-        }
-    }, [state]);
+  useEffect(() => {
+    if (state.success) {
+      toast.success(state.message);
+    } else if (state.message) {
+      toast.error(state.message);
+    }
+  }, [state]);
 
-    return (
-        <form action={formAction} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6 max-w-2xl">
-            <div>
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">Point System Configuration</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Correct Score Points
-                        </label>
-                        <Input
-                            type="number"
-                            name="correctScore"
-                            defaultValue={initialSettings.correctScore}
-                            min="0"
-                            required
-                            className="bg-white text-gray-900 border-gray-300"
-                        />
-                        <p className="text-xs text-gray-500 mt-1">
-                            Points awarded for correctly predicting the exact home and away score.
-                        </p>
-                    </div>
+  return (
+    <form
+      action={formAction}
+      className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6 max-w-2xl"
+    >
+      <div>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">
+          Point System Configuration
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Correct Score Points
+            </label>
+            <Input
+              type="number"
+              name="correctScore"
+              defaultValue={initialSettings.correctScore}
+              min="0"
+              required
+              className="bg-white text-gray-900 border-gray-300"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Points awarded for correctly predicting the exact home and away
+              score.
+            </p>
+          </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Correct Outcome Points
-                        </label>
-                        <Input
-                            type="number"
-                            name="correctOutcome"
-                            defaultValue={initialSettings.correctOutcome}
-                            min="0"
-                            required
-                            className="bg-white text-gray-900 border-gray-300"
-                        />
-                        <p className="text-xs text-gray-500 mt-1">
-                            Points awarded for correctly predicting the winner (or draw).
-                        </p>
-                    </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Correct Outcome Points
+            </label>
+            <Input
+              type="number"
+              name="correctOutcome"
+              defaultValue={initialSettings.correctOutcome}
+              min="0"
+              required
+              className="bg-white text-gray-900 border-gray-300"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Points awarded for correctly predicting the winner (or draw).
+            </p>
+          </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Penalty Prediction Points
-                        </label>
-                        <Input
-                            type="number"
-                            name="correctPenaltyPrediction"
-                            defaultValue={initialSettings.correctPenaltyPrediction}
-                            min="0"
-                            required
-                            className="bg-white text-gray-900 border-gray-300"
-                        />
-                        <p className="text-xs text-gray-500 mt-1">
-                            Points awarded for correctly predicting if a match will go to penalties (Knockout only).
-                        </p>
-                    </div>
-                </div>
-            </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Penalty Prediction Points
+            </label>
+            <Input
+              type="number"
+              name="correctPenaltyPrediction"
+              defaultValue={initialSettings.correctPenaltyPrediction}
+              min="0"
+              required
+              className="bg-white text-gray-900 border-gray-300"
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Points awarded for correctly predicting if a match will go to
+              penalties (Knockout only).
+            </p>
+          </div>
+        </div>
+      </div>
 
-            <div className="flex justify-end pt-4 border-t border-gray-100">
-                <Button type="submit" disabled={isPending}>
-                    {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Save Changes
-                </Button>
-            </div>
-        </form>
-    );
+      <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+        <div>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={async () => {
+              try {
+                setIsSending(true);
+                const res = await fetch("/api/admin/send-match-emails", {
+                  method: "POST",
+                  credentials: "same-origin",
+                  headers: { Accept: "application/json" },
+                });
+
+                const contentType = res.headers.get("content-type") || "";
+                let json: any = null;
+                if (contentType.includes("application/json")) {
+                  try {
+                    json = await res.json();
+                  } catch (e) {
+                    toast.error("Invalid JSON response from server");
+                    return;
+                  }
+                } else {
+                  const text = await res.text();
+                  toast.error(
+                    text || "Unexpected non-JSON response from server",
+                  );
+                  return;
+                }
+
+                if (json && json.ok) {
+                  toast.success(
+                    `Emails sent to ${json.result.sent} users (${json.result.matchesFound} matches)`,
+                  );
+                } else {
+                  toast.error(json?.error || "Failed to send emails");
+                }
+              } catch (e: any) {
+                toast.error(e?.message || "Failed to send emails");
+              } finally {
+                setIsSending(false);
+              }
+            }}
+            disabled={isSending}
+          >
+            {isSending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Send Match Emails Now
+          </Button>
+        </div>
+
+        <div>
+          <Button type="submit" disabled={isPending}>
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Save Changes
+          </Button>
+        </div>
+      </div>
+    </form>
+  );
 }
