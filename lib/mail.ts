@@ -69,7 +69,7 @@ export const sendMatchesDigest = async (email: string, matches: Array<any>) => {
     }).join("<br/>\n");
 
     const html = getEmailTemplate({
-        url: `${domain}/matches`,
+        url: `${domain}/dashboard/matches`,
         subject,
         previewText,
         title: "Matches starting ~24 hours from now",

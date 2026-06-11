@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     }
 
     try {
-        const result = await runSendMatchEmails();
+        const result = await runSendMatchEmails({ isManual: true });
         return NextResponse.json({ ok: true, result });
     } catch (err: any) {
         console.error(err);
