@@ -1,8 +1,9 @@
 import { getGroupDetails } from "@/app/actions/groups";
 import { auth } from "@/auth";
-import { Trophy, Users, Copy, Check } from "lucide-react";
-import CopyButton from "@/components/user/CopyButton"; // We'll create this small helper
+import { Users } from "lucide-react";
+import CopyButton from "@/components/user/CopyButton";
 import DeleteGroupButton from "@/components/user/DeleteGroupButton";
+import GroupMemberRow from "@/components/user/GroupMemberRow";
 
 export const dynamic = "force-dynamic";
 
@@ -18,13 +19,6 @@ export default async function GroupDetailsPage({ params }: { params: Promise<{ i
     }
 
     const { group, leaderboard } = data;
-
-    const getRankIcon = (index: number) => {
-        if (index === 0) return <Trophy className="w-5 h-5 text-yellow-500" />;
-        if (index === 1) return <span className="text-gray-400 font-bold text-lg">2</span>;
-        if (index === 2) return <span className="text-amber-600 font-bold text-lg">3</span>;
-        return <span className="text-gray-500 font-bold">{index + 1}</span>;
-    };
 
     return (
         <div className="space-y-6">
@@ -68,37 +62,14 @@ export default async function GroupDetailsPage({ params }: { params: Promise<{ i
                 {leaderboard.length === 0 ? (
                     <div className="p-8 text-center text-gray-500">No members yet.</div>
                 ) : (
-                    <div className="divide-y divide-gray-100">
+                    <div>
                         {leaderboard.map((user: any, index: number) => (
-                            <div
+                            <GroupMemberRow
                                 key={user._id}
-                                className={`flex items-center px-6 py-4 transition-colors hover:bg-gray-50 ${user._id === currentUserId ? "bg-indigo-50/50" : ""}`}
-                            >
-                                <div className="flex-shrink-0 w-8 flex justify-center text-center">
-                                    {getRankIcon(index)}
-                                </div>
-                                <div className="flex-shrink-0 ml-4">
-                                    <div className="h-10 w-10 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center border border-gray-200 text-gray-500 font-semibold">
-                                        {user.image ? (
-                                            <img src={user.image} alt={user.name} className="h-full w-full object-cover" />
-                                        ) : (
-                                            user.name.charAt(0).toUpperCase()
-                                        )}
-                                    </div>
-                                </div>
-                                <div className="ml-4 flex-1">
-                                    <div className="font-bold text-gray-900 flex items-center gap-2">
-                                        {user.name}
-                                        {user._id === currentUserId && (
-                                            <span className="text-[10px] bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded-full uppercase font-bold tracking-wide">You</span>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className="text-right">
-                                    <span className="block text-xl font-bold text-indigo-600">{user.totalPoints}</span>
-                                    <span className="text-[10px] font-bold text-gray-400 uppercase">Pts</span>
-                                </div>
-                            </div>
+                                user={user}
+                                index={index}
+                                currentUserId={currentUserId}
+                            />
                         ))}
                     </div>
                 )}

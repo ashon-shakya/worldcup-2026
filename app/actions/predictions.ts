@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@/auth";
-import { Match, Prediction } from "@/models/schema";
+import { Match, Prediction, Team } from "@/models/schema";
 import connectToDatabase from "@/lib/db";
 import { revalidatePath, unstable_noStore as noStore } from "next/cache";
 import { z } from "zod";
@@ -88,4 +88,37 @@ export async function getUserPredictions(userId: string) {
         };
     });
     return predictionMap;
+}
+
+export async function getPublicPredictions(userId: string) {
+    noStore();
+    await connectToDatabase();
+
+    const predictions = await Prediction.find({ user: userId })
+        .populate({
+            path: "match",
+            populate: [
+                { path: "homeTeam", model: "Team" },
+                { path: "awayTeam", model: "Team" },
+                { path: "winner", model: "Team" }
+            ]
+        })
+        .populate("predictedWinner");
+
+    const now = new Date();
+
+    // Predictions are viewable once locked (5 mins before kickoff)
+    const publicPredictions = predictions.filter((p: any) => {
+        if (!p.match) return false;
+        const kickOffTime = new Date(p.match.kickOff);
+        const lockTime = new Date(kickOffTime.getTime() - 5 * 60000);
+        return now > lockTime || p.match.status === "LIVE" || p.match.status === "FINISHED";
+    });
+
+    // Sort predictions in descending order of kickOff time
+    publicPredictions.sort((a: any, b: any) => {
+        return new Date(b.match.kickOff).getTime() - new Date(a.match.kickOff).getTime();
+    });
+
+    return JSON.parse(JSON.stringify(publicPredictions));
 }
