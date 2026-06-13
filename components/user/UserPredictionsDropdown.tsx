@@ -8,9 +8,10 @@ import { motion, AnimatePresence } from "framer-motion";
 interface UserPredictionsDropdownProps {
     userId: string;
     isExpanded: boolean;
+    allowedStages?: string[];
 }
 
-export default function UserPredictionsDropdown({ userId, isExpanded }: UserPredictionsDropdownProps) {
+export default function UserPredictionsDropdown({ userId, isExpanded, allowedStages }: UserPredictionsDropdownProps) {
     const [predictions, setPredictions] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
@@ -70,11 +71,25 @@ export default function UserPredictionsDropdown({ userId, isExpanded }: UserPred
         );
     }
 
+    const displayPredictions = allowedStages && allowedStages.length > 0
+        ? predictions.filter((p: any) => p.match && allowedStages.includes(p.match.stage))
+        : predictions;
+
+    if (displayPredictions.length === 0) {
+        return (
+            <div className="p-8 text-center text-gray-500 bg-gray-50/50 border-t border-gray-100 flex flex-col items-center justify-center gap-2">
+                <HelpCircle className="w-8 h-8 text-gray-400" />
+                <p className="font-medium text-sm">No predictions in allowed rounds</p>
+                <p className="text-xs text-gray-400">Only started or completed match predictions in allowed rounds will appear here.</p>
+            </div>
+        );
+    }
+
     // Pagination calculations
     const indexOfLastPrediction = currentPage * predictionsPerPage;
     const indexOfFirstPrediction = indexOfLastPrediction - predictionsPerPage;
-    const currentPredictions = predictions.slice(indexOfFirstPrediction, indexOfLastPrediction);
-    const totalPages = Math.ceil(predictions.length / predictionsPerPage);
+    const currentPredictions = displayPredictions.slice(indexOfFirstPrediction, indexOfLastPrediction);
+    const totalPages = Math.ceil(displayPredictions.length / predictionsPerPage);
 
     const handleNextPage = () => {
         if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);

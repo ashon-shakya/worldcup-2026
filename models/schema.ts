@@ -74,6 +74,10 @@ const GroupSchema = new Schema(
         owner: { type: Schema.Types.ObjectId, ref: "User", required: true },
         isPrivate: { type: Boolean, default: true },
         members: [{ type: Schema.Types.ObjectId, ref: "User" }],
+        includedStages: {
+            type: [String],
+            default: ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final"]
+        },
     },
     { timestamps: true },
 );
@@ -101,5 +105,10 @@ if (models.Prediction && (!models.Prediction.schema.paths.penaltyPrediction || !
     delete models.Prediction;
 }
 export const Prediction = models.Prediction || model("Prediction", PredictionSchema);
+
+// Force schema update for Group model when includedStages is added
+if (models.Group && !models.Group.schema.paths.includedStages) {
+    delete models.Group;
+}
 export const Group = models.Group || model("Group", GroupSchema);
 export const SystemSettings = models.SystemSettings || model("SystemSettings", SystemSettingsSchema);

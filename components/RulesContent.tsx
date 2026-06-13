@@ -127,11 +127,15 @@ export default function RulesContent() {
                     <ul className="space-y-3 text-gray-600 text-sm">
                         <li className="flex items-start">
                             <span className="mr-2 text-blue-500">•</span>
-                            <strong>Global Leaderboard:</strong> Everyone competes here.
+                            <div>
+                                <strong>Global Leaderboard:</strong> Everyone competes here. Total points from all rounds are always considered.
+                            </div>
                         </li>
                         <li className="flex items-start">
                             <span className="mr-2 text-blue-500">•</span>
-                            <strong>Private Groups:</strong> Create a group and share the code with friends to compete in a private league.
+                            <div>
+                                <strong>Private Groups:</strong> Create a group and share the code with friends to compete in a private league. Group admins can configure which rounds contribute to the group points calculation.
+                            </div>
                         </li>
                     </ul>
                 </div>

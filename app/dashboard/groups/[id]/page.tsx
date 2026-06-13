@@ -4,6 +4,7 @@ import { Users } from "lucide-react";
 import CopyButton from "@/components/user/CopyButton";
 import DeleteGroupButton from "@/components/user/DeleteGroupButton";
 import GroupMemberRow from "@/components/user/GroupMemberRow";
+import GroupSettingsForm from "@/components/user/GroupSettingsForm";
 
 export const dynamic = "force-dynamic";
 
@@ -69,11 +70,17 @@ export default async function GroupDetailsPage({ params }: { params: Promise<{ i
                                 user={user}
                                 index={index}
                                 currentUserId={currentUserId}
+                                allowedStages={group.includedStages || []}
                             />
                         ))}
                     </div>
                 )}
             </div>
+
+            {/* Settings Section - Admin Only */}
+            {currentUserId === group.owner && (
+                <GroupSettingsForm groupId={group._id} currentStages={group.includedStages || []} />
+            )}
         </div>
     );
 }

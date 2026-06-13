@@ -110,10 +110,31 @@ export async function getGroupDetails(groupId: string) {
     // Calculate leaderboard for these members ONLY
     const memberIds = group.members.map((m: any) => m._id);
 
+    // Default to all stages if includedStages is missing or empty
+    const stagesToInclude = group.includedStages && group.includedStages.length > 0
+        ? group.includedStages
+        : ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final"];
+
     const leaderboard = await Prediction.aggregate([
         {
             $match: {
                 user: { $in: memberIds }
+            }
+        },
+        {
+            $lookup: {
+                from: "matches",
+                localField: "match",
+                foreignField: "_id",
+                as: "matchInfo"
+            }
+        },
+        {
+            $unwind: "$matchInfo"
+        },
+        {
+            $match: {
+                "matchInfo.stage": { $in: stagesToInclude }
             }
         },
         {
@@ -185,5 +206,36 @@ export async function deleteGroup(groupId: string) {
     } catch (error) {
         console.error("Failed to delete group:", error);
         return { message: "Failed to delete group" };
+    }
+}
+
+export async function updateGroupStages(groupId: string, stages: string[]) {
+    const session = await auth();
+    if (!session || !session.user) return { message: "Unauthorized" };
+
+    try {
+        await connectToDatabase();
+        const group = await Group.findById(groupId);
+        if (!group) return { message: "Group not found" };
+
+        if (group.owner.toString() !== session.user.id) {
+            return { message: "Only the group owner can modify settings" };
+        }
+
+        const validStages = ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final"];
+        const filteredStages = stages.filter(s => validStages.includes(s));
+
+        if (filteredStages.length === 0) {
+            return { message: "You must include at least one round" };
+        }
+
+        group.includedStages = filteredStages;
+        await group.save();
+
+        revalidatePath(`/dashboard/groups/${groupId}`);
+        return { message: "success" };
+    } catch (error) {
+        console.error("Failed to update group settings:", error);
+        return { message: "Failed to update group settings" };
     }
 }

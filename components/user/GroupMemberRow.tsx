@@ -9,9 +9,10 @@ interface GroupMemberRowProps {
     user: any;
     index: number;
     currentUserId?: string;
+    allowedStages?: string[];
 }
 
-export default function GroupMemberRow({ user, index, currentUserId }: GroupMemberRowProps) {
+export default function GroupMemberRow({ user, index, currentUserId, allowedStages }: GroupMemberRowProps) {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const getRankIcon = (idx: number) => {
@@ -74,7 +75,7 @@ export default function GroupMemberRow({ user, index, currentUserId }: GroupMemb
                         transition={{ duration: 0.25, ease: "easeInOut" }}
                         className="overflow-hidden"
                     >
-                        <UserPredictionsDropdown userId={user._id} isExpanded={isExpanded} />
+                        <UserPredictionsDropdown userId={user._id} isExpanded={isExpanded} allowedStages={allowedStages} />
                     </motion.div>
                 )}
             </AnimatePresence>
