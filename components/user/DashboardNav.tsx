@@ -4,6 +4,7 @@ import Link from "next/link";
 import { LogOut, Trophy, Home, List, Menu, X, Users, BookOpen } from "lucide-react";
 import { useState } from "react";
 import { logout } from "@/app/actions/auth";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function DashboardNav({ user }: { user: any }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -78,6 +79,7 @@ export default function DashboardNav({ user }: { user: any }) {
                                     </div>
                                 )}
                             </Link>
+                            <ThemeToggle />
                             <button
                                 onClick={() => logout()}
                                 className="text-gray-400 hover:text-orange-500 cursor-pointer"
@@ -173,12 +175,15 @@ export default function DashboardNav({ user }: { user: any }) {
                                 <div className="text-base font-medium text-gray-800">{user.name}</div>
                                 <div className="text-sm font-medium text-gray-500">{user.email}</div>
                             </div>
-                            <button
-                                onClick={() => logout()}
-                                className="ml-auto flex-shrink-0 bg-white p-1 rounded-full text-gray-400 hover:text-gray-500  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            >
-                                <LogOut className="h-6 w-6" />
-                            </button>
+                            <div className="ml-auto flex items-center gap-3">
+                                <ThemeToggle />
+                                <button
+                                    onClick={() => logout()}
+                                    className="flex-shrink-0 bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                >
+                                    <LogOut className="h-6 w-6" />
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
@@ -46,15 +48,46 @@
 }
 
 :root {
-  --background: 217 71% 6%;
+  /* Light Mode - Indigo/Purple high-contrast premium theme */
+  --background: 210 40% 98%;      /* slate-50 */
+  --foreground: 222.2 84% 4.9%;    /* slate-900 */
+  --card: 0 0% 100%;               /* white */
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 243.4 75.4% 58.6%;   /* Indigo-600 */
+  --primary-foreground: 210 40% 98%;
+  --secondary: 262.1 83.3% 57.8%; /* Purple-600 */
+  --secondary-foreground: 210 40% 98%;
+  --muted: 210 40% 96.1%;          /* slate-100 */
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;    /* slate-200 */
+  --input: 214.3 31.8% 91.4%;
+  --ring: 243.4 75.4% 58.6%;
+  --radius: 0.5rem;
+
+  --radial-color-1: rgba(99, 102, 241, 0.04);
+  --radial-color-2: rgba(168, 85, 247, 0.04);
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg-hover: rgba(255, 255, 255, 0.85);
+  --glass-shadow: rgba(0, 0, 0, 0.03);
+}
+
+.dark {
+  /* Dark Mode - Sci-Fi Cyberpunk neon theme */
+  --background: 217 71% 6%;       /* Deep dark blue/black */
   --foreground: 210 40% 93%;
   --card: 222 47% 11%;
   --card-foreground: 210 40% 93%;
   --popover: 222 47% 11%;
   --popover-foreground: 210 40% 93%;
-  --primary: 189 100% 50%;
+  --primary: 189 100% 50%;       /* Neon Cyan */
   --primary-foreground: 217 71% 6%;
-  --secondary: 278 65% 46%;
+  --secondary: 278 65% 46%;      /* Purple */
   --secondary-foreground: 210 40% 93%;
   --muted: 217 33% 17%;
   --muted-foreground: 215 20% 58%;
@@ -65,7 +98,12 @@
   --border: 217 33% 17%;
   --input: 217 33% 17%;
   --ring: 189 100% 50%;
-  --radius: 0.5rem;
+
+  --radial-color-1: rgba(0, 212, 255, 0.08);
+  --radial-color-2: rgba(123, 44, 191, 0.08);
+  --glass-bg: rgba(30, 41, 59, 0.3);
+  --glass-bg-hover: rgba(30, 41, 59, 0.5);
+  --glass-shadow: rgba(0, 212, 255, 0.08);
 }
 
 @layer base {
@@ -74,34 +112,33 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground font-sans antialiased transition-colors duration-300;
     background-image: radial-gradient(at 0% 0%,
-        rgba(0, 212, 255, 0.1) 0px,
+        var(--radial-color-1) 0px,
         transparent 50%),
       radial-gradient(at 100% 100%,
-        rgba(123, 44, 191, 0.1) 0px,
+        var(--radial-color-2) 0px,
         transparent 50%);
   }
 }
 
 @layer components {
-
   /* Define shared glass styles in a standard class to be used directly or copied */
   .glass-card {
-    @apply bg-card/30 backdrop-blur-xl border border-primary/20 rounded-lg;
-    background: rgba(30, 41, 59, 0.3);
-    box-shadow: 0 8px 32px 0 rgba(0, 212, 255, 0.1);
+    @apply backdrop-blur-xl border border-primary/20 rounded-lg;
+    background: var(--glass-bg);
+    box-shadow: 0 8px 32px 0 var(--glass-shadow);
   }
 
   .glass-card-hover {
-    @apply bg-card/30 backdrop-blur-xl border border-primary/20 rounded-lg transition-all duration-300;
-    background: rgba(30, 41, 59, 0.3);
-    box-shadow: 0 8px 32px 0 rgba(0, 212, 255, 0.1);
+    @apply backdrop-blur-xl border border-primary/20 rounded-lg transition-all duration-300;
+    background: var(--glass-bg);
+    box-shadow: 0 8px 32px 0 var(--glass-shadow);
   }
 
   .glass-card-hover:hover {
     @apply border-primary/40 scale-[1.02];
-    background: rgba(30, 41, 59, 0.5);
+    background: var(--glass-bg-hover);
     box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
   }
 
@@ -116,20 +153,19 @@
   }
 
   .cyber-input {
-    @apply bg-card/30 backdrop-blur-xl border border-primary/20 rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200;
-    background: rgba(30, 41, 59, 0.3);
-    box-shadow: 0 8px 32px 0 rgba(0, 212, 255, 0.1);
+    @apply backdrop-blur-xl border border-primary/20 rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200;
+    background: var(--glass-bg);
+    box-shadow: 0 8px 32px 0 var(--glass-shadow);
   }
 
   .cyber-button {
-    @apply bg-card/30 backdrop-blur-xl border border-primary/20 rounded-lg px-6 py-3 font-semibold text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg shadow-cyan-500/20;
-    background: rgba(30, 41, 59, 0.3);
-    /* No generic box-shadow here to avoid conflict with shadow-lg, or keep it if desired */
+    @apply backdrop-blur-xl border border-primary/20 rounded-lg px-6 py-3 font-semibold text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg shadow-cyan-500/20;
+    background: var(--glass-bg);
   }
 
   .cyber-button-secondary {
-    @apply bg-card/30 backdrop-blur-xl border border-primary/20 rounded-lg px-6 py-3 font-semibold text-secondary hover:bg-secondary hover:text-secondary-foreground transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg shadow-purple-500/20;
-    background: rgba(30, 41, 59, 0.3);
+    @apply backdrop-blur-xl border border-primary/20 rounded-lg px-6 py-3 font-semibold text-secondary hover:bg-secondary hover:text-secondary-foreground transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg shadow-purple-500/20;
+    background: var(--glass-bg);
   }
 
   .gradient-text {
@@ -172,5 +208,51 @@
 
   &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+/* Global overrides to dark-theme white / gray classes on admin and sub-pages */
+.dark {
+  .bg-blue-50, .bg-slate-50, .bg-zinc-50, .bg-gray-100, .bg-slate-100 {
+    background-color: hsl(var(--background)) !important;
+  }
+  .bg-white, .bg-gray-50, .bg-slate-50\/50 {
+    background-color: hsl(var(--card)) !important;
+  }
+  .text-gray-900 {
+    color: hsl(var(--foreground)) !important;
+  }
+  .text-gray-800 {
+    color: hsl(var(--foreground)) !important;
+  }
+  .text-gray-700 {
+    color: hsl(var(--foreground)) !important;
+  }
+  .text-gray-600 {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+  .text-gray-500 {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+  .border-gray-100 {
+    border-color: hsl(var(--border)) !important;
+  }
+  .border-gray-200 {
+    border-color: hsl(var(--border)) !important;
+  }
+  .border-gray-300 {
+    border-color: hsl(var(--border)) !important;
+  }
+  
+  /* Input elements in light panels */
+  input.bg-white, select.bg-white, textarea.bg-white, input.border-gray-300, select.border-gray-300 {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+    border-color: hsl(var(--border)) !important;
+  }
+  
+  /* Table row hovers */
+  tr.hover\:bg-gray-50\/50:hover, tr.hover\:bg-gray-50:hover {
+    background-color: hsl(var(--muted)) !important;
   }
 }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, Users, Trophy, Settings, LogOut, Menu, X } from "lucide-react";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function AdminSidebar({ role }: { role?: string }) {
     const pathname = usePathname();
@@ -37,13 +38,16 @@ export default function AdminSidebar({ role }: { role?: string }) {
                     <img src="/icon.png" alt="CupQuest Logo" className="h-8 w-auto rounded-md" />
                     <span className="font-bold text-lg">CupQuest Admin</span>
                 </div>
-                <button
-                    onClick={() => setIsOpen(!isOpen)}
-                    className="p-2 text-gray-400 hover:text-white focus:outline-none"
-                    aria-label="Toggle menu"
-                >
-                    {isOpen ? <X size={24} /> : <Menu size={24} />}
-                </button>
+                <div className="flex items-center gap-2">
+                    <ThemeToggle />
+                    <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="p-2 text-gray-400 hover:text-white focus:outline-none"
+                        aria-label="Toggle menu"
+                    >
+                        {isOpen ? <X size={24} /> : <Menu size={24} />}
+                    </button>
+                </div>
             </header>
 
             {/* Sidebar backdrop overlay for mobile */}
@@ -87,14 +91,15 @@ export default function AdminSidebar({ role }: { role?: string }) {
                     })}
                 </nav>
 
-                <div className="p-4 border-t border-gray-800">
+                <div className="p-4 border-t border-gray-800 flex items-center justify-between">
                     <Link
                         href="/"
-                        className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors text-gray-400 hover:text-white"
+                        className="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors text-gray-400 hover:text-white flex-1 mr-2"
                     >
                         <LogOut size={20} />
                         <span>Exit Admin</span>
                     </Link>
+                    <ThemeToggle />
                 </div>
             </aside>
         </>
