@@ -3,6 +3,7 @@
 import { User } from "@/models/schema";
 import connectToDatabase from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { auth } from "@/auth";
 
 export async function getUsers(options: {
     page?: number;
@@ -56,7 +57,12 @@ export async function getUsers(options: {
     };
 }
 
-export async function updateUserRole(userId: string, newRole: "USER" | "ADMIN") {
+export async function updateUserRole(userId: string, newRole: "USER" | "ADMIN" | "MODERATOR") {
+    const session = await auth();
+    if (!session || (session.user as any).role !== "ADMIN") {
+        return { message: "Unauthorized" };
+    }
+
     try {
         await connectToDatabase();
         await User.findByIdAndUpdate(userId, { role: newRole });
@@ -69,6 +75,11 @@ export async function updateUserRole(userId: string, newRole: "USER" | "ADMIN") 
 }
 
 export async function deleteUser(userId: string) {
+    const session = await auth();
+    if (!session || (session.user as any).role !== "ADMIN") {
+        return { message: "Unauthorized" };
+    }
+
     try {
         await connectToDatabase();
         await User.findByIdAndDelete(userId);

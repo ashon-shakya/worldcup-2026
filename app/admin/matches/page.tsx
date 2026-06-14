@@ -471,13 +471,20 @@ export default function MatchesPage() {
                                         </button>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${match.status === "LIVE" ? "bg-green-50 text-green-700 ring-green-600/20" :
-                                            match.status === "FINISHED" ? "bg-blue-50 text-blue-700 ring-blue-700/10" :
-                                                "bg-gray-50 text-gray-600 ring-gray-500/10"
-                                            }`}>
-                                            {match.status === "LIVE" && <span className="mr-1 h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />}
-                                            {match.status}
-                                        </span>
+                                        <div className="flex flex-col items-start gap-1">
+                                            <span className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset ${match.status === "LIVE" ? "bg-green-50 text-green-700 ring-green-600/20" :
+                                                match.status === "FINISHED" ? "bg-blue-50 text-blue-700 ring-blue-700/10" :
+                                                    "bg-gray-50 text-gray-600 ring-gray-500/10"
+                                                }`}>
+                                                {match.status === "LIVE" && <span className="mr-1 h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />}
+                                                {match.status}
+                                            </span>
+                                            {match.scoreUpdatedBy && (
+                                                <span className="text-[10px] text-gray-400 font-semibold italic">
+                                                    Mod: {match.scoreUpdatedBy}
+                                                </span>
+                                            )}
+                                        </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <button

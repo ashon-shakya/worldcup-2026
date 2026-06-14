@@ -7,6 +7,7 @@ import { z } from "zod";
 import { Prediction } from "@/models/schema";
 import { calculatePoints } from "@/lib/scoring";
 import { getPointSettings } from "@/app/actions/admin/settings";
+import { auth } from "@/auth";
 
 const MatchSchema = z.object({
     homeTeam: z.string().min(1, "Home team required"),
@@ -118,6 +119,11 @@ const ScoreSchema = z.object({
 });
 
 export async function updateMatchScore(id: string, prevState: any, formData: FormData) {
+    const session = await auth();
+    if (!session || !session.user || ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "MODERATOR")) {
+        return { message: "Unauthorized" };
+    }
+
     const data = Object.fromEntries(formData);
     const parsed = ScoreSchema.safeParse(data);
 
@@ -143,7 +149,7 @@ export async function updateMatchScore(id: string, prevState: any, formData: For
             winnerId = penaltyWinner;
         }
 
-        const updatedMatch = await Match.findByIdAndUpdate(id, {
+        const updateFields: any = {
             homeScore,
             awayScore,
             status: "FINISHED",
@@ -152,8 +158,17 @@ export async function updateMatchScore(id: string, prevState: any, formData: For
             winner: winnerId,
             // Ensure isKnockout is set if it wasn't
             isKnockout: existingMatch?.isKnockout || isKnockoutStage
-        }, { new: true });
+        };
 
+        // Filled by the name of the moderator who updates the score
+        if (session.user && (session.user as any).role === "MODERATOR") {
+            updateFields.scoreUpdatedBy = session.user.name || session.user.email || "Moderator";
+        } else {
+            // Null if set by Admin (as it's specifically for tracking moderators)
+            updateFields.scoreUpdatedBy = null;
+        }
+
+        const updatedMatch = await Match.findByIdAndUpdate(id, updateFields, { new: true });
 
         const predictions = await Prediction.find({ match: id });
 
@@ -177,9 +192,31 @@ export async function updateMatchScore(id: string, prevState: any, formData: For
         }));
 
         revalidatePath("/admin/matches");
+        revalidatePath("/admin/set-score");
         return { message: "success" };
     } catch (error) {
         console.error("Failed to update score:", error);
         return { message: "Failed to update score" };
     }
+}
+
+export async function getUnsetMatches() {
+    const session = await auth();
+    if (!session || ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "MODERATOR")) {
+        throw new Error("Unauthorized");
+    }
+
+    await connectToDatabase();
+    const now = new Date();
+    const matches = await Match.find({
+        status: { $ne: "FINISHED" },
+        kickOff: { $lt: now }
+    })
+    .populate("homeTeam", "name flagUrl")
+    .populate("awayTeam", "name flagUrl")
+    .populate("penaltyWinner", "name")
+    .populate("winner", "_id")
+    .sort({ kickOff: 1 });
+
+    return JSON.parse(JSON.stringify(matches));
 }

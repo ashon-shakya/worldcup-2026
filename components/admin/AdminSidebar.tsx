@@ -5,17 +5,22 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, Users, Trophy, Settings, LogOut, Menu, X } from "lucide-react";
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ role }: { role?: string }) {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
 
-    const navLinks = [
-        { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
-        { href: "/admin/teams", label: "Teams", icon: Users },
-        { href: "/admin/matches", label: "Matches", icon: Trophy },
-        { href: "/admin/users", label: "Users", icon: Users },
-        { href: "/admin/settings", label: "Settings", icon: Settings },
-    ];
+    const navLinks = role === "MODERATOR"
+        ? [
+            { href: "/admin/set-score", label: "Set Score", icon: Trophy },
+          ]
+        : [
+            { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
+            { href: "/admin/teams", label: "Teams", icon: Users },
+            { href: "/admin/matches", label: "Matches", icon: Trophy },
+            { href: "/admin/users", label: "Users", icon: Users },
+            { href: "/admin/settings", label: "Settings", icon: Settings },
+            { href: "/admin/set-score", label: "Set Score", icon: Trophy },
+          ];
 
     const isActive = (href: string) => {
         if (href === "/admin") {

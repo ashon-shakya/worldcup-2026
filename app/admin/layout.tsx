@@ -10,9 +10,9 @@ export default async function AdminLayout({
     children: React.ReactNode;
 }) {
     const session = await auth();
-    // console.log("Admin Layout Session:", JSON.stringify(session, null, 2));
+    const role = (session?.user as any)?.role;
 
-    if (!session || (session.user as any).role !== "ADMIN") {
+    if (!session || (role !== "ADMIN" && role !== "MODERATOR")) {
         console.log("Access denied. Redirecting to /");
         redirect("/");
     }
@@ -20,7 +20,7 @@ export default async function AdminLayout({
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col md:flex-row">
             {/* Sidebar */}
-            <AdminSidebar />
+            <AdminSidebar role={role} />
 
             {/* Main Content */}
             <main className="flex-1 p-4 md:p-8 md:ml-64 pt-20 md:pt-8">

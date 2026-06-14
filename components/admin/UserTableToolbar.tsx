@@ -107,6 +107,7 @@ export function UserTableToolbar() {
                     <SelectContent className="bg-white text-black border-gray-300">
                         <SelectItem value="ALL">All Roles</SelectItem>
                         <SelectItem value="USER">User</SelectItem>
+                        <SelectItem value="MODERATOR">Moderator</SelectItem>
                         <SelectItem value="ADMIN">Admin</SelectItem>
                     </SelectContent>
                 </Select>

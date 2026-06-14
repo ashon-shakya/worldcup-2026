@@ -7,7 +7,7 @@ const UserSchema = new Schema(
         email: { type: String, required: true, unique: true },
         password: { type: String, select: false }, // Select false to exclude by default
         image: { type: String },
-        role: { type: String, enum: ["USER", "ADMIN"], default: "USER" },
+        role: { type: String, enum: ["USER", "ADMIN", "MODERATOR"], default: "USER" },
         emailVerified: { type: Date, default: null },
         provider: { type: String, default: "credentials" },
         verificationToken: { type: String },
@@ -48,6 +48,7 @@ const MatchSchema = new Schema(
         wentToPenalties: { type: Boolean, default: false },
         penaltyWinner: { type: Schema.Types.ObjectId, ref: "Team" },
         winner: { type: Schema.Types.ObjectId, ref: "Team" }, // Null if draw
+        scoreUpdatedBy: { type: String, default: null },
     },
     { timestamps: true },
 );
@@ -95,7 +96,7 @@ const SystemSettingsSchema = new Schema(
 export const User = models.User || model("User", UserSchema);
 export const Team = models.Team || model("Team", TeamSchema);
 // Force schema update if hot reload kept old version without new fields
-if (models.Match && (!models.Match.schema.paths.wentToPenalties || !models.Match.schema.paths.isKnockout || !models.Match.schema.paths.penaltyWinner || !models.Match.schema.paths.winner)) {
+if (models.Match && (!models.Match.schema.paths.wentToPenalties || !models.Match.schema.paths.isKnockout || !models.Match.schema.paths.penaltyWinner || !models.Match.schema.paths.winner || !models.Match.schema.paths.scoreUpdatedBy)) {
     delete models.Match;
 }
 export const Match = models.Match || model("Match", MatchSchema);

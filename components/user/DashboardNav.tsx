@@ -53,7 +53,7 @@ export default function DashboardNav({ user }: { user: any }) {
                                 <BookOpen className="w-4 h-4 mr-2" />
                                 Rules
                             </Link>
-                            {user.role === 'ADMIN' && (
+                            {(user.role === 'ADMIN' || user.role === 'MODERATOR') && (
                                 <Link
                                     href="/admin"
                                     className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-red-500 hover:text-red-700 hover:border-red-300"
@@ -150,6 +150,15 @@ export default function DashboardNav({ user }: { user: any }) {
                         >
                             Settings
                         </Link>
+                        {(user.role === 'ADMIN' || user.role === 'MODERATOR') && (
+                            <Link
+                                href="/admin"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-red-600 hover:bg-gray-50 hover:border-red-300 hover:text-red-800"
+                            >
+                                Admin Panel
+                            </Link>
+                        )}
                     </div>
                     <div className="pt-4 pb-4 border-t border-gray-200">
                         <div className="flex items-center px-4">

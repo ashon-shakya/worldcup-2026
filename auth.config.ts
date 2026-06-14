@@ -11,9 +11,17 @@ export const authConfig = {
             const isOnAdmin = nextUrl.pathname.startsWith('/admin');
 
             if (isOnAdmin) {
-                // console.log("Middleware Auth User:", auth?.user);
-                if (isLoggedIn && (auth?.user as any).role === 'ADMIN') return true;
-                return false; // Redirect unauthenticated or non-admin users
+                if (isLoggedIn) {
+                    const role = (auth?.user as any).role;
+                    if (role === 'ADMIN') return true;
+                    if (role === 'MODERATOR') {
+                        if (nextUrl.pathname.startsWith('/admin/set-score')) {
+                            return true;
+                        }
+                        return Response.redirect(new URL('/admin/set-score', nextUrl));
+                    }
+                }
+                return false; // Redirect unauthenticated or non-admin/non-moderator users
             }
 
             if (isOnDashboard) {
