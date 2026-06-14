@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+import { getStoredFilters, setStoredFilters } from "@/lib/filterStorage";
 import { Input } from "@/components/ui/input";
 import {
     Select,
@@ -15,6 +17,49 @@ export function UserTableToolbar() {
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const { replace } = useRouter();
+
+    const checkedOnMount = useRef(false);
+    const [searchValue, setSearchValue] = useState(searchParams.get("search") || "");
+
+    useEffect(() => {
+        setSearchValue(searchParams.get("search") || "");
+    }, [searchParams]);
+
+    useEffect(() => {
+        const search = searchParams.get("search");
+        const role = searchParams.get("role");
+        const sort = searchParams.get("sort");
+        const order = searchParams.get("order");
+
+        const hasUrlParams = search !== null || role !== null || sort !== null || order !== null;
+
+        if (checkedOnMount.current) {
+            // Subsequent updates (after initial mount check)
+            const currentFilters: Record<string, string> = {};
+            if (search) currentFilters.search = search;
+            if (role) currentFilters.role = role;
+            if (sort) currentFilters.sort = sort;
+            if (order) currentFilters.order = order;
+            setStoredFilters("/admin/users", currentFilters);
+            return;
+        }
+
+        checkedOnMount.current = true;
+
+        // B. Initial mount load (if URL is empty, load from localStorage)
+        if (!hasUrlParams) {
+            const stored = getStoredFilters("/admin/users", {});
+            if (Object.keys(stored).length > 0) {
+                const params = new URLSearchParams(searchParams);
+                if (stored.search) params.set("search", stored.search);
+                if (stored.role) params.set("role", stored.role);
+                if (stored.sort) params.set("sort", stored.sort);
+                if (stored.order) params.set("order", stored.order);
+                if (!params.has("page")) params.set("page", "1");
+                replace(`${pathname}?${params.toString()}`);
+            }
+        }
+    }, [searchParams, pathname, replace]);
 
     const handleSearch = useDebouncedCallback((term: string) => {
         const params = new URLSearchParams(searchParams);
@@ -43,14 +88,17 @@ export function UserTableToolbar() {
             <div className="flex-1">
                 <Input
                     placeholder="Search users..."
-                    defaultValue={searchParams.get("search")?.toString()}
-                    onChange={(e) => handleSearch(e.target.value)}
+                    value={searchValue}
+                    onChange={(e) => {
+                        setSearchValue(e.target.value);
+                        handleSearch(e.target.value);
+                    }}
                     className="max-w-sm bg-white text-gray-900 border-gray-300"
                 />
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
                 <Select
-                    defaultValue={searchParams.get("role")?.toString() || "ALL"}
+                    value={searchParams.get("role")?.toString() || "ALL"}
                     onValueChange={(value) => handleFilterChange("role", value)}
                 >
                     <SelectTrigger className="w-[150px] bg-white text-black border-gray-300">
@@ -64,7 +112,7 @@ export function UserTableToolbar() {
                 </Select>
 
                 <Select
-                    defaultValue={searchParams.get("sort")?.toString() || "createdAt"}
+                    value={searchParams.get("sort")?.toString() || "createdAt"}
                     onValueChange={(value) => handleFilterChange("sort", value)}
                 >
                     <SelectTrigger className="w-[180px] bg-white text-black border-gray-300">
@@ -79,7 +127,7 @@ export function UserTableToolbar() {
                 </Select>
 
                 <Select
-                    defaultValue={searchParams.get("order")?.toString() || "desc"}
+                    value={searchParams.get("order")?.toString() || "desc"}
                     onValueChange={(value) => handleFilterChange("order", value)}
                 >
                     <SelectTrigger className="w-[120px] bg-white text-black border-gray-300">

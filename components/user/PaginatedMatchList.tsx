@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { getStoredFilters, setStoredFilters } from "@/lib/filterStorage";
 import MatchCard from "@/components/user/MatchCard";
 import { ChevronLeft, ChevronRight, Search, X, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 
@@ -34,6 +35,38 @@ export default function PaginatedMatchList({
     // Sort state
     const [sortKey, setSortKey] = useState<SortKey | null>(null);
     const [sortDir, setSortDir] = useState<SortDir>("asc");
+
+    const [isInitialized, setIsInitialized] = useState(false);
+
+    // Seek stored filters on mount
+    useEffect(() => {
+        const stored = getStoredFilters("/dashboard/matches", {
+            searchQuery: "",
+            filterStage: "",
+            filterStatus: "",
+            sortKey: null,
+            sortDir: "asc",
+        });
+        setSearchQuery(stored.searchQuery);
+        setFilterStage(stored.filterStage);
+        setFilterStatus(stored.filterStatus);
+        setSortKey(stored.sortKey);
+        setSortDir(stored.sortDir);
+        setIsInitialized(true);
+    }, []);
+
+    // Sync state changes with localStorage
+    useEffect(() => {
+        if (isInitialized) {
+            setStoredFilters("/dashboard/matches", {
+                searchQuery,
+                filterStage,
+                filterStatus,
+                sortKey,
+                sortDir,
+            });
+        }
+    }, [searchQuery, filterStage, filterStatus, sortKey, sortDir, isInitialized]);
 
     // Flatten all matches
     const allStages = [...stagesOrder, ...extraStages];

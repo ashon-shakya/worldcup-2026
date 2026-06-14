@@ -30,7 +30,7 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
 
     return (
         <div className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900 flex items-center">
                         <Users className="mr-2 h-6 w-6" />
@@ -48,7 +48,7 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
 
             <UserTableToolbar />
 
-            <div className="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+            <div className="bg-white shadow-sm rounded-lg border border-gray-200 overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                         <tr>

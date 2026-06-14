@@ -2,8 +2,11 @@
 
 import { getTeams, deleteTeam, deleteTeams } from "@/app/actions/admin/teams";
 import TeamForm from "@/components/admin/TeamForm";
-import { Plus, Trash2, Upload, Edit, ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
+import { Plus, Trash2, Upload, Edit, ArrowUp, ArrowDown, ArrowUpDown, Search, X } from "lucide-react";
 import { useState, useEffect, useRef, useMemo } from "react";
+import { getStoredFilters, setStoredFilters } from "@/lib/filterStorage";
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import Pagination from "@/components/admin/Pagination";
 
 type SortKey = "name" | "group";
 type SortDir = "asc" | "desc";
@@ -34,18 +37,75 @@ export default function TeamsPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [sortKey, setSortKey] = useState<SortKey | null>(null);
     const [sortDir, setSortDir] = useState<SortDir>("asc");
+    const [searchQuery, setSearchQuery] = useState("");
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const { replace } = useRouter();
+
+    const pageParam = searchParams.get("page");
+    const currentPage = pageParam ? Number(pageParam) : 1;
+
+    const [isInitialized, setIsInitialized] = useState(false);
+
+    // Seek stored filters on mount
+    useEffect(() => {
+        const stored = getStoredFilters("/admin/teams", {
+            sortKey: null,
+            sortDir: "asc",
+            searchQuery: ""
+        });
+        setSortKey(stored.sortKey);
+        setSortDir(stored.sortDir);
+        setSearchQuery(stored.searchQuery);
+        setIsInitialized(true);
+    }, []);
+
+    // Sync state changes with localStorage
+    useEffect(() => {
+        if (isInitialized) {
+            setStoredFilters("/admin/teams", {
+                sortKey,
+                sortDir,
+                searchQuery
+            });
+        }
+    }, [sortKey, sortDir, searchQuery, isInitialized]);
+
+    // Reset page to 1 when search changes
+    useEffect(() => {
+        if (isInitialized) {
+            const params = new URLSearchParams(searchParams);
+            params.set("page", "1");
+            replace(`${pathname}?${params.toString()}`);
+        }
+    }, [searchQuery]);
+
+    const filteredTeams = useMemo(() => {
+        if (!searchQuery) return teams;
+        const q = searchQuery.toLowerCase();
+        return teams.filter((t) => (t.name || "").toLowerCase().includes(q));
+    }, [teams, searchQuery]);
+
     const sortedTeams = useMemo(() => {
-        if (!sortKey) return teams;
-        return [...teams].sort((a, b) => {
+        if (!sortKey) return filteredTeams;
+        return [...filteredTeams].sort((a, b) => {
             const aVal = (a[sortKey] || "").toLowerCase();
             const bVal = (b[sortKey] || "").toLowerCase();
             if (aVal < bVal) return sortDir === "asc" ? -1 : 1;
             if (aVal > bVal) return sortDir === "asc" ? 1 : -1;
             return 0;
         });
-    }, [teams, sortKey, sortDir]);
+    }, [filteredTeams, sortKey, sortDir]);
+
+    const TEAMS_PER_PAGE = 10;
+    const totalPages = Math.max(1, Math.ceil(sortedTeams.length / TEAMS_PER_PAGE));
+    const safeCurrentPage = Math.min(currentPage, totalPages);
+    const startIdx = (safeCurrentPage - 1) * TEAMS_PER_PAGE;
+    const paginatedTeams = useMemo(() => {
+        return sortedTeams.slice(startIdx, startIdx + TEAMS_PER_PAGE);
+    }, [sortedTeams, startIdx]);
 
     const handleSort = (key: SortKey) => {
         if (sortKey === key) {
@@ -55,6 +115,11 @@ export default function TeamsPage() {
             setSortKey(key);
             setSortDir("asc");
         }
+        
+        // Reset to page 1
+        const params = new URLSearchParams(searchParams);
+        params.set("page", "1");
+        replace(`${pathname}?${params.toString()}`);
     };
 
     const SortIcon = ({ column }: { column: SortKey }) => {
@@ -92,10 +157,19 @@ export default function TeamsPage() {
     };
 
     const toggleSelectAll = () => {
-        if (selectedIds.size === teams.length) {
-            setSelectedIds(new Set());
+        const allOnPageSelected = paginatedTeams.length > 0 && paginatedTeams.every((t) => selectedIds.has(t._id));
+        if (allOnPageSelected) {
+            setSelectedIds((prev) => {
+                const next = new Set(prev);
+                paginatedTeams.forEach((t) => next.delete(t._id));
+                return next;
+            });
         } else {
-            setSelectedIds(new Set(teams.map((t) => t._id)));
+            setSelectedIds((prev) => {
+                const next = new Set(prev);
+                paginatedTeams.forEach((t) => next.add(t._id));
+                return next;
+            });
         }
     };
 
@@ -144,9 +218,9 @@ export default function TeamsPage() {
 
     return (
         <div>
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
                 <h1 className="text-2xl font-bold text-gray-900">Teams</h1>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2 w-full sm:w-auto">
                     {selectedIds.size > 0 && (
                         <button
                             onClick={handleBulkDelete}
@@ -183,6 +257,29 @@ export default function TeamsPage() {
                 </div>
             </div>
 
+            {/* Search and Filters Bar */}
+            <div className="flex flex-wrap items-center gap-3 mb-4">
+                <div className="relative flex-1 min-w-[200px] max-w-sm">
+                    <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input
+                        type="text"
+                        placeholder="Search teams..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="block w-full rounded-lg border border-gray-300 py-2 pl-9 pr-3 text-sm text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600"
+                    />
+                </div>
+                {searchQuery && (
+                    <button
+                        onClick={() => setSearchQuery("")}
+                        className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 px-2 py-1 rounded hover:bg-gray-100"
+                    >
+                        <X size={14} />
+                        Clear search
+                    </button>
+                )}
+            </div>
+
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
                     <div className="bg-white rounded-xl p-6 w-full max-w-md">
@@ -192,7 +289,7 @@ export default function TeamsPage() {
                 </div>
             )}
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                         <tr>
@@ -200,7 +297,7 @@ export default function TeamsPage() {
                                 <input
                                     type="checkbox"
                                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 cursor-pointer"
-                                    checked={teams.length > 0 && selectedIds.size === teams.length}
+                                    checked={paginatedTeams.length > 0 && paginatedTeams.every((t) => selectedIds.has(t._id))}
                                     onChange={toggleSelectAll}
                                 />
                             </th>
@@ -219,7 +316,7 @@ export default function TeamsPage() {
                         ) : teams.length === 0 ? (
                             <tr><td colSpan={4} className="px-6 py-4 text-center text-gray-500">No teams found.</td></tr>
                         ) : (
-                            sortedTeams.map((team) => (
+                            paginatedTeams.map((team) => (
                                 <tr key={team._id} className={selectedIds.has(team._id) ? "bg-indigo-50" : ""}>
                                     <td className="px-6 py-4 w-10">
                                         <input
@@ -264,6 +361,7 @@ export default function TeamsPage() {
                         )}
                     </tbody>
                 </table>
+                <Pagination totalPages={totalPages} currentPage={safeCurrentPage} />
             </div>
         </div>
     );

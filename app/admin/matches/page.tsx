@@ -3,6 +3,9 @@ import { getMatches, deleteMatch, deleteMatches } from "@/app/actions/admin/matc
 import MatchForm from "@/components/admin/MatchForm";
 import { Plus, Trash2, Upload, Calendar, MapPin, ArrowUp, ArrowDown, ArrowUpDown, Search, X, Edit } from "lucide-react";
 import { useState, useEffect, useRef, useMemo } from "react";
+import { getStoredFilters, setStoredFilters } from "@/lib/filterStorage";
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import Pagination from "@/components/admin/Pagination";
 import { toast } from "sonner";
 
 import ScoreModal from "@/components/admin/ScoreModal";
@@ -22,6 +25,13 @@ export default function MatchesPage() {
     const [isLoading, setIsLoading] = useState(true);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+    const { replace } = useRouter();
+
+    const pageParam = searchParams.get("page");
+    const currentPage = pageParam ? Number(pageParam) : 1;
+
     // Sort state
     const [sortKey, setSortKey] = useState<SortKey | null>(null);
     const [sortDir, setSortDir] = useState<SortDir>("asc");
@@ -30,6 +40,47 @@ export default function MatchesPage() {
     const [searchQuery, setSearchQuery] = useState("");
     const [filterStage, setFilterStage] = useState("");
     const [filterStatus, setFilterStatus] = useState("");
+
+    const [isInitialized, setIsInitialized] = useState(false);
+
+    // Seek stored filters on mount
+    useEffect(() => {
+        const stored = getStoredFilters("/admin/matches", {
+            searchQuery: "",
+            filterStage: "",
+            filterStatus: "",
+            sortKey: null,
+            sortDir: "asc"
+        });
+        setSearchQuery(stored.searchQuery);
+        setFilterStage(stored.filterStage);
+        setFilterStatus(stored.filterStatus);
+        setSortKey(stored.sortKey);
+        setSortDir(stored.sortDir);
+        setIsInitialized(true);
+    }, []);
+
+    // Sync state changes with localStorage
+    useEffect(() => {
+        if (isInitialized) {
+            setStoredFilters("/admin/matches", {
+                searchQuery,
+                filterStage,
+                filterStatus,
+                sortKey,
+                sortDir
+            });
+        }
+    }, [searchQuery, filterStage, filterStatus, sortKey, sortDir, isInitialized]);
+
+    // Reset page to 1 when filters change
+    useEffect(() => {
+        if (isInitialized) {
+            const params = new URLSearchParams(searchParams);
+            params.set("page", "1");
+            replace(`${pathname}?${params.toString()}`);
+        }
+    }, [searchQuery, filterStage, filterStatus]);
 
     const fetchMatches = async () => {
         setIsLoading(true);
@@ -59,10 +110,19 @@ export default function MatchesPage() {
     };
 
     const toggleSelectAll = () => {
-        if (selectedIds.size === displayedMatches.length) {
-            setSelectedIds(new Set());
+        const allOnPageSelected = paginatedMatches.length > 0 && paginatedMatches.every((m: any) => selectedIds.has(m._id));
+        if (allOnPageSelected) {
+            setSelectedIds((prev) => {
+                const next = new Set(prev);
+                paginatedMatches.forEach((m: any) => next.delete(m._id));
+                return next;
+            });
         } else {
-            setSelectedIds(new Set(displayedMatches.map((m) => m._id)));
+            setSelectedIds((prev) => {
+                const next = new Set(prev);
+                paginatedMatches.forEach((m: any) => next.add(m._id));
+                return next;
+            });
         }
     };
 
@@ -121,6 +181,11 @@ export default function MatchesPage() {
             setSortKey(key);
             setSortDir("asc");
         }
+        
+        // Reset to page 1
+        const params = new URLSearchParams(searchParams);
+        params.set("page", "1");
+        replace(`${pathname}?${params.toString()}`);
     };
 
     const SortIcon = ({ column }: { column: SortKey }) => {
@@ -183,18 +248,25 @@ export default function MatchesPage() {
                 return 0;
             });
         }
-
         return filtered;
     }, [matches, searchQuery, filterStage, filterStatus, sortKey, sortDir]);
 
+    const MATCHES_PER_PAGE = 10;
+    const totalPages = Math.max(1, Math.ceil(displayedMatches.length / MATCHES_PER_PAGE));
+    const safeCurrentPage = Math.min(currentPage, totalPages);
+    const startIdx = (safeCurrentPage - 1) * MATCHES_PER_PAGE;
+    const paginatedMatches = useMemo(() => {
+        return displayedMatches.slice(startIdx, startIdx + MATCHES_PER_PAGE);
+    }, [displayedMatches, startIdx]);
+
     return (
         <div>
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
                 <div className="flex items-center gap-4">
                     <h1 className="text-2xl font-bold text-gray-900">Matches</h1>
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2 w-full sm:w-auto">
                     {selectedIds.size > 0 && (
                         <button
                             onClick={handleBulkDelete}
@@ -290,7 +362,7 @@ export default function MatchesPage() {
                 <ScoreModal match={scoreModalMatch} onClose={() => setScoreModalMatch(null)} />
             )}
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                         <tr>
@@ -298,7 +370,7 @@ export default function MatchesPage() {
                                 <input
                                     type="checkbox"
                                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 cursor-pointer"
-                                    checked={displayedMatches.length > 0 && selectedIds.size === displayedMatches.length}
+                                    checked={paginatedMatches.length > 0 && paginatedMatches.every((m: any) => selectedIds.has(m._id))}
                                     onChange={toggleSelectAll}
                                 />
                             </th>
@@ -328,10 +400,10 @@ export default function MatchesPage() {
                     <tbody className="bg-white divide-y divide-gray-200">
                         {isLoading ? (
                             <tr><td colSpan={7} className="px-6 py-4 text-center">Loading...</td></tr>
-                        ) : displayedMatches.length === 0 ? (
+                        ) : paginatedMatches.length === 0 ? (
                             <tr><td colSpan={7} className="px-6 py-4 text-center text-gray-500">{hasActiveFilters ? "No matches match your filters." : "No matches scheduled."}</td></tr>
                         ) : (
-                            displayedMatches.map((match) => (
+                            paginatedMatches.map((match: any) => (
                                 <tr key={match._id} className={selectedIds.has(match._id) ? "bg-indigo-50" : ""}>
                                     <td className="px-6 py-4 w-10">
                                         <input
@@ -431,6 +503,7 @@ export default function MatchesPage() {
                         )}
                     </tbody>
                 </table>
+                <Pagination totalPages={totalPages} currentPage={safeCurrentPage} />
             </div>
         </div>
     );

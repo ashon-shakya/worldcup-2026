@@ -26,8 +26,24 @@ export default function Pagination({ totalPages, currentPage }: PaginationProps)
 
     if (totalPages <= 1) return null;
 
+    const getPageNumbers = () => {
+        const pages: (number | "...")[] = [];
+        if (totalPages <= 7) {
+            for (let i = 1; i <= totalPages; i++) pages.push(i);
+        } else {
+            pages.push(1);
+            if (currentPage > 3) pages.push("...");
+            for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
+                pages.push(i);
+            }
+            if (currentPage < totalPages - 2) pages.push("...");
+            pages.push(totalPages);
+        }
+        return pages;
+    };
+
     return (
-        <div className="flex items-center justify-between px-4 py-3 sm:px-6">
+        <div className="flex items-center justify-between px-4 py-3 sm:px-6 border-t border-gray-100">
             <div className="flex flex-1 justify-between sm:hidden">
                 <Button
                     variant="outline"
@@ -52,24 +68,47 @@ export default function Pagination({ totalPages, currentPage }: PaginationProps)
                     </p>
                 </div>
                 <div>
-                    <div className="flex gap-2">
+                    <div className="flex items-center gap-1">
                         <Button
                             variant="outline"
-                            size="sm"
+                            size="icon"
+                            className="h-9 w-9 text-gray-400 border-gray-200 hover:text-gray-600 hover:bg-gray-50"
                             disabled={currentPage <= 1}
                             onClick={() => handlePageChange(currentPage - 1)}
                         >
                             <ChevronLeft className="h-4 w-4" />
-                            Previous
+                            <span className="sr-only">Previous</span>
                         </Button>
+
+                        {getPageNumbers().map((page, i) =>
+                            page === "..." ? (
+                                <span key={`dots-${i}`} className="px-2 py-1 text-sm text-gray-400">…</span>
+                            ) : (
+                                <Button
+                                    key={page}
+                                    variant="outline"
+                                    size="sm"
+                                    className={`min-w-[36px] h-9 ${
+                                        currentPage === page
+                                            ? "bg-indigo-50 border-indigo-300 text-indigo-700 hover:bg-indigo-100 hover:text-indigo-800"
+                                            : "text-gray-400 border-gray-200 hover:text-gray-600 hover:bg-gray-50"
+                                    }`}
+                                    onClick={() => handlePageChange(page as number)}
+                                >
+                                    {page}
+                                </Button>
+                            )
+                        )}
+
                         <Button
                             variant="outline"
-                            size="sm"
+                            size="icon"
+                            className="h-9 w-9 text-gray-400 border-gray-200 hover:text-gray-600 hover:bg-gray-50"
                             disabled={currentPage >= totalPages}
                             onClick={() => handlePageChange(currentPage + 1)}
                         >
-                            Next
                             <ChevronRight className="h-4 w-4" />
+                            <span className="sr-only">Next</span>
                         </Button>
                     </div>
                 </div>
