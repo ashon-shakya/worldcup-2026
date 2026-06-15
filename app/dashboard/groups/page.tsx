@@ -89,32 +89,66 @@ export default function GroupsPage() {
                         <p className="text-gray-500 mt-1">Create one or join a friend's group to get started!</p>
                     </div>
                 ) : (
-                    groups.map((group) => (
-                        <Link
-                            key={group._id}
-                            href={`/dashboard/groups/${group._id}`}
-                            className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow hover:border-indigo-300 group"
-                        >
-                            <div className="flex justify-between items-start mb-4">
-                                <div className="h-12 w-12 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold text-xl">
-                                    {group.name.charAt(0).toUpperCase()}
+                    groups.map((group) => {
+                        const hasColor = !!group.color;
+                        const isHex = group.color?.startsWith("#");
+                        return (
+                            <Link
+                                key={group._id}
+                                href={`/dashboard/groups/${group._id}`}
+                                className={`rounded-xl shadow-sm border p-6 hover:shadow-md transition-all duration-200 group flex flex-col justify-between min-h-[185px] ${
+                                    hasColor 
+                                        ? `border-black/15 shadow-sm ${!isHex ? group.color : ""}` 
+                                        : "bg-white dark:bg-slate-900/60 border-gray-200 dark:border-slate-800 hover:border-indigo-300"
+                                }`}
+                                style={hasColor ? { 
+                                    ...(isHex ? { backgroundColor: group.color } : {}), 
+                                    color: group.textColor || "#0f172a" 
+                                } : {}}
+                            >
+                                <div>
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div className={`h-12 w-12 rounded-lg flex items-center justify-center font-bold text-xl ${
+                                            hasColor 
+                                                ? "bg-white/60 text-slate-900 border border-black/5" 
+                                                : "bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400"
+                                        }`}>
+                                            {group.name.charAt(0).toUpperCase()}
+                                        </div>
+                                        <span className={`text-xs px-2 py-1 rounded-full ${
+                                            hasColor 
+                                                ? "bg-black/10 text-slate-900 font-semibold" 
+                                                : (group.isPrivate ? "bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-400" : "bg-green-100 dark:bg-green-950/30 text-green-600 dark:text-green-400")
+                                        }`}>
+                                            {group.isPrivate ? "Private" : "Public"}
+                                        </span>
+                                    </div>
+                                    <h3 className={`text-lg font-bold mb-1 transition-colors ${
+                                        hasColor 
+                                            ? "text-current" 
+                                            : "text-gray-900 dark:text-white group-hover:text-indigo-600"
+                                    }`}>
+                                        {group.name}
+                                    </h3>
+                                    <div className={`flex items-center text-sm mb-4 ${
+                                        hasColor 
+                                            ? "text-current opacity-80" 
+                                            : "text-gray-500 dark:text-gray-400"
+                                    }`}>
+                                        <Users size={16} className="mr-1" />
+                                        {group.members.length} member{group.members.length !== 1 ? 's' : ''}
+                                    </div>
                                 </div>
-                                <span className={`text-xs px-2 py-1 rounded-full ${group.isPrivate ? "bg-gray-100 text-gray-600" : "bg-green-100 text-green-600"}`}>
-                                    {group.isPrivate ? "Private" : "Public"}
-                                </span>
-                            </div>
-                            <h3 className="text-lg font-bold text-gray-900 mb-1 group-hover:text-indigo-600 transition-colors">
-                                {group.name}
-                            </h3>
-                            <div className="flex items-center text-sm text-gray-500 mb-4">
-                                <Users size={16} className="mr-1" />
-                                {group.members.length} member{group.members.length !== 1 ? 's' : ''}
-                            </div>
-                            <div className="flex items-center text-indigo-600 font-medium text-sm">
-                                View Leaderboard <ArrowRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
-                            </div>
-                        </Link>
-                    ))
+                                <div className={`flex items-center font-semibold text-sm mt-auto ${
+                                    hasColor 
+                                        ? "text-current border-t border-black/10 pt-3" 
+                                        : "text-indigo-600 dark:text-indigo-400"
+                                }`}>
+                                    View Leaderboard <ArrowRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
+                                </div>
+                            </Link>
+                        );
+                    })
                 )}
             </div>
         </div>

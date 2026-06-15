@@ -256,3 +256,67 @@
     background-color: hsl(var(--muted)) !important;
   }
 }
+
+/* Group Card Animated Backgrounds */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.bg-animate-1 {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #a1c4fd 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease infinite;
+}
+.bg-animate-2 {
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease infinite;
+}
+.bg-animate-3 {
+  background: linear-gradient(135deg, #fad0c4 0%, #ffd1ff 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease infinite;
+}
+.bg-animate-4 {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease infinite;
+}
+.bg-animate-5 {
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease infinite;
+}
+.bg-animate-6 {
+  background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease infinite;
+}
+.bg-animate-7 {
+  background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease infinite;
+}
+.bg-animate-8 {
+  background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease infinite;
+}
+.bg-animate-9 {
+  background: linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease infinite;
+}
+.bg-animate-10 {
+  background: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease infinite;
+}

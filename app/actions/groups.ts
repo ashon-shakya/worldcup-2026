@@ -209,7 +209,7 @@ export async function deleteGroup(groupId: string) {
     }
 }
 
-export async function updateGroupStages(groupId: string, stages: string[]) {
+export async function updateGroupSettings(groupId: string, stages: string[], color: string | null, textColor: string | null) {
     const session = await auth();
     if (!session || !session.user) return { message: "Unauthorized" };
 
@@ -230,9 +230,12 @@ export async function updateGroupStages(groupId: string, stages: string[]) {
         }
 
         group.includedStages = filteredStages;
+        group.color = color;
+        group.textColor = textColor;
         await group.save();
 
         revalidatePath(`/dashboard/groups/${groupId}`);
+        revalidatePath("/dashboard/groups");
         return { message: "success" };
     } catch (error) {
         console.error("Failed to update group settings:", error);
