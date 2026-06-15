@@ -5,6 +5,7 @@ const UserSchema = new Schema(
     {
         name: { type: String, required: true },
         nickname: { type: String },
+        optOutGlobal: { type: Boolean, default: false },
         email: { type: String, required: true, unique: true },
         password: { type: String, select: false }, // Select false to exclude by default
         image: { type: String },
@@ -96,7 +97,7 @@ const SystemSettingsSchema = new Schema(
 );
 
 // Prevent overwriting models if they are already compiled (Next.js hot reload issue)
-if (models.User && !models.User.schema.paths.nickname) {
+if (models.User && (!models.User.schema.paths.nickname || !models.User.schema.paths.optOutGlobal)) {
     delete models.User;
 }
 export const User = models.User || model("User", UserSchema);

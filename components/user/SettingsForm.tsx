@@ -13,6 +13,7 @@ interface SettingsFormProps {
     user: {
         name: string;
         nickname?: string | null;
+        optOutGlobal?: boolean;
         email: string;
         image?: string | null;
     };
@@ -27,6 +28,7 @@ export default function SettingsForm({ user }: SettingsFormProps) {
 
     const [nameInput, setNameInput] = useState(user.name);
     const [nicknameInput, setNicknameInput] = useState(user.nickname || "");
+    const [optOutGlobalInput, setOptOutGlobalInput] = useState(user.optOutGlobal || false);
     
     const profileInitialState = {
         error: "",
@@ -34,6 +36,7 @@ export default function SettingsForm({ user }: SettingsFormProps) {
     };
 
     const [profileState, profileFormAction, isProfilePending] = useActionState(async (prevState: any, formData: FormData) => {
+        formData.set("optOutGlobal", optOutGlobalInput ? "true" : "false");
         const result = await updateProfileInfo(prevState, formData);
         if (result.error) {
             return { error: result.error, success: false };
@@ -41,7 +44,7 @@ export default function SettingsForm({ user }: SettingsFormProps) {
         
         const name = formData.get("name") as string;
         const nickname = formData.get("nickname") as string;
-        await update({ name, nickname });
+        await update({ name, nickname, optOutGlobal: optOutGlobalInput });
         
         return { error: "", success: true };
     }, profileInitialState);
@@ -193,6 +196,26 @@ export default function SettingsForm({ user }: SettingsFormProps) {
                         <p className="text-xs text-gray-500 mt-1">
                             If set, your nickname will be displayed throughout the app instead of your display name.
                         </p>
+                    </div>
+                    <div className="flex items-start py-2">
+                        <div className="flex items-center h-5">
+                            <input
+                                id="optOutGlobal"
+                                name="optOutGlobal"
+                                type="checkbox"
+                                checked={optOutGlobalInput}
+                                onChange={(e) => setOptOutGlobalInput(e.target.checked)}
+                                className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded cursor-pointer"
+                            />
+                        </div>
+                        <div className="ml-3 text-sm">
+                            <label htmlFor="optOutGlobal" className="font-semibold text-gray-700 cursor-pointer">
+                                Opt out of Global Leaderboard
+                            </label>
+                            <p className="text-gray-500 text-xs mt-0.5">
+                                If checked, you will be hidden from the Global Leaderboard. You will still remain visible in private groups you are a member of.
+                            </p>
+                        </div>
                     </div>
                     <div>
                         <label

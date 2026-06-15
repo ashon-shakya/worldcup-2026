@@ -22,6 +22,7 @@ export default async function SettingsPage() {
                 user={{
                     name: session.user.name || "",
                     nickname: (session.user as any).nickname || "",
+                    optOutGlobal: (session.user as any).optOutGlobal || false,
                     email: session.user.email || "",
                     image: session.user.image,
                 }}

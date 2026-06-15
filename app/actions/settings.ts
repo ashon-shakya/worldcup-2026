@@ -117,6 +117,7 @@ export async function updateProfileInfo(prevState: any, formData: FormData) {
 
     const name = formData.get("name") as string;
     const nickname = formData.get("nickname") as string;
+    const optOutGlobal = formData.get("optOutGlobal") === "true";
 
     if (!name || name.trim() === "") {
         return { error: "Display name is required" };
@@ -128,6 +129,7 @@ export async function updateProfileInfo(prevState: any, formData: FormData) {
         await User.findByIdAndUpdate(session.user.id, {
             name: name.trim(),
             nickname: nickname ? nickname.trim() : "",
+            optOutGlobal,
         });
 
         revalidatePath("/dashboard/settings");

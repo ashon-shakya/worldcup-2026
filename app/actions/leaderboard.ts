@@ -28,6 +28,11 @@ export async function getGlobalLeaderboard() {
             $unwind: "$userInfo"
         },
         {
+            $match: {
+                "userInfo.optOutGlobal": { $ne: true }
+            }
+        },
+        {
             $project: {
                 _id: 1,
                 name: "$userInfo.name",
