@@ -25,7 +25,7 @@ export default function GroupMemberRow({ user, index, currentUserId, allowedStag
     return (
         <div
             id={`group-member-row-${user._id}`}
-            className={`border-b border-gray-100 last:border-b-0 overflow-hidden transition-all duration-200 ${user._id === currentUserId ? "bg-indigo-50/30" : "bg-white hover:bg-gray-50/50"}`}
+            className={`border-b border-gray-100 dark:border-slate-800 last:border-b-0 overflow-hidden transition-all duration-200 ${user._id === currentUserId ? "bg-indigo-50/30 dark:bg-indigo-950/20" : "bg-white dark:bg-slate-900/60 hover:bg-gray-50/50 dark:hover:bg-slate-800/50"}`}
         >
             {/* Header: Clickable member details */}
             <div
@@ -55,7 +55,7 @@ export default function GroupMemberRow({ user, index, currentUserId, allowedStag
                 </div>
                 <div className="flex items-center gap-3">
                     <div className="text-right">
-                        <span className="block text-xl font-bold text-indigo-600">{user.totalPoints}</span>
+                        <span className="block text-xl font-bold text-indigo-600 dark:text-indigo-400">{user.totalPoints}</span>
                         <span className="text-[10px] font-bold text-gray-400 uppercase">Pts</span>
                     </div>
                     <ChevronDown

@@ -22,74 +22,74 @@ export default function RulesContent() {
                 </div>
                 <div className="p-6 space-y-6 text-gray-900">
                     <p className="text-gray-600">
-                        You can earn up to <span className="font-bold text-indigo-600">16 points</span> per match (in knockout rounds). Points are awarded based on accuracy:
+                        You can earn up to <span className="font-bold text-indigo-600 dark:text-indigo-400">16 points</span> per match (in knockout rounds). Points are awarded based on accuracy:
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <div className="bg-green-50 p-4 rounded-lg border border-green-100">
-                            <div className="font-bold text-green-700 text-lg mb-1">5 Points</div>
-                            <div className="text-sm text-green-800 font-medium">Correct Home Score</div>
-                            <p className="text-xs text-green-600 mt-1">Predicting the exact goals scored by Home Team.</p>
+                        <div className="bg-green-50 dark:bg-green-950/30 p-4 rounded-lg border border-green-100 dark:border-green-900/50">
+                            <div className="font-bold text-green-700 dark:text-green-400 text-lg mb-1">5 Points</div>
+                            <div className="text-sm text-green-800 dark:text-green-300 font-medium">Correct Home Score</div>
+                            <p className="text-xs text-green-600 dark:text-green-400/80 mt-1">Predicting the exact goals scored by Home Team.</p>
                         </div>
-                        <div className="bg-green-50 p-4 rounded-lg border border-green-100">
-                            <div className="font-bold text-green-700 text-lg mb-1">5 Points</div>
-                            <div className="text-sm text-green-800 font-medium">Correct Away Score</div>
-                            <p className="text-xs text-green-600 mt-1">Predicting the exact goals scored by Away Team.</p>
+                        <div className="bg-green-50 dark:bg-green-950/30 p-4 rounded-lg border border-green-100 dark:border-green-900/50">
+                            <div className="font-bold text-green-700 dark:text-green-400 text-lg mb-1">5 Points</div>
+                            <div className="text-sm text-green-800 dark:text-green-300 font-medium">Correct Away Score</div>
+                            <p className="text-xs text-green-600 dark:text-green-400/80 mt-1">Predicting the exact goals scored by Away Team.</p>
                         </div>
-                        <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
-                            <div className="font-bold text-blue-700 text-lg mb-1">3 Points</div>
-                            <div className="text-sm text-blue-800 font-medium">Correct Outcome</div>
-                            <p className="text-xs text-blue-600 mt-1">Predicting the winner or a draw correctly.</p>
+                        <div className="bg-blue-50 dark:bg-blue-950/30 p-4 rounded-lg border border-blue-100 dark:border-blue-900/50">
+                            <div className="font-bold text-blue-700 dark:text-blue-400 text-lg mb-1">3 Points</div>
+                            <div className="text-sm text-blue-800 dark:text-blue-300 font-medium">Correct Outcome</div>
+                            <p className="text-xs text-blue-600 dark:text-blue-400/80 mt-1">Predicting the winner or a draw correctly.</p>
                         </div>
-                        <div className="bg-purple-50 p-4 rounded-lg border border-purple-100">
-                            <div className="font-bold text-purple-700 text-lg mb-1">3 Points</div>
-                            <div className="text-sm text-purple-800 font-medium">Penalty Bonus</div>
-                            <p className="text-xs text-purple-600 mt-1">Correctly predicting if a knockout match goes to penalties.</p>
+                        <div className="bg-purple-50 dark:bg-purple-950/30 p-4 rounded-lg border border-purple-100 dark:border-purple-900/50">
+                            <div className="font-bold text-purple-700 dark:text-purple-400 text-lg mb-1">3 Points</div>
+                            <div className="text-sm text-purple-800 dark:text-purple-300 font-medium">Penalty Bonus</div>
+                            <p className="text-xs text-purple-600 dark:text-purple-400/80 mt-1">Correctly predicting if a knockout match goes to penalties.</p>
                         </div>
                     </div>
 
-                    <div className="mt-6 border-t border-gray-100 pt-6">
-                        <h3 className="font-bold text-gray-900 mb-3 flex items-center">
+                    <div className="mt-6 border-t border-gray-100 dark:border-gray-800 pt-6">
+                        <h3 className="font-bold text-gray-900 dark:text-white mb-3 flex items-center">
                             <Target className="mr-2 w-5 h-5 text-indigo-500" />
                             Examples
                         </h3>
-                        <div className="space-y-3 text-sm text-black">
-                            <div className="flex justify-between items-center bg-gray-50 p-3 rounded">
+                        <div className="space-y-3 text-sm text-black dark:text-white">
+                            <div className="flex justify-between items-center bg-gray-50 dark:bg-slate-900/50 p-3 rounded">
                                 <div>
                                     <span className="font-mono font-bold">Prediction: 2-1</span> vs <span className="font-mono font-bold">Result: 2-1</span>
                                 </div>
-                                <span className="font-bold text-indigo-600">13 Pts (Perfect Score + Outcome)</span>
+                                <span className="font-bold text-indigo-600 dark:text-indigo-400">13 Pts (Perfect Score + Outcome)</span>
                             </div>
 
-                            <div className="flex justify-between items-center bg-gray-50 p-3 rounded">
+                            <div className="flex justify-between items-center bg-gray-50 dark:bg-slate-900/50 p-3 rounded">
                                 <div>
                                     <span className="font-mono font-bold">Prediction: 2-0</span> vs <span className="font-mono font-bold">Result: 1-0</span>
                                 </div>
-                                <span className="font-bold text-indigo-600">8 Pts (Outcome + Away Score)</span>
+                                <span className="font-bold text-indigo-600 dark:text-indigo-400">8 Pts (Outcome + Away Score)</span>
                             </div>
-                            <div className="flex justify-between items-center bg-gray-50 p-3 rounded">
+                            <div className="flex justify-between items-center bg-gray-50 dark:bg-slate-900/50 p-3 rounded">
                                 <div>
                                     <span className="font-mono font-bold">Prediction: 3-0</span> vs <span className="font-mono font-bold">Result: 1-0</span>
                                 </div>
-                                <span className="font-bold text-indigo-600">8 Pts (Outcome + Away Score)</span>
+                                <span className="font-bold text-indigo-600 dark:text-indigo-400">8 Pts (Outcome + Away Score)</span>
                             </div>
-                            <div className="flex justify-between items-center bg-gray-50 p-3 rounded">
+                            <div className="flex justify-between items-center bg-gray-50 dark:bg-slate-900/50 p-3 rounded">
                                 <div>
                                     <span className="font-mono font-bold">Prediction: 1-1</span> vs <span className="font-mono font-bold">Result: 2-2</span>
                                 </div>
-                                <span className="font-bold text-indigo-600">3 Pts (Draw Outcome Only)</span>
+                                <span className="font-bold text-indigo-600 dark:text-indigo-400">3 Pts (Draw Outcome Only)</span>
                             </div>
-                            <div className="flex justify-between items-center bg-gray-50 p-3 rounded">
+                            <div className="flex justify-between items-center bg-gray-50 dark:bg-slate-900/50 p-3 rounded">
                                 <div>
                                     <span className="font-mono font-bold">Prediction: 1-0</span> vs <span className="font-mono font-bold">Result: 0-1</span>
                                 </div>
-                                <span className="font-bold text-gray-400">0 Pts</span>
+                                <span className="font-bold text-gray-400 dark:text-gray-500">0 Pts</span>
                             </div>
-                            <div className="flex justify-between items-center bg-purple-50 p-3 rounded">
+                            <div className="flex justify-between items-center bg-purple-50 dark:bg-purple-950/30 p-3 rounded">
                                 <div>
                                     <span className="font-mono font-bold">Penalty Prediction: Yes</span> vs <span className="font-mono font-bold">Result: Yes</span>
                                 </div>
-                                <span className="font-bold text-purple-600">+3 Pts (Penalty Bonus)</span>
+                                <span className="font-bold text-purple-600 dark:text-purple-400">+3 Pts (Penalty Bonus)</span>
                             </div>
                         </div>
                     </div>

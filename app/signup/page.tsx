@@ -24,7 +24,7 @@ export default function SignupPage() {
     const [state, dispatch] = useActionState(signup, undefined);
 
     return (
-        <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[url('/bg-2.jpg')] bg-cover bg-center bg-no-repeat bg-scroll sm:bg-fixed">
+        <div className="dark flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[url('/bg-2.jpg')] bg-cover bg-center bg-no-repeat bg-scroll sm:bg-fixed">
             <Link href="/" className="absolute top-4 left-4 p-2 text-gray-400 hover:text-white transition-colors bg-black/20 rounded-full backdrop-blur-sm z-50">
                 <Home size={20} />
             </Link>

@@ -22,10 +22,10 @@ export default function LeaderboardRow({ user, index, currentUserId }: Leaderboa
     };
 
     const getRankClass = (idx: number) => {
-        if (idx === 0) return "bg-yellow-55 bg-yellow-50/70 border-yellow-200";
-        if (idx === 1) return "bg-gray-50/70 border-gray-200";
-        if (idx === 2) return "bg-amber-50/70 border-orange-200";
-        return "bg-white border-gray-100 hover:bg-gray-50/80";
+        if (idx === 0) return "bg-yellow-50/70 dark:bg-yellow-950/20 border-yellow-200 dark:border-yellow-900/50 hover:bg-yellow-100/50 dark:hover:bg-yellow-950/30";
+        if (idx === 1) return "bg-gray-50/70 dark:bg-slate-900/40 border-gray-200 dark:border-slate-800 hover:bg-gray-100/50 dark:hover:bg-slate-800/60";
+        if (idx === 2) return "bg-amber-50/70 dark:bg-amber-950/20 border-orange-200 dark:border-orange-900/40 hover:bg-amber-100/50 dark:hover:bg-amber-950/30";
+        return "bg-white dark:bg-slate-900/60 border-gray-100 dark:border-slate-800 hover:bg-gray-50/80 dark:hover:bg-slate-800/40";
     };
 
     return (
@@ -64,7 +64,7 @@ export default function LeaderboardRow({ user, index, currentUserId }: Leaderboa
                 </div>
                 <div className="flex items-center gap-3">
                     <div className="text-right px-2 sm:px-4">
-                        <span className="block text-2xl font-bold text-indigo-600">{user.totalPoints}</span>
+                        <span className="block text-2xl font-bold text-indigo-600 dark:text-indigo-400">{user.totalPoints}</span>
                         <span className="text-[10px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wide">Points</span>
                     </div>
                     <ChevronDown

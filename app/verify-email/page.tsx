@@ -11,7 +11,7 @@ export default async function VerifyEmailPage({
 
   if (!token || typeof token !== "string") {
     return (
-      <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[url('/bg-2.jpg')] bg-cover bg-center bg-no-repeat bg-scroll sm:bg-fixed">
+      <div className="dark flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[url('/bg-2.jpg')] bg-cover bg-center bg-no-repeat bg-scroll sm:bg-fixed">
         <div className="glass-card p-8 sm:mx-auto sm:w-full sm:max-w-sm text-center">
           <h2 className="text-2xl font-bold text-red-500">Invalid Token</h2>
           <p className="mt-2 text-gray-300">Missing or invalid verification token.</p>
@@ -31,7 +31,7 @@ export default async function VerifyEmailPage({
 
   if (!user) {
     return (
-      <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[url('/bg-2.jpg')] bg-cover bg-center bg-no-repeat bg-scroll sm:bg-fixed">
+      <div className="dark flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[url('/bg-2.jpg')] bg-cover bg-center bg-no-repeat bg-scroll sm:bg-fixed">
         <div className="glass-card p-8 sm:mx-auto sm:w-full sm:max-w-sm text-center">
           <h2 className="text-2xl font-bold text-red-500">Invalid Token</h2>
           <p className="mt-2 text-gray-300">This token is invalid or has expired.</p>
@@ -47,7 +47,7 @@ export default async function VerifyEmailPage({
 
   if (hasExpired) {
     return (
-      <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[url('/bg-2.jpg')] bg-cover bg-center bg-no-repeat bg-scroll sm:bg-fixed">
+      <div className="dark flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[url('/bg-2.jpg')] bg-cover bg-center bg-no-repeat bg-scroll sm:bg-fixed">
         <div className="glass-card p-8 sm:mx-auto sm:w-full sm:max-w-sm text-center">
           <h2 className="text-2xl font-bold text-red-500">Token Expired</h2>
           <p className="mt-2 text-gray-300">This token has expired. Please sign up again or request a new one.</p>
@@ -65,7 +65,7 @@ export default async function VerifyEmailPage({
   await user.save();
 
   return (
-    <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[url('/bg-2.jpg')] bg-cover bg-center bg-no-repeat bg-scroll sm:bg-fixed">
+    <div className="dark flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[url('/bg-2.jpg')] bg-cover bg-center bg-no-repeat bg-scroll sm:bg-fixed">
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm glass-card p-8 text-center">
           <Link href="/">
