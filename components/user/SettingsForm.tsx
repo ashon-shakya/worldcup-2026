@@ -1,6 +1,6 @@
 "use client";
 
-import { updatePassword, updateProfileImage } from "@/app/actions/settings";
+import { updatePassword, updateProfileImage, updateProfileInfo } from "@/app/actions/settings";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2, Upload } from "lucide-react";
@@ -12,6 +12,7 @@ import { toast } from "sonner";
 interface SettingsFormProps {
     user: {
         name: string;
+        nickname?: string | null;
         email: string;
         image?: string | null;
     };
@@ -23,6 +24,35 @@ export default function SettingsForm({ user }: SettingsFormProps) {
     );
     const [uploading, setUploading] = useState(false);
     const { update } = useSession();
+
+    const [nameInput, setNameInput] = useState(user.name);
+    const [nicknameInput, setNicknameInput] = useState(user.nickname || "");
+    
+    const profileInitialState = {
+        error: "",
+        success: false,
+    };
+
+    const [profileState, profileFormAction, isProfilePending] = useActionState(async (prevState: any, formData: FormData) => {
+        const result = await updateProfileInfo(prevState, formData);
+        if (result.error) {
+            return { error: result.error, success: false };
+        }
+        
+        const name = formData.get("name") as string;
+        const nickname = formData.get("nickname") as string;
+        await update({ name, nickname });
+        
+        return { error: "", success: true };
+    }, profileInitialState);
+
+    useEffect(() => {
+        if (profileState.success) {
+            toast.success("Profile details updated successfully");
+        } else if (profileState.error) {
+            toast.error(profileState.error);
+        }
+    }, [profileState]);
 
     const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -121,6 +151,67 @@ export default function SettingsForm({ user }: SettingsFormProps) {
                         </p>
                     </div>
                 </div>
+            </div>
+
+            {/* Profile Details Section */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h2 className="text-xl font-semibold mb-4 text-gray-900">Profile Details</h2>
+                <form action={profileFormAction} className="space-y-4 max-w-md">
+                    <div>
+                        <label
+                            htmlFor="name"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                        >
+                            Display Name
+                        </label>
+                        <Input
+                            id="name"
+                            name="name"
+                            type="text"
+                            required
+                            value={nameInput}
+                            onChange={(e) => setNameInput(e.target.value)}
+                            className="bg-white text-gray-900 border-gray-300 placeholder:text-gray-400"
+                        />
+                    </div>
+                    <div>
+                        <label
+                            htmlFor="nickname"
+                            className="block text-sm font-medium text-gray-700 mb-1"
+                        >
+                            Nickname (Optional)
+                        </label>
+                        <Input
+                            id="nickname"
+                            name="nickname"
+                            type="text"
+                            value={nicknameInput}
+                            onChange={(e) => setNicknameInput(e.target.value)}
+                            placeholder="Enter a nickname"
+                            className="bg-white text-gray-900 border-gray-300 placeholder:text-gray-400"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">
+                            If set, your nickname will be displayed throughout the app instead of your display name.
+                        </p>
+                    </div>
+                    <div>
+                        <label
+                            className="block text-sm font-medium text-gray-500 mb-1"
+                        >
+                            Email Address (Cannot be changed)
+                        </label>
+                        <Input
+                            type="email"
+                            disabled
+                            value={user.email}
+                            className="bg-gray-50 text-gray-500 border-gray-200 cursor-not-allowed"
+                        />
+                    </div>
+                    <Button type="submit" disabled={isProfilePending}>
+                        {isProfilePending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        Save Changes
+                    </Button>
+                </form>
             </div>
 
             {/* Password Update Section */}

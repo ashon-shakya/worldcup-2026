@@ -108,3 +108,36 @@ export async function updatePassword(prevState: any, formData: FormData) {
         return { error: "Failed to update password" };
     }
 }
+
+export async function updateProfileInfo(prevState: any, formData: FormData) {
+    const session = await auth();
+    if (!session || !session.user) {
+        return { error: "Unauthorized" };
+    }
+
+    const name = formData.get("name") as string;
+    const nickname = formData.get("nickname") as string;
+
+    if (!name || name.trim() === "") {
+        return { error: "Display name is required" };
+    }
+
+    try {
+        await connectToDatabase();
+        
+        await User.findByIdAndUpdate(session.user.id, {
+            name: name.trim(),
+            nickname: nickname ? nickname.trim() : "",
+        });
+
+        revalidatePath("/dashboard/settings");
+        revalidatePath("/dashboard"); 
+        revalidatePath("/dashboard/leaderboard");
+        revalidatePath("/dashboard/groups");
+
+        return { success: true };
+    } catch (error) {
+        console.error("Profile info update error:", error);
+        return { error: "Failed to update profile details" };
+    }
+}

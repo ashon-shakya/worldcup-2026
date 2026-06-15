@@ -40,6 +40,7 @@ export const authConfig = {
                 token.id = user.id?.toString();
                 token.role = (user as any).role;
                 token.picture = user.image;
+                token.nickname = (user as any).nickname;
             }
             if (trigger === "update" && session) {
                 token = { ...token, ...session };
@@ -54,6 +55,10 @@ export const authConfig = {
                 session.user.id = token.id as string;
                 (session.user as any).role = token.role;
                 session.user.image = token.picture as string | null | undefined;
+                (session.user as any).nickname = token.nickname as string | null | undefined;
+                if (token.name) {
+                    session.user.name = token.name as string;
+                }
             }
             return session;
         },

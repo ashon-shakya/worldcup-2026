@@ -29,6 +29,7 @@ export async function getUsers(options: {
     if (search) {
         query.$or = [
             { name: { $regex: search, $options: "i" } },
+            { nickname: { $regex: search, $options: "i" } },
             { email: { $regex: search, $options: "i" } },
         ];
     }

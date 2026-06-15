@@ -8,7 +8,7 @@ export default function UserRow({ user }: { user: any }) {
     const [isPending, startTransition] = useTransition();
 
     const handleRoleChange = (newRole: "USER" | "ADMIN" | "MODERATOR") => {
-        if (confirm(`Are you sure you want to change ${user.name}'s role to ${newRole}?`)) {
+        if (confirm(`Are you sure you want to change ${user.nickname || user.name}'s role to ${newRole}?`)) {
             startTransition(async () => {
                 await updateUserRole(user._id, newRole);
             });
@@ -16,7 +16,7 @@ export default function UserRow({ user }: { user: any }) {
     };
 
     const handleDelete = () => {
-        if (confirm(`Are you sure you want to delete ${user.name}? This action cannot be undone.`)) {
+        if (confirm(`Are you sure you want to delete ${user.nickname || user.name}? This action cannot be undone.`)) {
             startTransition(async () => {
                 await deleteUser(user._id);
             });
@@ -46,11 +46,13 @@ export default function UserRow({ user }: { user: any }) {
                 <div className="flex items-center">
                     <div className="flex-shrink-0 h-10 w-10">
                         <div className={`h-10 w-10 rounded-full flex items-center justify-center text-white font-bold transition-colors ${getAvatarBg(user.role)}`}>
-                            {user.name.charAt(0).toUpperCase()}
+                            {(user.nickname || user.name).charAt(0).toUpperCase()}
                         </div>
                     </div>
                     <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{user.name}</div>
+                        <div className="text-sm font-medium text-gray-900">
+                            {user.nickname ? `${user.nickname} (${user.name})` : user.name}
+                        </div>
                         <div className="text-sm text-gray-500">{user.email}</div>
                     </div>
                 </div>

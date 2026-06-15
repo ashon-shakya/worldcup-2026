@@ -68,14 +68,14 @@ export default function DashboardNav({ user }: { user: any }) {
                     <div className="hidden sm:ml-6 sm:flex sm:items-center">
                         <div className="flex items-center space-x-4">
                             <span className="text-sm font-medium text-gray-700 hidden md:block">
-                                {user.name}
+                                {user.nickname || user.name}
                             </span>
                             <Link href="/dashboard/settings">
                                 {user.image ? (
                                     <img className="h-8 w-8 rounded-full object-cover" src={user.image} alt="Settings" />
                                 ) : (
                                     <div className="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold">
-                                        {user.name?.charAt(0)}
+                                        {(user.nickname || user.name)?.charAt(0)}
                                     </div>
                                 )}
                             </Link>
@@ -168,11 +168,11 @@ export default function DashboardNav({ user }: { user: any }) {
                                 {user.image ? (
                                     <img className="h-10 w-10 rounded-full object-cover" src={user.image} alt="" />
                                 ) : (
-                                    <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold">{user.name?.charAt(0)}</div>
+                                    <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold">{(user.nickname || user.name)?.charAt(0)}</div>
                                 )}
                             </div>
                             <div className="ml-3">
-                                <div className="text-base font-medium text-gray-800">{user.name}</div>
+                                <div className="text-base font-medium text-gray-800">{user.nickname || user.name}</div>
                                 <div className="text-sm font-medium text-gray-500">{user.email}</div>
                             </div>
                             <div className="ml-auto flex items-center gap-3">

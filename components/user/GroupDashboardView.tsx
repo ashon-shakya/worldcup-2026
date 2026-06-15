@@ -238,12 +238,12 @@ export default function GroupDashboardView({ groupId, leaderboard, group, curren
                                                                             <div className="flex items-center gap-2.5">
                                                                                 <div className="h-7 w-7 rounded-full bg-indigo-100 dark:bg-indigo-950 flex items-center justify-center text-indigo-700 dark:text-indigo-400 font-bold border border-indigo-200 dark:border-indigo-900/50 overflow-hidden shrink-0">
                                                                                     {member.image ? (
-                                                                                        <img src={member.image} alt={member.name} className="h-full w-full object-cover" />
+                                                                                        <img src={member.image} alt={member.nickname || member.name} className="h-full w-full object-cover" />
                                                                                     ) : (
-                                                                                        member.name.charAt(0).toUpperCase()
+                                                                                        (member.nickname || member.name).charAt(0).toUpperCase()
                                                                                     )}
                                                                                 </div>
-                                                                                <span className="text-xs font-bold text-gray-900 dark:text-gray-200">{member.name}</span>
+                                                                                <span className="text-xs font-bold text-gray-900 dark:text-gray-200">{member.nickname || member.name}</span>
                                                                                 {member._id === currentUserId && (
                                                                                     <span className="text-[9px] bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-400 px-1.5 py-0.5 rounded-full uppercase font-bold tracking-wide">You</span>
                                                                                 )}

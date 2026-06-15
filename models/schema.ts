@@ -4,6 +4,7 @@ import mongoose, { Schema, model, models } from "mongoose";
 const UserSchema = new Schema(
     {
         name: { type: String, required: true },
+        nickname: { type: String },
         email: { type: String, required: true, unique: true },
         password: { type: String, select: false }, // Select false to exclude by default
         image: { type: String },
@@ -95,6 +96,9 @@ const SystemSettingsSchema = new Schema(
 );
 
 // Prevent overwriting models if they are already compiled (Next.js hot reload issue)
+if (models.User && !models.User.schema.paths.nickname) {
+    delete models.User;
+}
 export const User = models.User || model("User", UserSchema);
 export const Team = models.Team || model("Team", TeamSchema);
 // Force schema update if hot reload kept old version without new fields

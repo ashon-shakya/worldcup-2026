@@ -45,15 +45,15 @@ export default function LeaderboardRow({ user, index, currentUserId }: Leaderboa
                 <div className="flex-shrink-0 ml-4">
                     <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold border border-indigo-200 overflow-hidden">
                         {user.image ? (
-                            <img src={user.image} alt={user.name} className="h-10 w-10 rounded-full object-cover" />
+                            <img src={user.image} alt={user.nickname || user.name} className="h-10 w-10 rounded-full object-cover" />
                         ) : (
-                            user.name.charAt(0).toUpperCase()
+                            (user.nickname || user.name).charAt(0).toUpperCase()
                         )}
                     </div>
                 </div>
                 <div className="ml-4 flex-1">
                     <div className="font-bold text-gray-900 flex items-center gap-2">
-                        {user.name}
+                        {user.nickname || user.name}
                         {user._id === currentUserId && (
                             <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">You</span>
                         )}

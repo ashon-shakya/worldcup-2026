@@ -21,6 +21,7 @@ export default async function SettingsPage() {
             <SettingsForm
                 user={{
                     name: session.user.name || "",
+                    nickname: (session.user as any).nickname || "",
                     email: session.user.email || "",
                     image: session.user.image,
                 }}

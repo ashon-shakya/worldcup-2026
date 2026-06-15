@@ -104,7 +104,7 @@ export async function getGroupDetails(groupId: string) {
     await connectToDatabase();
 
     // Get group info
-    const group = await Group.findById(groupId).populate("members", "name image");
+    const group = await Group.findById(groupId).populate("members", "name nickname image");
     if (!group) return null;
 
     // Calculate leaderboard for these members ONLY
@@ -161,6 +161,7 @@ export async function getGroupDetails(groupId: string) {
             $project: {
                 _id: 1,
                 name: "$userInfo.name",
+                nickname: "$userInfo.nickname",
                 image: "$userInfo.image",
                 totalPoints: 1
             }
@@ -175,6 +176,7 @@ export async function getGroupDetails(groupId: string) {
         return {
             _id: member._id.toString(),
             name: member.name,
+            nickname: member.nickname,
             image: member.image,
             totalPoints: stats ? stats.totalPoints : 0
         };

@@ -31,6 +31,7 @@ export async function getGlobalLeaderboard() {
             $project: {
                 _id: 1,
                 name: "$userInfo.name",
+                nickname: "$userInfo.nickname",
                 image: "$userInfo.image",
                 email: "$userInfo.email", // Optional, maybe masked or removed for privacy in real app
                 totalPoints: 1

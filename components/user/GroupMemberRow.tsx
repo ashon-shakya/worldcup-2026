@@ -39,15 +39,15 @@ export default function GroupMemberRow({ user, index, currentUserId, allowedStag
                 <div className="flex-shrink-0 ml-4">
                     <div className="h-10 w-10 rounded-full bg-gray-250 bg-gray-200 overflow-hidden flex items-center justify-center border border-gray-200 text-gray-500 font-semibold">
                         {user.image ? (
-                            <img src={user.image} alt={user.name} className="h-full w-full object-cover" />
+                            <img src={user.image} alt={user.nickname || user.name} className="h-full w-full object-cover" />
                         ) : (
-                            user.name.charAt(0).toUpperCase()
+                            (user.nickname || user.name).charAt(0).toUpperCase()
                         )}
                     </div>
                 </div>
                 <div className="ml-4 flex-1">
                     <div className="font-bold text-gray-900 flex items-center gap-2">
-                        {user.name}
+                        {user.nickname || user.name}
                         {user._id === currentUserId && (
                             <span className="text-[10px] bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded-full uppercase font-bold tracking-wide">You</span>
                         )}
