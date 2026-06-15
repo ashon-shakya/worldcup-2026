@@ -3,7 +3,7 @@ import { auth } from "@/auth";
 import { Users } from "lucide-react";
 import CopyButton from "@/components/user/CopyButton";
 import DeleteGroupButton from "@/components/user/DeleteGroupButton";
-import GroupMemberRow from "@/components/user/GroupMemberRow";
+import GroupDashboardView from "@/components/user/GroupDashboardView";
 import GroupSettingsForm from "@/components/user/GroupSettingsForm";
 
 export const dynamic = "force-dynamic";
@@ -54,28 +54,13 @@ export default async function GroupDetailsPage({ params }: { params: Promise<{ i
                 </div>
             </div>
 
-            {/* Leaderboard Section */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-                    <h2 className="font-semibold text-gray-900">Leaderboard</h2>
-                </div>
-
-                {leaderboard.length === 0 ? (
-                    <div className="p-8 text-center text-gray-500">No members yet.</div>
-                ) : (
-                    <div>
-                        {leaderboard.map((user: any, index: number) => (
-                            <GroupMemberRow
-                                key={user._id}
-                                user={user}
-                                index={index}
-                                currentUserId={currentUserId}
-                                allowedStages={group.includedStages || []}
-                            />
-                        ))}
-                    </div>
-                )}
-            </div>
+            {/* Tabs View (Leaderboard & Match Predictions Table) */}
+            <GroupDashboardView
+                groupId={group._id}
+                leaderboard={leaderboard}
+                group={group}
+                currentUserId={currentUserId}
+            />
 
             {/* Settings Section - Admin Only */}
             {currentUserId === group.owner && (

@@ -1,7 +1,7 @@
 "use server";
 
 import connectToDatabase from "@/lib/db";
-import { Group, Prediction, User } from "@/models/schema";
+import { Group, Prediction, User, Match } from "@/models/schema";
 import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -238,4 +238,74 @@ export async function updateGroupStages(groupId: string, stages: string[]) {
         console.error("Failed to update group settings:", error);
         return { message: "Failed to update group settings" };
     }
+}
+
+export async function getGroupFinishedMatchesPredictions(groupId: string, page: number = 1) {
+    const session = await auth();
+    if (!session || !session.user) {
+        throw new Error("Unauthorized");
+    }
+
+    await connectToDatabase();
+
+    // Verify group exists and user is a member
+    const group = await Group.findById(groupId);
+    if (!group || !group.members.includes(session.user.id)) {
+        throw new Error("Unauthorized or group not found");
+    }
+
+    const stagesToInclude = group.includedStages && group.includedStages.length > 0
+        ? group.includedStages
+        : ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final"];
+
+    const limit = 10;
+    const skip = (page - 1) * limit;
+
+    // Fetch finished matches in included stages, sorted by kickoff descending
+    const [matches, totalMatches] = await Promise.all([
+        Match.find({
+            status: "FINISHED",
+            stage: { $in: stagesToInclude }
+        })
+        .sort({ kickOff: -1 })
+        .skip(skip)
+        .limit(limit)
+        .populate("homeTeam awayTeam"),
+        Match.countDocuments({
+            status: "FINISHED",
+            stage: { $in: stagesToInclude }
+        })
+    ]);
+
+    const matchIds = matches.map(m => m._id);
+
+    // Fetch predictions of all members for these matches
+    const predictions = await Prediction.find({
+        match: { $in: matchIds },
+        user: { $in: group.members }
+    });
+
+    // Structure predictions by matchId and userId
+    const predictionsMap: Record<string, Record<string, any>> = {};
+    predictions.forEach((p) => {
+        const mId = p.match.toString();
+        const uId = p.user.toString();
+        if (!predictionsMap[mId]) {
+            predictionsMap[mId] = {};
+        }
+        predictionsMap[mId][uId] = {
+            homeScore: p.homeScore,
+            awayScore: p.awayScore,
+            points: p.points,
+            penaltyPrediction: p.penaltyPrediction,
+            predictedWinner: p.predictedWinner ? p.predictedWinner.toString() : null
+        };
+    });
+
+    return {
+        matches: JSON.parse(JSON.stringify(matches)),
+        predictionsMap,
+        totalMatches,
+        totalPages: Math.ceil(totalMatches / limit)
+    };
 }
