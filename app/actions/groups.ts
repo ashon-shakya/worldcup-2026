@@ -269,20 +269,27 @@ export async function getGroupFinishedMatchesPredictions(groupId: string, page: 
     const limit = 10;
     const skip = (page - 1) * limit;
 
-    // Fetch finished matches in included stages, sorted by kickoff descending
+    // Fetch matches that have started in included stages, sorted by kickoff descending
+    const now = new Date();
+    const matchQuery = {
+        $and: [
+            { stage: { $in: stagesToInclude } },
+            {
+                $or: [
+                    { status: { $in: ["LIVE", "FINISHED"] } },
+                    { kickOff: { $lt: now } }
+                ]
+            }
+        ]
+    };
+
     const [matches, totalMatches] = await Promise.all([
-        Match.find({
-            status: "FINISHED",
-            stage: { $in: stagesToInclude }
-        })
+        Match.find(matchQuery)
         .sort({ kickOff: -1 })
         .skip(skip)
         .limit(limit)
         .populate("homeTeam awayTeam"),
-        Match.countDocuments({
-            status: "FINISHED",
-            stage: { $in: stagesToInclude }
-        })
+        Match.countDocuments(matchQuery)
     ]);
 
     const matchIds = matches.map(m => m._id);

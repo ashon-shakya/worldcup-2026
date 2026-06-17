@@ -118,24 +118,24 @@ export default function GroupDashboardView({ groupId, leaderboard, group, curren
                 <div className="bg-white dark:bg-slate-900/60 rounded-xl shadow-sm border border-gray-200 dark:border-slate-800 overflow-hidden">
                     <div className="px-6 py-4 border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-950/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div>
-                            <h2 className="font-semibold text-gray-900 dark:text-white">Finished Matches & Member Predictions</h2>
+                            <h2 className="font-semibold text-gray-900 dark:text-white">Started Matches & Member Predictions</h2>
                             <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Click on a match to view predictions of all members</p>
                         </div>
                         <span className="inline-block text-[11px] font-bold bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/40 px-2 py-0.5 rounded-full uppercase tracking-wider self-start sm:self-center">
-                            {totalMatches} Finished Match{totalMatches !== 1 ? "es" : ""}
+                            {totalMatches} Started Match{totalMatches !== 1 ? "es" : ""}
                         </span>
                     </div>
 
                     {loading ? (
-                        <div className="p-12 text-center text-gray-500 dark:text-gray-400 flex flex-col items-center justify-center gap-3">
+                        <div className="p-12 text-center text-gray-550 dark:text-gray-400 flex flex-col items-center justify-center gap-3">
                             <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
                             <p className="text-sm font-medium">Loading predictions...</p>
                         </div>
                     ) : matches.length === 0 ? (
                         <div className="p-12 text-center text-gray-500 dark:text-gray-400 flex flex-col items-center justify-center gap-2">
                             <HelpCircle className="w-10 h-10 text-gray-400 dark:text-gray-600" />
-                            <p className="font-semibold text-base text-gray-800 dark:text-gray-200">No finished matches found</p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400 max-w-sm">Once matches in the configured rounds are completed, their predictions leaderboard grid will display here.</p>
+                            <p className="font-semibold text-base text-gray-800 dark:text-gray-200">No started matches found</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 max-w-sm">Once matches in the configured rounds have started, their predictions leaderboard grid will display here.</p>
                         </div>
                     ) : (
                         <div className="p-4 space-y-4">
@@ -202,14 +202,30 @@ export default function GroupDashboardView({ groupId, leaderboard, group, curren
 
                                                 {/* Score / Chevron */}
                                                 <div className="flex items-center gap-4 shrink-0">
-                                                    <div className="flex items-center bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/30 px-3 py-1.5 rounded-lg text-sm font-black text-indigo-700 dark:text-indigo-400 shadow-3xs">
-                                                        {match.homeScore} - {match.awayScore}
-                                                        {isKnockout && match.wentToPenalties && (
-                                                            <span className="text-[9px] text-purple-600 dark:text-purple-400 font-bold bg-purple-50 dark:bg-purple-950/40 border border-purple-100 dark:border-purple-900/30 px-1.5 py-0.5 rounded ml-2 uppercase shrink-0">
-                                                                PK
+                                                    {match.status === "FINISHED" ? (
+                                                        <div className="flex items-center bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/30 px-3 py-1.5 rounded-lg text-sm font-black text-indigo-700 dark:text-indigo-400 shadow-3xs">
+                                                            {match.homeScore} - {match.awayScore}
+                                                            {isKnockout && match.wentToPenalties && (
+                                                                <span className="text-[9px] text-purple-650 dark:text-purple-400 font-bold bg-purple-50 dark:bg-purple-955/40 border border-purple-100 dark:border-purple-900/30 px-1.5 py-0.5 rounded ml-2 uppercase shrink-0">
+                                                                    PK
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    ) : match.status === "LIVE" ? (
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="inline-flex items-center gap-1 text-[9px] font-black bg-red-650 text-white px-2 py-1 rounded-md animate-pulse uppercase tracking-wider">
+                                                                <span className="h-1.5 w-1.5 bg-white rounded-full"></span>
+                                                                Live
                                                             </span>
-                                                        )}
-                                                    </div>
+                                                            <div className="flex items-center bg-red-50 dark:bg-red-955/20 border border-red-100 dark:border-red-900/30 px-3 py-1.5 rounded-lg text-sm font-black text-red-650 dark:text-red-400 shadow-3xs">
+                                                                {match.homeScore ?? 0} - {match.awayScore ?? 0}
+                                                            </div>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="flex items-center bg-amber-50 dark:bg-amber-955/20 border border-amber-100 dark:border-amber-900/30 px-3 py-1.5 rounded-lg text-[10px] font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider shadow-3xs">
+                                                            Started
+                                                        </div>
+                                                    )}
                                                     <ChevronDown
                                                         className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${isExpanded ? "rotate-180 text-indigo-600" : ""}`}
                                                     />
