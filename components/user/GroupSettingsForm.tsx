@@ -12,6 +12,7 @@ interface GroupSettingsFormProps {
     currentColor: string | null;
     currentTextColor: string | null;
     groupName: string;
+    currentDescription?: string;
 }
 
 const PASTEL_COLORS = [
@@ -53,7 +54,7 @@ const TEXT_COLORS = [
     { hex: "#111827", name: "Jet Black" }
 ];
 
-export default function GroupSettingsForm({ groupId, currentStages, currentColor, currentTextColor, groupName }: GroupSettingsFormProps) {
+export default function GroupSettingsForm({ groupId, currentStages, currentColor, currentTextColor, groupName, currentDescription = "" }: GroupSettingsFormProps) {
     const validStages = ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final"];
     
     // Default to all stages if currentStages is empty or null
@@ -61,6 +62,7 @@ export default function GroupSettingsForm({ groupId, currentStages, currentColor
     const [selectedStages, setSelectedStages] = useState<string[]>(initialStages);
     const [selectedColor, setSelectedColor] = useState<string | null>(currentColor);
     const [selectedTextColor, setSelectedTextColor] = useState<string | null>(currentTextColor);
+    const [description, setDescription] = useState(currentDescription);
     const [isPending, startTransition] = useTransition();
 
     const handleCheckboxChange = (stage: string) => {
@@ -85,7 +87,7 @@ export default function GroupSettingsForm({ groupId, currentStages, currentColor
         }
 
         startTransition(async () => {
-            const result = await updateGroupSettings(groupId, selectedStages, selectedColor, selectedTextColor);
+            const result = await updateGroupSettings(groupId, selectedStages, selectedColor, selectedTextColor, description);
             if (result.message === "success") {
                 toast.success("Group settings updated successfully!");
             } else {
@@ -263,6 +265,24 @@ export default function GroupSettingsForm({ groupId, currentStages, currentColor
                         </div>
                     </div>
                 )}
+
+                {/* Configure Group Description */}
+                <div className="pt-4 space-y-2 border-t border-gray-100 dark:border-slate-800 animate-in fade-in duration-200">
+                    <label
+                        htmlFor="description"
+                        className="block text-sm font-bold text-gray-900 dark:text-white"
+                    >
+                        Group Description (Optional)
+                    </label>
+                    <textarea
+                        id="description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        rows={3}
+                        className="w-full text-xs text-gray-800 dark:text-gray-100 rounded-xl border border-gray-200 dark:border-slate-800 p-3 bg-white dark:bg-slate-900/50 focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-gray-400 focus:border-indigo-500"
+                        placeholder="Describe the group e.g. Office sweepstakes for the 2026 World Cup..."
+                    />
+                </div>
 
                 <div className="pt-2 flex justify-end border-t border-gray-100 dark:border-slate-800 pt-4">
                     <Button onClick={handleSave} disabled={isPending} className="px-5 py-2 font-semibold">

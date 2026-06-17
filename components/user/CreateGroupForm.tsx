@@ -36,7 +36,7 @@ export default function CreateGroupForm({ onClose }: { onClose: () => void }) {
       <div>
         <label
           htmlFor="name"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-750 dark:text-gray-200"
         >
           Group Name
         </label>
@@ -45,8 +45,24 @@ export default function CreateGroupForm({ onClose }: { onClose: () => void }) {
           name="name"
           id="name"
           required
-          className="mt-1 block w-full text-gray-800 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border"
+          className="mt-1 block w-full text-gray-800 dark:text-gray-100 rounded-md border-gray-300 dark:border-slate-800 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border bg-white dark:bg-slate-900/50"
           placeholder="e.g. Office League"
+        />
+      </div>
+
+      <div>
+        <label
+          htmlFor="description"
+          className="block text-sm font-medium text-gray-750 dark:text-gray-200"
+        >
+          Description (Optional)
+        </label>
+        <textarea
+          name="description"
+          id="description"
+          rows={3}
+          className="mt-1 block w-full text-gray-800 dark:text-gray-100 rounded-md border-gray-300 dark:border-slate-800 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border bg-white dark:bg-slate-900/50"
+          placeholder="e.g. Friendly predictor tournament for the 2026 World Cup..."
         />
       </div>
 

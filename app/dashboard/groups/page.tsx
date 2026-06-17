@@ -130,6 +130,15 @@ export default function GroupsPage() {
                                     }`}>
                                         {group.name}
                                     </h3>
+                                    {group.description && (
+                                        <p className={`text-xs mb-2.5 line-clamp-2 ${
+                                            hasColor 
+                                                ? "text-current/80 font-medium" 
+                                                : "text-gray-550 dark:text-gray-400"
+                                        }`}>
+                                            {group.description}
+                                        </p>
+                                    )}
                                     <div className={`flex items-center text-sm mb-4 ${
                                         hasColor 
                                             ? "text-current opacity-80" 

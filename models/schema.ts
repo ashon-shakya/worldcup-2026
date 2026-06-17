@@ -83,6 +83,7 @@ const GroupSchema = new Schema(
         },
         color: { type: String, default: null },
         textColor: { type: String, default: null },
+        description: { type: String, default: "" },
     },
     { timestamps: true },
 );
@@ -114,8 +115,8 @@ if (models.Prediction && (!models.Prediction.schema.paths.penaltyPrediction || !
 }
 export const Prediction = models.Prediction || model("Prediction", PredictionSchema);
 
-// Force schema update for Group model when includedStages, color, or textColor is added
-if (models.Group && (!models.Group.schema.paths.includedStages || !models.Group.schema.paths.color || !models.Group.schema.paths.textColor)) {
+// Force schema update for Group model when includedStages, color, textColor, or description is added
+if (models.Group && (!models.Group.schema.paths.includedStages || !models.Group.schema.paths.color || !models.Group.schema.paths.textColor || !models.Group.schema.paths.description)) {
     delete models.Group;
 }
 export const Group = models.Group || model("Group", GroupSchema);

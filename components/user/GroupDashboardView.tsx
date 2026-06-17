@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Trophy, ChevronLeft, ChevronRight, Calendar, Clock, HelpCircle, FileText, ListOrdered, ChevronDown } from "lucide-react";
 import { getGroupFinishedMatchesPredictions } from "@/app/actions/groups";
 import GroupMemberRow from "./GroupMemberRow";
+import LeaderboardRace from "./LeaderboardRace";
 
 interface GroupDashboardViewProps {
     groupId: string;
@@ -13,7 +14,7 @@ interface GroupDashboardViewProps {
 }
 
 export default function GroupDashboardView({ groupId, leaderboard, group, currentUserId }: GroupDashboardViewProps) {
-    const [activeTab, setActiveTab] = useState<"leaderboard" | "predictions">("leaderboard");
+    const [activeTab, setActiveTab] = useState<"leaderboard" | "race" | "predictions">("leaderboard");
     const [matches, setMatches] = useState<any[]>([]);
     const [predictionsMap, setPredictionsMap] = useState<Record<string, Record<string, any>>>({});
     const [currentPage, setCurrentPage] = useState(1);
@@ -58,17 +59,24 @@ export default function GroupDashboardView({ groupId, leaderboard, group, curren
             <div className="flex border-b border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 rounded-xl p-1 shadow-xs border gap-1">
                 <button
                     onClick={() => setActiveTab("leaderboard")}
-                    className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 ${activeTab === "leaderboard" ? "bg-indigo-600 text-white shadow-sm" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-800/50"}`}
+                    className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${activeTab === "leaderboard" ? "bg-indigo-600 text-white shadow-sm" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-800/50"}`}
                 >
                     <ListOrdered size={16} />
                     Leaderboard
+                </button>
+                <button
+                    onClick={() => setActiveTab("race")}
+                    className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${activeTab === "race" ? "bg-indigo-600 text-white shadow-sm" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-800/50"}`}
+                >
+                    <Trophy size={16} />
+                    Leaderboard Race
                 </button>
                 <button
                     onClick={() => {
                         setActiveTab("predictions");
                         setCurrentPage(1);
                     }}
-                    className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 ${activeTab === "predictions" ? "bg-indigo-600 text-white shadow-sm" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-800/50"}`}
+                    className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${activeTab === "predictions" ? "bg-indigo-600 text-white shadow-sm" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-800/50"}`}
                 >
                     <FileText size={16} />
                     Match Predictions
@@ -83,7 +91,7 @@ export default function GroupDashboardView({ groupId, leaderboard, group, curren
                     </div>
 
                     {leaderboard.length === 0 ? (
-                        <div className="p-8 text-center text-gray-500 dark:text-gray-400">No members yet.</div>
+                        <div className="p-8 text-center text-gray-550 dark:text-gray-400">No members yet.</div>
                     ) : (
                         <div>
                             {leaderboard.map((user: any, index: number) => (
@@ -98,6 +106,11 @@ export default function GroupDashboardView({ groupId, leaderboard, group, curren
                         </div>
                     )}
                 </div>
+            )}
+
+            {/* Leaderboard Race Tab Content */}
+            {activeTab === "race" && (
+                <LeaderboardRace groupId={groupId} />
             )}
 
             {/* Predictions Tab Content */}

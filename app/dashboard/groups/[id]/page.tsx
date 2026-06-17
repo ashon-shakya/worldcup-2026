@@ -36,6 +36,11 @@ export default async function GroupDetailsPage({ params }: { params: Promise<{ i
                         <Users size={14} className="mr-1" />
                         {group.members.length} member{group.members.length !== 1 ? 's' : ''}
                     </p>
+                    {group.description && (
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-2.5 bg-gray-50/50 dark:bg-slate-900/40 p-3 rounded-lg border border-gray-150 dark:border-slate-800/80 italic max-w-xl">
+                            {group.description}
+                        </p>
+                    )}
                 </div>
 
                 <div className="flex flex-col items-center md:items-end gap-3">
@@ -64,7 +69,7 @@ export default async function GroupDetailsPage({ params }: { params: Promise<{ i
 
             {/* Settings Section - Admin Only */}
             {currentUserId === group.owner && (
-                <GroupSettingsForm groupId={group._id} currentStages={group.includedStages || []} currentColor={group.color || null} currentTextColor={group.textColor || null} groupName={group.name} />
+                <GroupSettingsForm groupId={group._id} currentStages={group.includedStages || []} currentColor={group.color || null} currentTextColor={group.textColor || null} groupName={group.name} currentDescription={group.description || ""} />
             )}
         </div>
     );

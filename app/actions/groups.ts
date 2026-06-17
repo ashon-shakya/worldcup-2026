@@ -12,6 +12,7 @@ function generateCode() {
 
 const CreateGroupSchema = z.object({
     name: z.string().min(3, "Name must be at least 3 characters"),
+    description: z.string().optional(),
 });
 
 const JoinGroupSchema = z.object({
@@ -29,7 +30,7 @@ export async function createGroup(prevState: any, formData: FormData) {
         return { message: "Invalid input" };
     }
 
-    const { name } = parsed.data;
+    const { name, description } = parsed.data;
 
     try {
         await connectToDatabase();
@@ -47,6 +48,7 @@ export async function createGroup(prevState: any, formData: FormData) {
             code,
             owner: session.user.id,
             members: [session.user.id], // Creator joins automatically
+            description: description || "",
         });
 
         revalidatePath("/dashboard/groups");
@@ -211,7 +213,7 @@ export async function deleteGroup(groupId: string) {
     }
 }
 
-export async function updateGroupSettings(groupId: string, stages: string[], color: string | null, textColor: string | null) {
+export async function updateGroupSettings(groupId: string, stages: string[], color: string | null, textColor: string | null, description?: string) {
     const session = await auth();
     if (!session || !session.user) return { message: "Unauthorized" };
 
@@ -234,6 +236,7 @@ export async function updateGroupSettings(groupId: string, stages: string[], col
         group.includedStages = filteredStages;
         group.color = color;
         group.textColor = textColor;
+        group.description = description || "";
         await group.save();
 
         revalidatePath(`/dashboard/groups/${groupId}`);
