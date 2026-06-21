@@ -150,6 +150,13 @@ export default function PaginatedMatchList({
         setCurrentPage(1);
     };
 
+    const handleShowNextMatches = () => {
+        setFilterStatus("SCHEDULED");
+        setSortKey("kickOff");
+        setSortDir("asc");
+        setCurrentPage(1);
+    };
+
     const handleSort = (key: SortKey) => {
         if (sortKey === key) {
             if (sortDir === "asc") setSortDir("desc");
@@ -247,10 +254,16 @@ export default function PaginatedMatchList({
                     <SortButton label="Date" sortKeyVal="kickOff" />
                     <SortButton label="Stage" sortKeyVal="stage" />
                 </div>
+                <button
+                    onClick={handleShowNextMatches}
+                    className="flex items-center gap-1.5 bg-indigo-50 dark:bg-indigo-950/30 hover:bg-indigo-100 dark:hover:bg-indigo-900/40 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-900/50 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 shadow-3xs cursor-pointer"
+                >
+                    Show Next Matches
+                </button>
                 {hasActiveFilters && (
                     <button
                         onClick={clearFilters}
-                        className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 px-2 py-1 rounded hover:bg-gray-100"
+                        className="flex items-center gap-1 text-sm text-gray-550 hover:text-gray-700 px-2 py-1 rounded hover:bg-gray-100"
                     >
                         <X size={14} />
                         Clear filters

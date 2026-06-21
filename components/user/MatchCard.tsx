@@ -4,6 +4,7 @@ import { submitPrediction } from "@/app/actions/predictions";
 import { useActionState, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { Calendar, Lock, CheckCircle } from "lucide-react";
+import TeamMatchesModal from "./TeamMatchesModal";
 
 function SubmitButton({ isLocked }: { isLocked: boolean }) {
     const { pending } = useFormStatus();
@@ -37,6 +38,7 @@ export default function MatchCard({ match, prediction }: MatchCardProps) {
     const [showPenaltyInput, setShowPenaltyInput] = useState(prediction?.penaltyPrediction || false);
     const [homeScore, setHomeScore] = useState(prediction?.homeScore?.toString() || "");
     const [awayScore, setAwayScore] = useState(prediction?.awayScore?.toString() || "");
+    const [selectedTeam, setSelectedTeam] = useState<{ id: string; name: string } | null>(null);
 
     useEffect(() => {
         setShowPenaltyInput(prediction?.penaltyPrediction || false);
@@ -68,152 +70,169 @@ export default function MatchCard({ match, prediction }: MatchCardProps) {
                 <span>{match.stage} • {match.venue}</span>
             </div>
 
-            <div className="p-6">
+            <div className="px-2 py-4 sm:p-6">
                 <form
                     key={JSON.stringify(prediction)}
                     action={dispatch}
-                    className="flex flex-col md:flex-row items-center justify-between gap-6"
+                    className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6"
                 >
                     <input type="hidden" name="matchId" value={match._id} />
 
-                    {/* Home Team */}
-                    <div className={`flex flex-col items-center w-1/3 p-2 rounded-lg transition-all duration-300 ${isFinished && match.winner && match.winner._id === match.homeTeam?._id
-                        ? "bg-yellow-50 ring-2 ring-yellow-400 scale-105 shadow-lg"
-                        : isFinished && match.winner
-                            ? "opacity-50 grayscale scale-95"
-                            : ""
-                        }`}>
-                        {match.homeTeam?.flagUrl && (
-                            <img src={match.homeTeam.flagUrl} alt={match.homeTeam.name} className="w-12 h-9 object-cover rounded shadow-sm mb-2" />
-                        )}
-                        <span className={`font-bold text-center ${isFinished && match.winner && match.winner._id === match.homeTeam?._id ? "text-yellow-700 font-black" : "text-gray-900"
+                    {/* Matchup row: always horizontal */}
+                    <div className="flex flex-row items-center justify-between flex-1 w-full gap-2 sm:gap-4">
+                        {/* Home Team */}
+                        <div className={`flex flex-col items-center w-[30%] sm:w-1/3 p-1 sm:p-2 rounded-lg transition-all duration-300 ${isFinished && match.winner && match.winner._id === match.homeTeam?._id
+                            ? "bg-yellow-50 ring-2 ring-yellow-400 scale-105 shadow-lg"
+                            : isFinished && match.winner
+                                ? "opacity-50 grayscale scale-95"
+                                : ""
                             }`}>
-                            {match.homeTeam?.name}
-                            {isFinished && match.winner && match.winner._id === match.homeTeam?._id && (
-                                <span className="block text-[10px] uppercase tracking-widest text-yellow-600 mt-1">Winner</span>
+                            {match.homeTeam?.flagUrl && (
+                                <img
+                                    src={match.homeTeam.flagUrl}
+                                    alt={match.homeTeam.name}
+                                    title={`Click to view ${match.homeTeam.name} matches`}
+                                    onClick={() => setSelectedTeam({ id: match.homeTeam._id, name: match.homeTeam.name })}
+                                    className="w-10 h-7 sm:w-12 sm:h-9 object-cover rounded shadow-sm mb-1.5 sm:mb-2 cursor-pointer hover:scale-110 active:scale-95 transition-all duration-200 animate-pulse-on-hover"
+                                />
                             )}
-                        </span>
-                    </div>
+                            <span className={`text-xs sm:text-sm md:text-base font-bold text-center ${isFinished && match.winner && match.winner._id === match.homeTeam?._id ? "text-yellow-700 font-black" : "text-gray-900"
+                                }`}>
+                                {match.homeTeam?.name}
+                                {isFinished && match.winner && match.winner._id === match.homeTeam?._id && (
+                                    <span className="block text-[9px] sm:text-[10px] uppercase tracking-widest text-yellow-600 mt-0.5 sm:mt-1">Winner</span>
+                                )}
+                            </span>
+                        </div>
 
-                    {/* Prediction Inputs / Score Display */}
-                    <div className="flex flex-col items-center flex-1">
-                        {isLocked || isFinished ? (
-                            <div className="text-center">
-                                <div className="text-3xl font-black text-gray-800 flex items-center justify-center gap-4">
-                                    <span>{match.status === "FINISHED" ? match.homeScore : (prediction?.homeScore ?? "-")}</span>
-                                    <span className="text-gray-300 text-lg">vs</span>
-                                    <span>{match.status === "FINISHED" ? match.awayScore : (prediction?.awayScore ?? "-")}</span>
+                        {/* Prediction Inputs / Score Display */}
+                        <div className="flex flex-col items-center flex-1 min-w-0">
+                            {isLocked || isFinished ? (
+                                <div className="text-center">
+                                    <div className="text-2xl sm:text-3xl font-black text-gray-800 flex items-center justify-center gap-2 sm:gap-4">
+                                        <span>{match.status === "FINISHED" ? match.homeScore : (prediction?.homeScore ?? "-")}</span>
+                                        <span className="text-gray-300 text-base sm:text-lg">vs</span>
+                                        <span>{match.status === "FINISHED" ? match.awayScore : (prediction?.awayScore ?? "-")}</span>
+                                    </div>
+                                    {prediction && (
+                                        <div className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-indigo-600 font-medium bg-indigo-50 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full whitespace-nowrap">
+                                            Your Pick: {prediction.homeScore} - {prediction.awayScore}
+                                        </div>
+                                    )}
+                                    {isFinished && prediction && prediction.points !== undefined && (
+                                        <div className="mt-1 text-[10px] sm:text-xs font-bold text-green-600">
+                                            +{prediction.points} PTS
+                                        </div>
+                                    )}
+                                    {isFinished && isKnockout && match.wentToPenalties && (
+                                        <div className="mt-1 text-[9px] sm:text-xs font-bold text-purple-600 bg-purple-50 px-1.5 sm:px-2 py-0.5 rounded border border-purple-100 uppercase tracking-wide whitespace-nowrap">
+                                            Won on Penalties
+                                        </div>
+                                    )}
                                 </div>
-                                {prediction && (
-                                    <div className="mt-2 text-sm text-indigo-600 font-medium bg-indigo-50 px-3 py-1 rounded-full">
-                                        Your Pick: {prediction.homeScore} - {prediction.awayScore}
-                                    </div>
-                                )}
-                                {isFinished && prediction && prediction.points !== undefined && (
-                                    <div className="mt-1 text-xs font-bold text-green-600">
-                                        +{prediction.points} PTS
-                                    </div>
-                                )}
-                                {isFinished && isKnockout && match.wentToPenalties && (
-                                    <div className="mt-1 text-[10px] sm:text-xs font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded border border-purple-100 uppercase tracking-wide">
-                                        Won on Penalties
-                                    </div>
-                                )}
-                            </div>
-                        ) : (
-                            <div className="flex items-center gap-3">
-                                <input
-                                    type="number"
-                                    name="homeScore"
-                                    min="0"
-                                    value={homeScore}
-                                    onChange={(e) => {
-                                        setHomeScore(e.target.value);
-                                        if (e.target.value !== awayScore) setShowPenaltyInput(false);
-                                    }}
-                                    className="w-20 h-12 text-center text-xl font-bold border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-0 appearance-none bg-gray-50 text-gray-900"
-                                    placeholder="-"
-                                />
-                                <span className="text-gray-300 font-bold">-</span>
-                                <input
-                                    type="number"
-                                    name="awayScore"
-                                    min="0"
-                                    value={awayScore}
-                                    onChange={(e) => {
-                                        setAwayScore(e.target.value);
-                                        if (homeScore !== e.target.value) setShowPenaltyInput(false);
-                                    }}
-                                    className="w-20 h-12 text-center text-xl font-bold border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-0 appearance-none bg-gray-50 text-gray-900"
-                                    placeholder="-"
-                                />
-                            </div>
-                        )}
-                        {/* Penalty Prediction - Only for Knockout Matches & Active Prediction Phase */}
-                        {isKnockout && !isLocked && !isFinished && isDraw && (
-                            <div className="mt-4 flex flex-col items-center gap-3 w-full">
-                                <label className="flex items-center space-x-2 text-xs font-medium text-gray-700 cursor-pointer bg-gray-50 px-3 py-1.5 rounded-full border border-gray-200 hover:bg-gray-100 transition-colors">
+                            ) : (
+                                <div className="flex items-center gap-1.5 sm:gap-3">
                                     <input
-                                        type="checkbox"
-                                        name="penaltyPrediction"
-                                        value="true"
-                                        checked={showPenaltyInput}
-                                        onChange={(e) => setShowPenaltyInput(e.target.checked)}
-                                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                        type="number"
+                                        name="homeScore"
+                                        min="0"
+                                        value={homeScore}
+                                        onChange={(e) => {
+                                            setHomeScore(e.target.value);
+                                            if (e.target.value !== awayScore) setShowPenaltyInput(false);
+                                        }}
+                                        className="w-12 h-10 sm:w-20 sm:h-12 text-center text-lg sm:text-xl font-bold border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-0 appearance-none bg-gray-50 text-gray-900 p-0"
+                                        placeholder="-"
                                     />
-                                    <span>Match decides on Penalties?</span>
-                                </label>
-
-                                {showPenaltyInput && (
-                                    <select
-                                        name="predictedWinner"
-                                        defaultValue={prediction?.predictedWinner || ""}
-                                        className="text-xs w-full max-w-[200px] border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 bg-white text-gray-900"
-                                    >
-                                        <option value="" disabled>Select Penalty Winner</option>
-                                        <option value={match.homeTeam?._id}>{match.homeTeam?.name}</option>
-                                        <option value={match.awayTeam?._id}>{match.awayTeam?.name}</option>
-                                    </select>
-                                )}
-                            </div>
-                        )}
-                        {/* Display Penalty Prediction if Locked/Finished */}
-                        {isKnockout && (isLocked || isFinished) && (
-                            <div className="mt-2 flex flex-col items-center gap-1">
-                                <div className="text-xs font-medium text-gray-500">
-                                    Predicted Penalties: <span className={prediction?.penaltyPrediction ? "text-purple-600 font-bold" : ""}>{prediction?.penaltyPrediction ? "Yes" : "No"}</span>
+                                    <span className="text-gray-300 font-bold">-</span>
+                                    <input
+                                        type="number"
+                                        name="awayScore"
+                                        min="0"
+                                        value={awayScore}
+                                        onChange={(e) => {
+                                            setAwayScore(e.target.value);
+                                            if (homeScore !== e.target.value) setShowPenaltyInput(false);
+                                        }}
+                                        className="w-12 h-10 sm:w-20 sm:h-12 text-center text-lg sm:text-xl font-bold border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-0 appearance-none bg-gray-50 text-gray-900 p-0"
+                                        placeholder="-"
+                                    />
                                 </div>
-                                {prediction?.penaltyPrediction && prediction.predictedWinner && (
-                                    <div className="text-[10px] text-purple-600 bg-purple-50 px-2 py-0.5 rounded border border-purple-100 font-bold uppercase tracking-wide">
-                                        Winner Pick: {match.homeTeam?._id === prediction.predictedWinner ? match.homeTeam?.name : match.awayTeam?._id === prediction.predictedWinner ? match.awayTeam?.name : "Unknown"}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Away Team */}
-                    <div className={`flex flex-col items-center w-1/3 p-2 rounded-lg transition-all duration-300 ${isFinished && match.winner && match.winner._id === match.awayTeam?._id
-                        ? "bg-yellow-50 ring-2 ring-yellow-400 scale-105 shadow-lg"
-                        : isFinished && match.winner
-                            ? "opacity-50 grayscale scale-95"
-                            : ""
-                        }`}>
-                        {match.awayTeam?.flagUrl && (
-                            <img src={match.awayTeam.flagUrl} alt={match.awayTeam.name} className="w-12 h-9 object-cover rounded shadow-sm mb-2" />
-                        )}
-                        <span className={`font-bold text-center ${isFinished && match.winner && match.winner._id === match.awayTeam?._id ? "text-yellow-700 font-black" : "text-gray-900"
-                            }`}>
-                            {match.awayTeam?.name}
-                            {isFinished && match.winner && match.winner._id === match.awayTeam?._id && (
-                                <span className="block text-[10px] uppercase tracking-widest text-yellow-600 mt-1">Winner</span>
                             )}
-                        </span>
+
+                            {/* Penalty Prediction - Only for Knockout Matches & Active Prediction Phase */}
+                            {isKnockout && !isLocked && !isFinished && isDraw && (
+                                <div className="mt-3 sm:mt-4 flex flex-col items-center gap-2 sm:gap-3 w-full">
+                                    <label className="flex items-center space-x-1.5 sm:space-x-2 text-[10px] sm:text-xs font-medium text-gray-700 cursor-pointer bg-gray-50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-gray-200 hover:bg-gray-100 transition-colors whitespace-nowrap">
+                                        <input
+                                            type="checkbox"
+                                            name="penaltyPrediction"
+                                            value="true"
+                                            checked={showPenaltyInput}
+                                            onChange={(e) => setShowPenaltyInput(e.target.checked)}
+                                            className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                        />
+                                        <span>Decides on Penalties?</span>
+                                    </label>
+
+                                    {showPenaltyInput && (
+                                        <select
+                                            name="predictedWinner"
+                                            defaultValue={prediction?.predictedWinner || ""}
+                                            className="text-[10px] sm:text-xs w-full max-w-[150px] sm:max-w-[200px] border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 bg-white text-gray-900 py-1 px-2"
+                                        >
+                                            <option value="" disabled>Select Winner</option>
+                                            <option value={match.homeTeam?._id}>{match.homeTeam?.name}</option>
+                                            <option value={match.awayTeam?._id}>{match.awayTeam?.name}</option>
+                                        </select>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* Display Penalty Prediction if Locked/Finished */}
+                            {isKnockout && (isLocked || isFinished) && (
+                                <div className="mt-2 flex flex-col items-center gap-1">
+                                    <div className="text-[10px] sm:text-xs font-medium text-gray-500 whitespace-nowrap">
+                                        Predicted Penalties: <span className={prediction?.penaltyPrediction ? "text-purple-600 font-bold" : ""}>{prediction?.penaltyPrediction ? "Yes" : "No"}</span>
+                                    </div>
+                                    {prediction?.penaltyPrediction && prediction.predictedWinner && (
+                                        <div className="text-[9px] sm:text-[10px] text-purple-600 bg-purple-50 px-1.5 sm:px-2 py-0.5 rounded border border-purple-100 font-bold uppercase tracking-wide whitespace-nowrap">
+                                            Winner Pick: {match.homeTeam?._id === prediction.predictedWinner ? match.homeTeam?.name : match.awayTeam?._id === prediction.predictedWinner ? match.awayTeam?.name : "Unknown"}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Away Team */}
+                        <div className={`flex flex-col items-center w-[30%] sm:w-1/3 p-1 sm:p-2 rounded-lg transition-all duration-300 ${isFinished && match.winner && match.winner._id === match.awayTeam?._id
+                            ? "bg-yellow-50 ring-2 ring-yellow-400 scale-105 shadow-lg"
+                            : isFinished && match.winner
+                                ? "opacity-50 grayscale scale-95"
+                                : ""
+                            }`}>
+                            {match.awayTeam?.flagUrl && (
+                                <img
+                                    src={match.awayTeam.flagUrl}
+                                    alt={match.awayTeam.name}
+                                    title={`Click to view ${match.awayTeam.name} matches`}
+                                    onClick={() => setSelectedTeam({ id: match.awayTeam._id, name: match.awayTeam.name })}
+                                    className="w-10 h-7 sm:w-12 sm:h-9 object-cover rounded shadow-sm mb-1.5 sm:mb-2 cursor-pointer hover:scale-110 active:scale-95 transition-all duration-200 animate-pulse-on-hover"
+                                />
+                            )}
+                            <span className={`text-xs sm:text-sm md:text-base font-bold text-center ${isFinished && match.winner && match.winner._id === match.awayTeam?._id ? "text-yellow-700 font-black" : "text-gray-900"
+                                }`}>
+                                {match.awayTeam?.name}
+                                {isFinished && match.winner && match.winner._id === match.awayTeam?._id && (
+                                    <span className="block text-[9px] sm:text-[10px] uppercase tracking-widest text-yellow-600 mt-0.5 sm:mt-1">Winner</span>
+                                )}
+                            </span>
+                        </div>
                     </div>
 
                     {/* Action Button */}
                     {(!isLocked && !isFinished) && (
-                        <div className="w-full md:w-auto flex justify-center mt-4 md:mt-0">
+                        <div className="w-full md:w-auto flex justify-center mt-2 md:mt-0">
                             <SubmitButton isLocked={isLocked} />
                         </div>
                     )}
@@ -228,6 +247,14 @@ export default function MatchCard({ match, prediction }: MatchCardProps) {
                     </p>
                 )}
             </div>
+
+            {selectedTeam && (
+                <TeamMatchesModal
+                    teamId={selectedTeam.id}
+                    teamName={selectedTeam.name}
+                    onClose={() => setSelectedTeam(null)}
+                />
+            )}
         </div>
     );
 }

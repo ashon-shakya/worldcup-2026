@@ -122,3 +122,19 @@ export async function getPublicPredictions(userId: string) {
 
     return JSON.parse(JSON.stringify(publicPredictions));
 }
+
+export async function getTeamMatches(teamId: string) {
+    await connectToDatabase();
+    const matches = await Match.find({
+        $or: [
+            { homeTeam: teamId },
+            { awayTeam: teamId }
+        ]
+    })
+    .populate("homeTeam", "name flagUrl")
+    .populate("awayTeam", "name flagUrl")
+    .sort({ kickOff: -1 });
+
+    return JSON.parse(JSON.stringify(matches));
+}
+
