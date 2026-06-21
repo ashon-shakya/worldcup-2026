@@ -62,14 +62,14 @@ export default function GroupDashboardView({ groupId, leaderboard, group, curren
                     className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${activeTab === "leaderboard" ? "bg-indigo-600 text-white shadow-sm" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-800/50"}`}
                 >
                     <ListOrdered size={16} />
-                    Leaderboard
+                    <span className="hidden sm:inline">Leaderboard</span>
                 </button>
                 <button
                     onClick={() => setActiveTab("race")}
                     className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${activeTab === "race" ? "bg-indigo-600 text-white shadow-sm" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-800/50"}`}
                 >
                     <Trophy size={16} />
-                    Leaderboard Race
+                    <span className="hidden sm:inline">Leaderboard Race</span>
                 </button>
                 <button
                     onClick={() => {
@@ -79,7 +79,7 @@ export default function GroupDashboardView({ groupId, leaderboard, group, curren
                     className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${activeTab === "predictions" ? "bg-indigo-600 text-white shadow-sm" : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-800/50"}`}
                 >
                     <FileText size={16} />
-                    Match Predictions
+                    <span className="hidden sm:inline">Match Predictions</span>
                 </button>
             </div>
 
