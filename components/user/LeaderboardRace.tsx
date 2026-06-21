@@ -382,20 +382,20 @@ export default function LeaderboardRace({ groupId }: LeaderboardRaceProps) {
                                 className="flex items-center gap-3 w-full"
                             >
                                 {/* Rank Icon or Number */}
-                                <div className={`w-8 text-center text-sm font-bold flex items-center justify-center shrink-0 ${rankColor}`}>
+                                <div className={`w-6 sm:w-8 text-center text-xs sm:text-sm font-bold flex items-center justify-center shrink-0 ${rankColor}`}>
                                     {rankIcon || index + 1}
                                 </div>
 
                                 {/* Avatar & Username */}
-                                <div className="flex items-center gap-2.5 w-36 shrink-0 truncate">
-                                    <div className="h-7 w-7 rounded-full bg-indigo-100 dark:bg-indigo-950 flex items-center justify-center text-indigo-700 dark:text-indigo-400 font-bold border border-indigo-200 dark:border-indigo-900/50 overflow-hidden shrink-0">
+                                <div className="flex items-center gap-1.5 sm:gap-2.5 w-24 sm:w-36 shrink-0 truncate">
+                                    <div className="h-6 w-6 sm:h-7 sm:w-7 rounded-full bg-indigo-100 dark:bg-indigo-950 flex items-center justify-center text-[10px] sm:text-xs text-indigo-700 dark:text-indigo-400 font-bold border border-indigo-200 dark:border-indigo-900/50 overflow-hidden shrink-0">
                                         {item.image ? (
                                             <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
                                         ) : (
                                             item.name.charAt(0).toUpperCase()
                                         )}
                                     </div>
-                                    <span className="text-xs font-bold text-gray-900 dark:text-gray-200 truncate">
+                                    <span className="text-[10px] sm:text-xs font-bold text-gray-900 dark:text-gray-200 truncate">
                                         {item.name}
                                     </span>
                                 </div>
@@ -409,7 +409,7 @@ export default function LeaderboardRace({ groupId }: LeaderboardRaceProps) {
                                         animate={{ width: `${widthPercent}%` }}
                                         transition={{ type: "tween", duration: speed / 1000 }}
                                     />
-                                    <span className="absolute right-3 text-[10px] font-black text-gray-900 dark:text-gray-100 z-10 bg-white/70 dark:bg-slate-950/70 border border-gray-200/40 dark:border-slate-800/40 px-1.5 py-0.5 rounded shadow-3xs">
+                                    <span className="absolute right-1.5 sm:right-3 text-[9px] sm:text-[10px] font-black text-gray-900 dark:text-gray-100 z-10 bg-white/70 dark:bg-slate-950/70 border border-gray-200/40 dark:border-slate-800/40 px-1 sm:px-1.5 py-0.5 rounded shadow-3xs">
                                         {item.score} PTS
                                     </span>
                                 </div>
