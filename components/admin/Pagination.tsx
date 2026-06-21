@@ -27,17 +27,17 @@ export default function Pagination({ totalPages, currentPage }: PaginationProps)
     if (totalPages <= 1) return null;
 
     const getPageNumbers = () => {
-        const pages: (number | "...")[] = [];
-        if (totalPages <= 7) {
+        const pages: number[] = [];
+        if (totalPages <= 4) {
             for (let i = 1; i <= totalPages; i++) pages.push(i);
         } else {
-            pages.push(1);
-            if (currentPage > 3) pages.push("...");
-            for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
-                pages.push(i);
+            let start = Math.max(1, currentPage - 1);
+            if (start + 3 > totalPages) {
+                start = totalPages - 3;
             }
-            if (currentPage < totalPages - 2) pages.push("...");
-            pages.push(totalPages);
+            for (let i = 0; i < 4; i++) {
+                pages.push(start + i);
+            }
         }
         return pages;
     };

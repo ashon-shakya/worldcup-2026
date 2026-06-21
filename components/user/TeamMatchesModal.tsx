@@ -52,7 +52,7 @@ export default function TeamMatchesModal({ teamId, teamName, onClose }: TeamMatc
         <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fade-in">
             {/* Modal Box */}
             <div className="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-lg max-h-[85vh] flex flex-col shadow-2xl border border-gray-150 dark:border-slate-800 text-gray-900 dark:text-gray-100 overflow-hidden transform scale-95 animate-scale-up">
-                
+
                 {/* Header */}
                 <div className="px-6 py-4 border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-950/20 flex justify-between items-center">
                     <div>
@@ -71,7 +71,7 @@ export default function TeamMatchesModal({ teamId, teamName, onClose }: TeamMatc
                 </div>
 
                 {/* Body Content */}
-                <div className="flex-1 overflow-y-auto p-6">
+                <div className="flex-1 overflow-y-auto p-4 ">
                     {loading ? (
                         <div className="py-20 flex flex-col items-center justify-center gap-3 text-gray-500">
                             <Loader2 className="w-8 h-8 animate-spin text-indigo-600 dark:text-indigo-400" />
@@ -86,8 +86,8 @@ export default function TeamMatchesModal({ teamId, teamName, onClose }: TeamMatc
                             <table className="min-w-full divide-y divide-gray-200 dark:divide-slate-800 text-left">
                                 <thead className="bg-gray-50 dark:bg-slate-950/40 text-xs font-semibold text-gray-550 dark:text-gray-400 uppercase tracking-wider">
                                     <tr>
-                                        <th scope="col" className="px-4 py-3 text-center w-[75%]">Matchup</th>
-                                        <th scope="col" className="px-4 py-3 text-center w-[25%]">Score / Status</th>
+                                        <th scope="col" className="px-4 py-3 text-center w-[65%]">Matchup</th>
+                                        <th scope="col" className="px-4 py-3 text-center w-[35%]">Score / Status</th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white dark:bg-slate-900/40 divide-y divide-gray-150 dark:divide-slate-850">
@@ -106,16 +106,15 @@ export default function TeamMatchesModal({ teamId, teamName, onClose }: TeamMatc
                                         };
 
                                         return (
-                                            <tr 
+                                            <tr
                                                 key={match._id}
-                                                className={`hover:bg-gray-55/50 dark:hover:bg-slate-800/30 transition-colors text-xs ${
-                                                    isFinished && isWinner
-                                                        ? "bg-yellow-50/10"
-                                                        : ""
-                                                }`}
+                                                className={`hover:bg-gray-55/50 dark:hover:bg-slate-800/30 transition-colors text-xs ${isFinished && isWinner
+                                                    ? "bg-yellow-50/10"
+                                                    : ""
+                                                    }`}
                                             >
                                                 {/* Matchup with metadata underneath */}
-                                                <td className="px-4 py-4.5">
+                                                <td className="px-2 py-4.5">
                                                     <div className="flex flex-col items-center">
                                                         {/* Teams flags & names row */}
                                                         <div className="flex items-center justify-center space-x-3 w-full">
@@ -173,7 +172,7 @@ export default function TeamMatchesModal({ teamId, teamName, onClose }: TeamMatc
                                                 </td>
 
                                                 {/* Score or Status */}
-                                                <td className="px-4 py-4.5 whitespace-nowrap text-center font-mono align-middle">
+                                                <td className="px-2 py-4.5 whitespace-nowrap text-center font-mono align-middle">
                                                     {isFinished ? (
                                                         <span className="inline-flex items-center bg-indigo-50 dark:bg-indigo-950/45 border border-indigo-100 dark:border-indigo-900/30 px-2.5 py-0.5 rounded-md text-xs font-black text-indigo-750 dark:text-indigo-400 shadow-3xs">
                                                             {match.homeScore} - {match.awayScore}
