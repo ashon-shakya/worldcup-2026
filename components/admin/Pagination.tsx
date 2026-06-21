@@ -80,25 +80,21 @@ export default function Pagination({ totalPages, currentPage }: PaginationProps)
                             <span className="sr-only">Previous</span>
                         </Button>
 
-                        {getPageNumbers().map((page, i) =>
-                            page === "..." ? (
-                                <span key={`dots-${i}`} className="px-2 py-1 text-sm text-gray-400">…</span>
-                            ) : (
-                                <Button
-                                    key={page}
-                                    variant="outline"
-                                    size="sm"
-                                    className={`min-w-[36px] h-9 ${
-                                        currentPage === page
-                                            ? "bg-indigo-50 border-indigo-300 text-indigo-700 hover:bg-indigo-100 hover:text-indigo-800"
-                                            : "text-gray-400 border-gray-200 hover:text-gray-600 hover:bg-gray-50"
-                                    }`}
-                                    onClick={() => handlePageChange(page as number)}
-                                >
-                                    {page}
-                                </Button>
-                            )
-                        )}
+                        {getPageNumbers().map((page) => (
+                            <Button
+                                key={page}
+                                variant="outline"
+                                size="sm"
+                                className={`min-w-[36px] h-9 ${
+                                    currentPage === page
+                                        ? "bg-indigo-50 border-indigo-300 text-indigo-700 hover:bg-indigo-100 hover:text-indigo-800"
+                                        : "text-gray-400 border-gray-200 hover:text-gray-600 hover:bg-gray-50"
+                                }`}
+                                onClick={() => handlePageChange(page)}
+                            >
+                                {page}
+                            </Button>
+                        ))}
 
                         <Button
                             variant="outline"

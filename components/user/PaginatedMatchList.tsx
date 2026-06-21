@@ -315,23 +315,19 @@ export default function PaginatedMatchList({
                                 >
                                     <ChevronLeft size={18} />
                                 </button>
-                                {getPageNumbers().map((page, i) =>
-                                    page === "..." ? (
-                                        <span key={`dots-${i}`} className="px-2 py-1 text-sm text-gray-400">…</span>
-                                    ) : (
-                                        <button
-                                            key={page}
-                                            onClick={() => goToPage(page as number)}
-                                            className={`min-w-[36px] h-9 rounded-lg text-sm font-medium transition-colors ${
-                                                safeCurrentPage === page
-                                                    ? "bg-indigo-600 text-white"
-                                                    : "text-gray-700 hover:bg-gray-100"
-                                            }`}
-                                        >
-                                            {page}
-                                        </button>
-                                    )
-                                )}
+                                {getPageNumbers().map((page) => (
+                                    <button
+                                        key={page}
+                                        onClick={() => goToPage(page)}
+                                        className={`min-w-[36px] h-9 rounded-lg text-sm font-medium transition-colors ${
+                                            safeCurrentPage === page
+                                                ? "bg-indigo-600 text-white"
+                                                : "text-gray-700 hover:bg-gray-100"
+                                        }`}
+                                    >
+                                        {page}
+                                    </button>
+                                ))}
                                 <button
                                     onClick={() => goToPage(safeCurrentPage + 1)}
                                     disabled={safeCurrentPage === totalPages}
