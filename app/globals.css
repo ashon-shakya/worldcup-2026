@@ -320,3 +320,296 @@
   background-size: 200% 200%;
   animation: gradient-shift 6s ease infinite;
 }
+
+/* Fiery Animation & Intro Styles */
+
+@keyframes rotate-fire {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fire-flicker {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px rgba(249, 115, 22, 0.7)) drop-shadow(0 0 16px rgba(239, 68, 68, 0.5)) saturate(1.2);
+  }
+  50% {
+    filter: drop-shadow(0 0 12px rgba(249, 115, 22, 1.0)) drop-shadow(0 0 32px rgba(239, 68, 68, 0.8)) saturate(1.6);
+  }
+}
+
+@keyframes slide-in-left {
+  0% {
+    opacity: 0;
+    transform: translateX(-100px) skewX(-6deg) scale(0.9);
+  }
+  70% {
+    transform: translateX(12px) skewX(2deg) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) skewX(0deg) scale(1);
+  }
+}
+
+@keyframes slide-in-right {
+  0% {
+    opacity: 0;
+    transform: translateX(100px) skewX(6deg) scale(0.9);
+  }
+  70% {
+    transform: translateX(-12px) skewX(-2deg) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) skewX(0deg) scale(1);
+  }
+}
+
+@keyframes drop-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes flare-pulse {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+.fiery-border-wrapper {
+  position: relative;
+  border-radius: 1.5rem;
+  padding: 3px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  transition: all 0.5s ease-in-out;
+}
+
+.fiery-border-wrapper::before {
+  content: '';
+  position: absolute;
+  width: 250%;
+  height: 250%;
+  z-index: 1;
+}
+
+.fiery-border-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: calc(1.5rem - 3px);
+  z-index: 2;
+  transition: all 0.5s ease-in-out;
+}
+
+/* Level 1: Group Stage (Subtle) */
+.fiery-level-group {
+  animation: fire-flicker-group 4s infinite ease-in-out;
+}
+.fiery-level-group::before {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    #7f1d1d 120deg,
+    #451a03 240deg,
+    transparent 360deg
+  );
+  animation: rotate-fire 8s linear infinite;
+}
+.fiery-level-group::after {
+  background: linear-gradient(to bottom, #0f172a, #0b0f19);
+}
+
+@keyframes fire-flicker-group {
+  0%, 100% {
+    filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.2));
+  }
+  50% {
+    filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.35));
+  }
+}
+
+/* Level 2: Knockout Stage (R32 / R16) */
+.fiery-level-knockout {
+  animation: fire-flicker-knockout 3.5s infinite ease-in-out;
+}
+.fiery-level-knockout::before {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    #b91c1c 90deg,
+    #c2410c 180deg,
+    #b91c1c 270deg,
+    transparent 360deg
+  );
+  animation: rotate-fire 6s linear infinite;
+}
+.fiery-level-knockout::after {
+  background: linear-gradient(to bottom, #0e1322, #070a13);
+}
+
+@keyframes fire-flicker-knockout {
+  0%, 100% {
+    filter: drop-shadow(0 0 4px rgba(185, 28, 28, 0.4)) drop-shadow(0 0 10px rgba(194, 65, 12, 0.2));
+  }
+  50% {
+    filter: drop-shadow(0 0 8px rgba(185, 28, 28, 0.6)) drop-shadow(0 0 18px rgba(194, 65, 12, 0.4));
+  }
+}
+
+/* Level 3: Quarter Final */
+.fiery-level-quarter {
+  animation: fire-flicker-quarter 3s infinite ease-in-out;
+}
+.fiery-level-quarter::before {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    #dc2626 60deg,
+    #ea580c 180deg,
+    #d97706 240deg,
+    transparent 360deg
+  );
+  animation: rotate-fire 4.5s linear infinite;
+}
+.fiery-level-quarter::after {
+  background: linear-gradient(to bottom, #0c0f1d, #05060d);
+}
+
+@keyframes fire-flicker-quarter {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px rgba(220, 38, 38, 0.5)) drop-shadow(0 0 15px rgba(234, 88, 12, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 12px rgba(220, 38, 38, 0.75)) drop-shadow(0 0 25px rgba(234, 88, 12, 0.5));
+  }
+}
+
+/* Level 4: Semi Final */
+.fiery-level-semi {
+  animation: fire-flicker-semi 2.5s infinite ease-in-out;
+}
+.fiery-level-semi::before {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    #ef4444 60deg,
+    #f97316 120deg,
+    #f59e0b 200deg,
+    #ef4444 280deg,
+    transparent 360deg
+  );
+  animation: rotate-fire 3s linear infinite;
+}
+.fiery-level-semi::after {
+  background: linear-gradient(to bottom, #090b16, #020307);
+}
+
+@keyframes fire-flicker-semi {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.65)) drop-shadow(0 0 20px rgba(249, 115, 22, 0.45));
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(239, 68, 68, 0.9)) drop-shadow(0 0 35px rgba(249, 115, 22, 0.7));
+  }
+}
+
+/* Level 5: Final (Intense Blazing) */
+.fiery-level-final {
+  animation: fire-flicker-final 1.8s infinite ease-in-out, pulse-final 4s infinite ease-in-out;
+}
+.fiery-level-final::before {
+  background: conic-gradient(
+    from 0deg,
+    #ff0000 0deg,
+    #ff5500 72deg,
+    #ffaa00 144deg,
+    #ffff00 216deg,
+    #ffffff 288deg,
+    #ff0000 360deg
+  );
+  animation: rotate-fire 1.8s linear infinite;
+}
+.fiery-level-final::after {
+  background: linear-gradient(to bottom, #060810, #000000);
+}
+
+@keyframes fire-flicker-final {
+  0%, 100% {
+    filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.8)) drop-shadow(0 0 30px rgba(249, 115, 22, 0.6)) drop-shadow(0 0 60px rgba(253, 224, 71, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 24px rgba(239, 68, 68, 1.0)) drop-shadow(0 0 50px rgba(249, 115, 22, 0.9)) drop-shadow(0 0 90px rgba(253, 224, 71, 0.7));
+  }
+}
+
+@keyframes pulse-final {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.015);
+  }
+}
+
+.fiery-border-content {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+}
+
+.animate-slide-left {
+  animation: slide-in-left 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.animate-slide-right {
+  animation: slide-in-right 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.animate-drop-in {
+  animation: drop-in 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.fire-flare {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(249,115,22,0.3) 0%, rgba(239,68,68,0) 70%);
+  filter: blur(15px);
+  pointer-events: none;
+  z-index: 1;
+  animation: flare-pulse 5s infinite ease-in-out;
+}
+
+/* Card Hover Tilt Effects */
+.fiery-border-wrapper {
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.animate-slide-left:hover .fiery-border-wrapper {
+  transform: rotateY(8deg) rotateX(2deg) scale(1.03);
+}
+
+.animate-slide-right:hover .fiery-border-wrapper {
+  transform: rotateY(-8deg) rotateX(2deg) scale(1.03);
+}

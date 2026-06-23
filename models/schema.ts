@@ -26,6 +26,7 @@ const TeamSchema = new Schema(
         name: { type: String, required: true },
         shortName: { type: String, required: true, uppercase: true, unique: true }, // ISO 3166-1 alpha-2 code (e.g. BR, FR)
         flagUrl: { type: String }, // URL to flag image
+        championImageUrl: { type: String }, // URL/path to champion hero image
         group: { type: String }, // e.g., "A", "B"...
     },
     { timestamps: true },
@@ -102,6 +103,9 @@ if (models.User && (!models.User.schema.paths.nickname || !models.User.schema.pa
     delete models.User;
 }
 export const User = models.User || model("User", UserSchema);
+if (models.Team && !models.Team.schema.paths.championImageUrl) {
+    delete models.Team;
+}
 export const Team = models.Team || model("Team", TeamSchema);
 // Force schema update if hot reload kept old version without new fields
 if (models.Match && (!models.Match.schema.paths.wentToPenalties || !models.Match.schema.paths.isKnockout || !models.Match.schema.paths.penaltyWinner || !models.Match.schema.paths.winner || !models.Match.schema.paths.scoreUpdatedBy)) {
