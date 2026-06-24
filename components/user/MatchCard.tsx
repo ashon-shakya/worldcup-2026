@@ -39,12 +39,14 @@ export default function MatchCard({ match, prediction }: MatchCardProps) {
     const [showPenaltyInput, setShowPenaltyInput] = useState(prediction?.penaltyPrediction || false);
     const [homeScore, setHomeScore] = useState(prediction?.homeScore?.toString() || "");
     const [awayScore, setAwayScore] = useState(prediction?.awayScore?.toString() || "");
+    const [predictedWinner, setPredictedWinner] = useState(prediction?.predictedWinner || "");
     const [selectedTeam, setSelectedTeam] = useState<{ id: string; name: string } | null>(null);
 
     useEffect(() => {
         setShowPenaltyInput(prediction?.penaltyPrediction || false);
         setHomeScore(prediction?.homeScore?.toString() || "");
         setAwayScore(prediction?.awayScore?.toString() || "");
+        setPredictedWinner(prediction?.predictedWinner || "");
     }, [prediction]);
 
     const isDraw = homeScore !== "" && awayScore !== "" && homeScore === awayScore;
@@ -56,6 +58,15 @@ export default function MatchCard({ match, prediction }: MatchCardProps) {
     // Inferred Knockout Status (Fallback for legacy matches)
     const isKnockoutStage = ["Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final", "3rd Place"].includes(match.stage);
     const isKnockout = match.isKnockout || isKnockoutStage;
+
+    const hasExistingPrediction = prediction && prediction.homeScore !== undefined && prediction.homeScore !== null;
+    const isSaved = state?.message === "success" || (
+        !!hasExistingPrediction &&
+        !state?.message &&
+        homeScore === prediction?.homeScore?.toString() &&
+        awayScore === prediction?.awayScore?.toString() &&
+        (!isKnockout ? true : showPenaltyInput === (prediction?.penaltyPrediction || false) && (showPenaltyInput ? predictedWinner === prediction?.predictedWinner : true))
+    );
 
     // If successfully saved, maybe show a toast or temporary visual cue. 
     // currently revalidatePath handles data refresh.
@@ -179,7 +190,8 @@ export default function MatchCard({ match, prediction }: MatchCardProps) {
                                     {showPenaltyInput && (
                                         <select
                                             name="predictedWinner"
-                                            defaultValue={prediction?.predictedWinner || ""}
+                                            value={predictedWinner}
+                                            onChange={(e) => setPredictedWinner(e.target.value)}
                                             className="text-[10px] sm:text-xs w-full max-w-[150px] sm:max-w-[200px] border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 bg-white text-gray-900 py-1 px-2"
                                         >
                                             <option value="" disabled>Select Winner</option>
@@ -242,7 +254,7 @@ export default function MatchCard({ match, prediction }: MatchCardProps) {
                 {state?.message && state.message !== "success" && (
                     <p className="text-red-500 text-xs text-center mt-2">{state.message}</p>
                 )}
-                {state?.message === "success" && (
+                {isSaved && (
                     <p className="text-green-600 text-xs text-center mt-2 flex items-center justify-center font-medium">
                         <CheckCircle size={12} className="mr-1" /> Saved
                     </p>
