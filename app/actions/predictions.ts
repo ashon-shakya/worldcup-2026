@@ -131,8 +131,8 @@ export async function getTeamMatches(teamId: string) {
             { awayTeam: teamId }
         ]
     })
-    .populate("homeTeam", "name flagUrl")
-    .populate("awayTeam", "name flagUrl")
+    .populate("homeTeam", "name shortName flagUrl")
+    .populate("awayTeam", "name shortName flagUrl")
     .sort({ kickOff: -1 });
 
     return JSON.parse(JSON.stringify(matches));
