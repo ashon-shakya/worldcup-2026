@@ -3,6 +3,7 @@ import { Match, Prediction, User } from "@/models/schema";
 import connectToDatabase from "@/lib/db";
 import Link from "next/link";
 import { Calendar, Clock } from "lucide-react";
+import LocalTime from "@/components/ui/LocalTime";
 
 function getStageTheme(stage: string) {
     const s = stage?.toLowerCase() || "";
@@ -69,9 +70,9 @@ async function getNextMatchesOfDay() {
         kickOff: { $gte: startOfDay, $lte: endOfDay },
         status: "SCHEDULED"
     })
-    .sort({ kickOff: 1 })
-    .populate("homeTeam")
-    .populate("awayTeam");
+        .sort({ kickOff: 1 })
+        .populate("homeTeam")
+        .populate("awayTeam");
 
     return JSON.parse(JSON.stringify(matches));
 }
@@ -139,7 +140,7 @@ export default async function DashboardPage() {
                     <div className="divide-y divide-slate-800 bg-slate-950">
                         {nextMatches.map((match: any, index: number) => {
                             const stageTheme = getStageTheme(match.stage);
-                            
+
                             return (
                                 <div key={match._id} className="relative overflow-hidden px-4 py-12 sm:p-12 md:p-16 flex flex-col items-center">
                                     {/* Background light glow effects */}
@@ -148,15 +149,15 @@ export default async function DashboardPage() {
 
                                     {/* Head-to-Head Visual Area */}
                                     <div className="relative z-10 w-full max-w-4xl flex flex-row items-center justify-between gap-2 sm:gap-6 md:gap-12">
-                                        
+
                                         {/* Home Team Hero Card */}
                                         <div className="flex-1 flex flex-col items-center animate-slide-left opacity-0" style={{ animationDelay: `${index * 150 + 200}ms` }}>
                                             <div className={`fiery-border-wrapper ${stageTheme.glowClass} w-full max-w-[110px] sm:max-w-[200px] md:max-w-[260px] aspect-[3/4] relative`}>
                                                 <div className="fiery-border-content relative w-full h-full overflow-hidden rounded-[calc(1.5rem-3px)]">
-                                                    <img 
-                                                        src={match.homeTeam?.championImageUrl || "/dummy-champion.png"} 
-                                                        alt={match.homeTeam?.name} 
-                                                        className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
+                                                    <img
+                                                        src={match.homeTeam?.championImageUrl || "/dummy-champion.png"}
+                                                        alt={match.homeTeam?.name}
+                                                        className="w-full h-full object-cover object-top hover:scale-110 transition-transform duration-700 scale-105"
                                                     />
                                                     {/* Gradient Overlay */}
                                                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
@@ -179,12 +180,12 @@ export default async function DashboardPage() {
                                             <div className={`${stageTheme.badgeClass} px-2 py-0.5 sm:px-6 sm:py-1.5 rounded-full text-[8px] sm:text-xs uppercase tracking-widest shadow-lg shadow-red-500/20 mb-2 sm:mb-4 whitespace-nowrap`}>
                                                 {stageTheme.title}
                                             </div>
-                                            
+
                                             <div className="relative flex items-center justify-center h-10 w-10 sm:h-20 sm:w-20 md:h-24 md:w-24">
                                                 {/* Rotating VS background */}
                                                 <div className="absolute inset-0 border border-orange-500/20 rounded-full animate-spin [animation-duration:15s] pointer-events-none"></div>
                                                 <div className="absolute inset-2 border border-red-500/10 rounded-full animate-spin [animation-duration:10s] reverse pointer-events-none"></div>
-                                                
+
                                                 <div className="text-lg sm:text-4xl md:text-5xl font-black italic text-transparent bg-clip-text bg-gradient-to-b from-orange-400 via-red-500 to-yellow-500 drop-shadow-[0_4px_12px_rgba(239,68,68,0.5)]">
                                                     VS
                                                 </div>
@@ -193,11 +194,11 @@ export default async function DashboardPage() {
                                             <div className="bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-lg sm:rounded-2xl px-2 py-1.5 sm:px-6 sm:py-4 mt-2 sm:mt-4 flex flex-col items-center gap-0.5 sm:gap-2 shadow-xl whitespace-nowrap">
                                                 <div className="flex items-center text-slate-300 text-[8px] sm:text-xs md:text-sm font-semibold">
                                                     <Calendar className="w-2.5 h-2.5 sm:w-4 sm:h-4 mr-1 sm:mr-2 text-orange-500" />
-                                                    {new Date(match.kickOff).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}
+                                                    <LocalTime date={match.kickOff} showTime={false} showDate={true} />
                                                 </div>
                                                 <div className="flex items-center text-slate-300 text-[8px] sm:text-xs md:text-sm font-semibold">
                                                     <Clock className="w-2.5 h-2.5 sm:w-4 sm:h-4 mr-1 sm:mr-2 text-red-500" />
-                                                    {new Date(match.kickOff).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
+                                                    <LocalTime date={match.kickOff} showTime={true} showDate={false} />
                                                 </div>
                                                 <p className="text-[7px] sm:text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5 sm:mt-1 hidden xs:block">{match.venue}</p>
                                             </div>
@@ -218,9 +219,9 @@ export default async function DashboardPage() {
                                         <div className="flex-1 flex flex-col items-center animate-slide-right opacity-0" style={{ animationDelay: `${index * 150 + 300}ms` }}>
                                             <div className={`fiery-border-wrapper ${stageTheme.glowClass} w-full max-w-[110px] sm:max-w-[200px] md:max-w-[260px] aspect-[3/4] relative`}>
                                                 <div className="fiery-border-content relative w-full h-full overflow-hidden rounded-[calc(1.5rem-3px)]">
-                                                    <img 
-                                                        src={match.awayTeam?.championImageUrl || "/dummy-champion.png"} 
-                                                        alt={match.awayTeam?.name} 
+                                                    <img
+                                                        src={match.awayTeam?.championImageUrl || "/dummy-champion.png"}
+                                                        alt={match.awayTeam?.name}
                                                         className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700"
                                                     />
                                                     {/* Gradient Overlay */}

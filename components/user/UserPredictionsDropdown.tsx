@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getPublicPredictions } from "@/app/actions/predictions";
 import { ChevronLeft, ChevronRight, Calendar, Clock, Trophy, HelpCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import LocalTime from "@/components/ui/LocalTime";
 
 interface UserPredictionsDropdownProps {
     userId: string;
@@ -192,16 +193,10 @@ export default function UserPredictionsDropdown({ userId, isExpanded, allowedSta
                                             </span>
                                         </div>
                                         <div className="flex items-center text-gray-500 dark:text-gray-400 text-xs mt-1">
-                                            <Calendar className="w-3.5 h-3.5 mr-1 text-gray-400 dark:text-gray-550" />
-                                            {new Date(match.kickOff).toLocaleDateString(undefined, {
-                                                month: "short",
-                                                day: "numeric",
-                                            })}
+                                            <Calendar className="w-3.5 h-3.5 mr-1 text-gray-400 dark:text-gray-555" />
+                                            <LocalTime date={match.kickOff} showTime={false} showDate={true} formatOptions={{ month: "short", day: "numeric" }} />
                                             <Clock className="w-3.5 h-3.5 ml-2.5 mr-1 text-gray-400 dark:text-gray-555" />
-                                            {new Date(match.kickOff).toLocaleTimeString(undefined, {
-                                                hour: "2-digit",
-                                                minute: "2-digit",
-                                            })}
+                                            <LocalTime date={match.kickOff} showTime={true} showDate={false} />
                                         </div>
                                     </div>
 

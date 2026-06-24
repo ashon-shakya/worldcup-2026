@@ -5,6 +5,7 @@ import { useActionState, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { Calendar, Lock, CheckCircle } from "lucide-react";
 import TeamMatchesModal from "./TeamMatchesModal";
+import LocalTime from "@/components/ui/LocalTime";
 
 function SubmitButton({ isLocked }: { isLocked: boolean }) {
     const { pending } = useFormStatus();
@@ -65,7 +66,7 @@ export default function MatchCard({ match, prediction }: MatchCardProps) {
             <div className="bg-gray-50 px-6 py-3 border-b border-gray-100 flex justify-between items-center text-xs text-gray-500 uppercase tracking-wider font-semibold">
                 <div className="flex items-center">
                     <Calendar size={14} className="mr-2" />
-                    {new Date(match.kickOff).toLocaleString('en-GB', { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                    <LocalTime date={match.kickOff} />
                 </div>
                 <span>{match.stage} • {match.venue}</span>
             </div>

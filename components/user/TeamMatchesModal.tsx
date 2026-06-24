@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { X, Calendar, MapPin, Loader2 } from "lucide-react";
 import { getTeamMatches } from "@/app/actions/predictions";
+import LocalTime from "@/components/ui/LocalTime";
 
 interface TeamMatchesModalProps {
     teamId: string;
@@ -39,14 +40,6 @@ export default function TeamMatchesModal({ teamId, teamName, onClose }: TeamMatc
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, [onClose]);
 
-    const formatDate = (dateStr: string) => {
-        return new Date(dateStr).toLocaleDateString(undefined, {
-            month: "short",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit"
-        });
-    };
 
     return (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fade-in">
@@ -156,7 +149,7 @@ export default function TeamMatchesModal({ teamId, teamName, onClose }: TeamMatc
                                                             <span>•</span>
                                                             <span className="flex items-center gap-0.5">
                                                                 <Calendar size={9} className="opacity-70" />
-                                                                {formatDate(match.kickOff)}
+                                                                <LocalTime date={match.kickOff} />
                                                             </span>
                                                             {match.venue && (
                                                                 <>

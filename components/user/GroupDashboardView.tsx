@@ -5,6 +5,7 @@ import { Trophy, ChevronLeft, ChevronRight, Calendar, Clock, HelpCircle, FileTex
 import { getGroupFinishedMatchesPredictions } from "@/app/actions/groups";
 import GroupMemberRow from "./GroupMemberRow";
 import LeaderboardRace from "./LeaderboardRace";
+import LocalTime from "@/components/ui/LocalTime";
 
 interface GroupDashboardViewProps {
     groupId: string;
@@ -163,10 +164,7 @@ export default function GroupDashboardView({ groupId, leaderboard, group, curren
                                                         <span>•</span>
                                                         <span className="flex items-center gap-0.5">
                                                             <Calendar size={10} />
-                                                            {new Date(match.kickOff).toLocaleDateString(undefined, {
-                                                                month: "short",
-                                                                day: "numeric",
-                                                            })}
+                                                            <LocalTime date={match.kickOff} showTime={false} formatOptions={{ month: "short", day: "numeric" }} />
                                                         </span>
                                                     </div>
 

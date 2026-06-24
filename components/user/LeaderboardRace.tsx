@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getLeaderboardTimeline } from "@/app/actions/leaderboard";
 import { Play, Pause, RotateCcw, ChevronLeft, ChevronRight, Trophy } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import LocalTime from "@/components/ui/LocalTime";
 
 interface LeaderboardRaceProps {
     groupId?: string;
@@ -336,12 +337,7 @@ export default function LeaderboardRace({ groupId }: LeaderboardRaceProps) {
                     <span>{currentStep.stage}</span>
                     <span>•</span>
                     <span>
-                        {new Date(currentStep.kickOff).toLocaleDateString(undefined, {
-                            month: "short",
-                            day: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit"
-                        })}
+                        <LocalTime date={currentStep.kickOff} />
                     </span>
                 </div>
             </div>
