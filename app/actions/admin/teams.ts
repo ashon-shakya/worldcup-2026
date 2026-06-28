@@ -8,7 +8,7 @@ import { z } from "zod";
 
 const TeamSchema = z.object({
     name: z.string().min(1, "Name is required"),
-    shortName: z.string().length(2, "Use 2-letter Country Code (e.g. US, BR)").optional(),
+    shortName: z.string().min(2, "Use 2 or 3-letter Country Code (e.g. US, BR, TBD)").max(3, "Use 2 or 3-letter Country Code (e.g. US, BR, TBD)").optional(),
     flagUrl: z.string().url("Invalid URL").optional().or(z.literal("")),
     championImageUrl: z.string().optional().or(z.literal("")),
     group: z.string().max(1, "Group must be a single letter").optional().or(z.literal("")),
@@ -17,7 +17,7 @@ const TeamSchema = z.object({
 async function uploadChampionImage(file: File, teamName: string): Promise<string> {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    
+
     // Slugify team name for public_id
     const sanitizedName = teamName
         .toLowerCase()
@@ -77,7 +77,11 @@ export async function createTeam(prevState: any, formData: FormData) {
 
     // Auto-generate flag URL if shortName is provided and flagUrl is empty
     if (shortName && !flagUrl) {
-        flagUrl = `https://flagsapi.com/${shortName.toUpperCase()}/flat/64.png`;
+        if (shortName.toUpperCase() === "TBD") {
+            flagUrl = "";
+        } else {
+            flagUrl = `https://flagsapi.com/${shortName.toUpperCase()}/flat/64.png`;
+        }
     }
 
     try {
@@ -120,7 +124,11 @@ export async function updateTeam(id: string, prevState: any, formData: FormData)
 
     // Auto-generate flag URL if shortName is provided and flagUrl is empty
     if (shortName && !flagUrl) {
-        flagUrl = `https://flagsapi.com/${shortName.toUpperCase()}/flat/64.png`;
+        if (shortName.toUpperCase() === "TBD") {
+            flagUrl = "";
+        } else {
+            flagUrl = `https://flagsapi.com/${shortName.toUpperCase()}/flat/64.png`;
+        }
     }
 
     try {

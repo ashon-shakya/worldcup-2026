@@ -59,8 +59,35 @@ export async function POST(req: Request) {
                 continue;
             }
 
-            const homeTeamDetails = teamMap.get(matchData.homeTeam);
-            const awayTeamDetails = teamMap.get(matchData.awayTeam);
+            let homeTeamDetails = teamMap.get(matchData.homeTeam);
+            if (!homeTeamDetails && matchData.homeTeam === "TBD") {
+                try {
+                    homeTeamDetails = await Team.findOneAndUpdate(
+                        { shortName: "TBD" },
+                        { name: "TBD", shortName: "TBD", flagUrl: "", group: "" },
+                        { upsert: true, new: true }
+                    );
+                    teamMap.set("TBD", homeTeamDetails);
+                } catch (err: any) {
+                    errors.push(`Row ${i + 1}: Failed to create TBD team: ${err.message}`);
+                    continue;
+                }
+            }
+
+            let awayTeamDetails = teamMap.get(matchData.awayTeam);
+            if (!awayTeamDetails && matchData.awayTeam === "TBD") {
+                try {
+                    awayTeamDetails = await Team.findOneAndUpdate(
+                        { shortName: "TBD" },
+                        { name: "TBD", shortName: "TBD", flagUrl: "", group: "" },
+                        { upsert: true, new: true }
+                    );
+                    teamMap.set("TBD", awayTeamDetails);
+                } catch (err: any) {
+                    errors.push(`Row ${i + 1}: Failed to create TBD team: ${err.message}`);
+                    continue;
+                }
+            }
 
             if (!homeTeamDetails) {
                 errors.push(`Row ${i + 1}: Home team '${matchData.homeTeam}' not found`);

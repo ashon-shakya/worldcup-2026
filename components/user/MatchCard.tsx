@@ -7,7 +7,7 @@ import { Calendar, Lock, CheckCircle } from "lucide-react";
 import TeamMatchesModal from "./TeamMatchesModal";
 import LocalTime from "@/components/ui/LocalTime";
 
-function SubmitButton({ isLocked }: { isLocked: boolean }) {
+function SubmitButton({ isLocked, isDisabled }: { isLocked: boolean; isDisabled?: boolean }) {
     const { pending } = useFormStatus();
 
     if (isLocked) {
@@ -21,8 +21,8 @@ function SubmitButton({ isLocked }: { isLocked: boolean }) {
     return (
         <button
             type="submit"
-            disabled={pending}
-            className="bg-indigo-600 text-white px-6 py-2 rounded-full font-bold text-sm shadow-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+            disabled={pending || isDisabled}
+            className="bg-indigo-600 text-white px-6 py-2 rounded-full font-bold text-sm shadow-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
         >
             {pending ? "Saving..." : "Predict"}
         </button>
@@ -49,7 +49,7 @@ export default function MatchCard({ match, prediction }: MatchCardProps) {
         setPredictedWinner(prediction?.predictedWinner || "");
     }, [prediction]);
 
-    const isDraw = homeScore !== "" && awayScore !== "" && homeScore === awayScore;
+    const isDraw = homeScore !== "" && awayScore !== "" && Number(homeScore) === Number(awayScore);
 
     // Check if locked (within 5 mins of kickoff)
     const isLocked = new Date() > new Date(new Date(match.kickOff).getTime() - 5 * 60000);
@@ -58,6 +58,17 @@ export default function MatchCard({ match, prediction }: MatchCardProps) {
     // Inferred Knockout Status (Fallback for legacy matches)
     const isKnockoutStage = ["Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final", "3rd Place"].includes(match.stage);
     const isKnockout = match.isKnockout || isKnockoutStage;
+
+    useEffect(() => {
+        if (isKnockout && isDraw) {
+            setShowPenaltyInput(true);
+        } else if (!isDraw) {
+            setShowPenaltyInput(false);
+            setPredictedWinner("");
+        }
+    }, [isKnockout, isDraw]);
+
+    const isPenaltyWinnerRequired = isKnockout && isDraw && !predictedWinner;
 
     const hasExistingPrediction = prediction && prediction.homeScore !== undefined && prediction.homeScore !== null;
     const isSaved = state?.message === "success" || (
@@ -149,10 +160,7 @@ export default function MatchCard({ match, prediction }: MatchCardProps) {
                                         name="homeScore"
                                         min="0"
                                         value={homeScore}
-                                        onChange={(e) => {
-                                            setHomeScore(e.target.value);
-                                            if (e.target.value !== awayScore) setShowPenaltyInput(false);
-                                        }}
+                                        onChange={(e) => setHomeScore(e.target.value)}
                                         className="w-12 h-10 sm:w-20 sm:h-12 text-center text-lg sm:text-xl font-bold border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-0 appearance-none bg-gray-50 text-gray-900 p-0"
                                         placeholder="-"
                                     />
@@ -162,43 +170,45 @@ export default function MatchCard({ match, prediction }: MatchCardProps) {
                                         name="awayScore"
                                         min="0"
                                         value={awayScore}
-                                        onChange={(e) => {
-                                            setAwayScore(e.target.value);
-                                            if (homeScore !== e.target.value) setShowPenaltyInput(false);
-                                        }}
+                                        onChange={(e) => setAwayScore(e.target.value)}
                                         className="w-12 h-10 sm:w-20 sm:h-12 text-center text-lg sm:text-xl font-bold border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-0 appearance-none bg-gray-50 text-gray-900 p-0"
                                         placeholder="-"
                                     />
                                 </div>
                             )}
-
                             {/* Penalty Prediction - Only for Knockout Matches & Active Prediction Phase */}
                             {isKnockout && !isLocked && !isFinished && isDraw && (
                                 <div className="mt-3 sm:mt-4 flex flex-col items-center gap-2 sm:gap-3 w-full">
-                                    <label className="flex items-center space-x-1.5 sm:space-x-2 text-[10px] sm:text-xs font-medium text-gray-700 cursor-pointer bg-gray-50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-gray-200 hover:bg-gray-100 transition-colors whitespace-nowrap">
+                                    <label className="flex items-center space-x-1.5 sm:space-x-2 text-[10px] sm:text-xs font-medium text-gray-400 cursor-not-allowed bg-gray-50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-gray-200 opacity-70 whitespace-nowrap">
                                         <input
                                             type="checkbox"
-                                            name="penaltyPrediction"
-                                            value="true"
-                                            checked={showPenaltyInput}
-                                            onChange={(e) => setShowPenaltyInput(e.target.checked)}
-                                            className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                            disabled
+                                            checked={true}
+                                            className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded cursor-not-allowed"
                                         />
+                                        <input type="hidden" name="penaltyPrediction" value="true" />
                                         <span>Decides on Penalties?</span>
                                     </label>
 
-                                    {showPenaltyInput && (
+                                    <div className="flex flex-col items-center gap-1 w-full">
                                         <select
                                             name="predictedWinner"
                                             value={predictedWinner}
                                             onChange={(e) => setPredictedWinner(e.target.value)}
-                                            className="text-[10px] sm:text-xs w-full max-w-[150px] sm:max-w-[200px] border-gray-200 rounded-lg focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 bg-white text-gray-900 py-1 px-2"
+                                            className={`text-[10px] sm:text-xs w-full max-w-[150px] sm:max-w-[200px] rounded-lg focus:ring-1 focus:ring-indigo-500 bg-white text-gray-900 py-1 px-2 transition-all ${
+                                                isPenaltyWinnerRequired
+                                                    ? "border-amber-400 bg-amber-50/30 text-amber-900 animate-pulse"
+                                                    : "border-gray-200"
+                                            }`}
                                         >
                                             <option value="" disabled>Select Winner</option>
                                             <option value={match.homeTeam?._id}>{match.homeTeam?.name}</option>
                                             <option value={match.awayTeam?._id}>{match.awayTeam?.name}</option>
                                         </select>
-                                    )}
+                                        {isPenaltyWinnerRequired && (
+                                            <span className="text-[9px] text-amber-600 font-medium">Winner selection required</span>
+                                        )}
+                                    </div>
                                 </div>
                             )}
 
@@ -246,7 +256,7 @@ export default function MatchCard({ match, prediction }: MatchCardProps) {
                     {/* Action Button */}
                     {(!isLocked && !isFinished) && (
                         <div className="w-full md:w-auto flex justify-center mt-2 md:mt-0">
-                            <SubmitButton isLocked={isLocked} />
+                            <SubmitButton isLocked={isLocked} isDisabled={isPenaltyWinnerRequired} />
                         </div>
                     )}
                 </form>

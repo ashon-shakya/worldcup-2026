@@ -45,8 +45,18 @@ export async function submitPrediction(prevState: any, formData: FormData) {
         }
 
         // Enforce penalty prediction only if it's a draw
+        const isKnockoutStage = ["Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final", "3rd Place"].includes(match.stage);
+        const isKnockout = match.isKnockout || isKnockoutStage;
+
         const isDraw = homeScore === awayScore;
-        const finalPenaltyPrediction = isDraw ? !!penaltyPrediction : false;
+
+        if (isKnockout && isDraw) {
+            if (!predictedWinner || predictedWinner.trim() === "") {
+                return { message: "You must select a winner for penalty shootout in knockout matches" };
+            }
+        }
+
+        const finalPenaltyPrediction = isDraw ? (isKnockout ? true : !!penaltyPrediction) : false;
         const finalPredictedWinner = isDraw && finalPenaltyPrediction && predictedWinner && predictedWinner.trim() !== "" ? predictedWinner : null;
 
         // Upsert prediction
