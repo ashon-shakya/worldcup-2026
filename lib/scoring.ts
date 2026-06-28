@@ -8,7 +8,9 @@ export function calculatePoints(
     settings: PointSettings,
     predictionPenalty?: boolean,
     resultWentToPenalties?: boolean,
-    isKnockout?: boolean
+    isKnockout?: boolean,
+    predictedWinnerId?: string,
+    actualWinnerId?: string
 ): number {
     let points = 0;
 
@@ -22,6 +24,23 @@ export function calculatePoints(
         points += settings.correctScore;
     }
 
+    // Special logic for knockout matches where the user predicts penalties (i.e. predicts a draw)
+    if (isKnockout && predictionHome === predictionAway) {
+        const predictedWinnerStr = predictedWinnerId?.toString();
+        const actualWinnerStr = actualWinnerId?.toString();
+
+        // In a knockout round if a user predicts penalty and predicts the correct winner
+        // then the user gets penalty +3 (correctPenaltyPrediction) plus winner +3 (correctOutcome)
+        // otherwise they will only get goal prediction points and not the penalty prediction score or outcome points.
+        if (resultWentToPenalties && predictedWinnerStr && actualWinnerStr && predictedWinnerStr === actualWinnerStr) {
+            points += settings.correctPenaltyPrediction;
+            points += settings.correctOutcome;
+        }
+
+        return points;
+    }
+
+    // Default flow (for group stage, or knockout matches where the user did NOT predict a draw/penalty)
     // Determine outcomes
     // 1: Home Win, 0: Draw, -1: Away Win
     const predictionOutcome = Math.sign(predictionHome - predictionAway);
@@ -38,21 +57,6 @@ export function calculatePoints(
         // The user request says: "people can predict if it will go to penalty or not"
         // So if user said YES (true), and it went to penalties (true), they get points.
         // If user said NO (false), and it went to penalties (true), they get 0.
-        // Wait, if user said NO and it DIDN'T go to penalties, should they get points?
-        // Usually "predicting penalties" means betting on the draw + extra time draw.
-        // Let's stick to the explicit request: "predict if it will go to penalty or not"
-        // This implies a binary choice.
-
-        // However, we only have `resultWentToPenalties` passed here if it *did* go to penalties or if we track that boolean on the match.
-        // The `updateMatchScore` action sets `status: FINISHED`. We added `wentToPenalties` to the match schema.
-
-        // If the admin marks the match as `wentToPenalties = true`
-        // And user predicted `predictedToGoToPenalties = true` -> Points
-        // If admin marks `wentToPenalties = false`
-        // And user predicted `predictedToGoToPenalties = false` -> Points?
-        // The user prompt said "add rule if it is a knockout round, people can predict if it will go to penalty or not"
-        // Usually bonus points are for predicting correctly.
-
         // Let's assume points are awarded if their boolean prediction matches the actual boolean outcome.
         if (predictionPenalty === resultWentToPenalties) {
             points += settings.correctPenaltyPrediction;

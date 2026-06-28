@@ -185,7 +185,9 @@ export async function updateMatchScore(id: string, prevState: any, formData: For
                 settings,
                 prediction.penaltyPrediction,
                 wentToPenalties || false,
-                updatedMatch.isKnockout
+                updatedMatch.isKnockout,
+                prediction.predictedWinner,
+                updatedMatch.winner
             );
 
             await Prediction.findByIdAndUpdate(prediction._id, { points });

@@ -109,6 +109,7 @@ export default function RulesContent() {
                             <li>
                                 <strong>No Bonus Points for Incorrect Match Outcome:</strong>
                                 <ul className="pl-5 mt-1 list-disc space-y-1">
+                                    <li>If you predict the match will go to a penalty shootout (draw prediction) and the match goes to penalties, you must predict the correct shootout winner to receive the +3 outcome points and the +3 penalty bonus points; otherwise, you only receive goal prediction points.</li>
                                     <li>If you predict the match will go to a penalty shootout (draw prediction) and select a winner, but the selected team wins during regular/extra time (no penalty shootout takes place), you <strong>do not</strong> receive the +3 outcome points or the +3 penalty bonus points.</li>
                                     <li>If you predict a regular/extra time winner (non-draw prediction), but the match goes to a penalty shootout instead, you <strong>do not</strong> receive the +3 outcome points or the +3 penalty bonus points (even if your predicted winner eventually wins the shootout).</li>
                                 </ul>

@@ -252,14 +252,9 @@ export default function UserPredictionsDropdown({ userId, isExpanded, allowedSta
                                         {/* Penalty Predictions Info */}
                                         {isKnockout && (pred.penaltyPrediction || (isFinished && match.wentToPenalties)) && (
                                             <div className="text-[10px] flex flex-col items-start md:items-end gap-0.5">
-                                                {pred.penaltyPrediction && (
-                                                    <div className="text-purple-600 dark:text-purple-300 bg-purple-50 dark:bg-purple-955/30 px-2 py-0.5 rounded border border-purple-100/80 dark:border-purple-900/30 font-bold tracking-wide">
-                                                        PK Pick: {match.homeTeam?._id === pred.predictedWinner ? "Home" : "Away"}
-                                                    </div>
-                                                )}
                                                 {isFinished && match.wentToPenalties && (
-                                                    <div className="text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-955/30 px-2 py-0.5 rounded border border-amber-100 dark:border-amber-900/30 font-medium">
-                                                        PK Result: {match.homeTeam?._id === match.penaltyWinner?._id ? "Home" : "Away"}
+                                                    <div className="text-amber-700 dark:text-amber-600 bg-amber-50 dark:bg-amber-955/30 px-2 py-0.5 rounded border border-amber-100 dark:border-amber-900/30 font-medium">
+                                                        Winner: {typeof match.penaltyWinner === "object" && match.penaltyWinner ? match.penaltyWinner.name : (match.penaltyWinner?.toString() === match.homeTeam?._id?.toString() ? match.homeTeam?.name : match.awayTeam?.name)}
                                                     </div>
                                                 )}
                                             </div>
@@ -267,6 +262,15 @@ export default function UserPredictionsDropdown({ userId, isExpanded, allowedSta
                                         <div>
                                             {getPointsBadge(pred.points || 0, match.status)}
                                         </div>
+                                        {isKnockout && (pred.penaltyPrediction || (isFinished && match.wentToPenalties)) && (
+                                            <div className="text-[10px] flex flex-col items-start md:items-end gap-0.5">
+                                                {pred.penaltyPrediction && (
+                                                    <div className="text-purple-600 dark:text-purple-600 bg-purple-50 dark:bg-purple-955/30 px-2 py-0.5 rounded border border-purple-100/80 dark:border-purple-900/30 font-bold tracking-wide">
+                                                        Winner Pick: {typeof pred.predictedWinner === "object" && pred.predictedWinner ? pred.predictedWinner.name : (pred.predictedWinner?.toString() === match.homeTeam?._id?.toString() ? match.homeTeam?.name : match.awayTeam?.name)}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             );
