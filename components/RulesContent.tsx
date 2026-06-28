@@ -93,6 +93,28 @@ export default function RulesContent() {
                             </div>
                         </div>
                     </div>
+
+                    <div className="mt-6 border-t border-gray-100 dark:border-gray-800 pt-6">
+                        <h3 className="font-bold text-gray-900 dark:text-white mb-3 flex items-center">
+                            <AlertCircle className="mr-2 w-5 h-5 text-purple-500" />
+                            Knockout Round Specific Rules
+                        </h3>
+                        <ul className="space-y-3 text-sm text-gray-600 dark:text-gray-400 list-disc pl-5">
+                            <li>
+                                <strong>Match Scores:</strong> The official score of the match for prediction purposes is the score at the end of <strong>90 minutes plus extra time</strong>. Penalty shootout scores are NOT included in the home/away match scores.
+                            </li>
+                            <li>
+                                <strong>Penalty Shootout Outcome:</strong> If you predict a draw in a knockout match, you must select the team you believe will win the penalty shootout.
+                            </li>
+                            <li>
+                                <strong>No Bonus Points for Incorrect Match Outcome:</strong>
+                                <ul className="pl-5 mt-1 list-disc space-y-1">
+                                    <li>If you predict the match will go to a penalty shootout (draw prediction) and select a winner, but the selected team wins during regular/extra time (no penalty shootout takes place), you <strong>do not</strong> receive the +3 outcome points or the +3 penalty bonus points.</li>
+                                    <li>If you predict a regular/extra time winner (non-draw prediction), but the match goes to a penalty shootout instead, you <strong>do not</strong> receive the +3 outcome points or the +3 penalty bonus points (even if your predicted winner eventually wins the shootout).</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
