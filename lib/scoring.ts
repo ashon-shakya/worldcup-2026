@@ -32,9 +32,11 @@ export function calculatePoints(
         // In a knockout round if a user predicts penalty and predicts the correct winner
         // then the user gets penalty +3 (correctPenaltyPrediction) plus winner +3 (correctOutcome)
         // otherwise they will only get goal prediction points and not the penalty prediction score or outcome points.
-        if (resultWentToPenalties && predictedWinnerStr && actualWinnerStr && predictedWinnerStr === actualWinnerStr) {
+        if (resultWentToPenalties && predictedWinnerStr && actualWinnerStr) {
             points += settings.correctPenaltyPrediction;
-            points += settings.correctOutcome;
+            if (predictedWinnerStr === actualWinnerStr) {
+                points += settings.correctOutcome;
+            }
         }
 
         return points;

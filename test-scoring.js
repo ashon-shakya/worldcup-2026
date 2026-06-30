@@ -31,9 +31,11 @@ function calculatePoints(
         // In a knockout round if a user predicts penalty and predicts the correct winner
         // then the user gets penalty +3 (correctPenaltyPrediction) plus winner +3 (correctOutcome)
         // otherwise they will only get goal prediction points and not the penalty prediction score or outcome points.
-        if (resultWentToPenalties && predictedWinnerStr && actualWinnerStr && predictedWinnerStr === actualWinnerStr) {
+        if (resultWentToPenalties && predictedWinnerStr && actualWinnerStr) {
             points += settings.correctPenaltyPrediction;
-            points += settings.correctOutcome;
+            if (predictedWinnerStr === actualWinnerStr) {
+                points += settings.correctOutcome;
+            }
         }
 
         return points;
@@ -109,13 +111,13 @@ test("Exact Score (Home Win)", 2, 1, 2, 1, settings, false, false, false, null, 
 test("Knockout Draw, Penalty shootout, Correct Winner", 1, 1, 1, 1, settings, true, true, true, "teamA", "teamA", 16);
 
 // Test Case 3: Knockout Draw, Penalty shootout, Incorrect Winner
-test("Knockout Draw, Penalty shootout, Incorrect Winner", 1, 1, 1, 1, settings, true, true, true, "teamA", "teamB", 10);
+test("Knockout Draw, Penalty shootout, Incorrect Winner", 1, 1, 1, 1, settings, true, true, true, "teamA", "teamB", 13);
 
 // Test Case 4: Knockout Draw, Different Draw Score, Penalty shootout, Correct Winner
 test("Knockout Draw, Different Draw Score, Penalty shootout, Correct Winner", 1, 1, 2, 2, settings, true, true, true, "teamA", "teamA", 6);
 
 // Test Case 5: Knockout Draw, Different Draw Score, Penalty shootout, Incorrect Winner
-test("Knockout Draw, Different Draw Score, Penalty shootout, Incorrect Winner", 1, 1, 2, 2, settings, true, true, true, "teamA", "teamB", 0);
+test("Knockout Draw, Different Draw Score, Penalty shootout, Incorrect Winner", 1, 1, 2, 2, settings, true, true, true, "teamA", "teamB", 3);
 
 // Test Case 6: Knockout Draw Prediction, but home team wins in regular/extra time
 test("Knockout Draw Prediction, but home team wins in regular/extra time", 1, 1, 2, 1, settings, true, false, true, "teamA", "teamA", 5);
