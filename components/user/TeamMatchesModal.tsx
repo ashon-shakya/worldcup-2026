@@ -112,33 +112,33 @@ export default function TeamMatchesModal({ teamId, teamName, onClose }: TeamMatc
                                                         {/* Teams flags & names row */}
                                                         <div className="flex items-center justify-center space-x-3 md:space-x-4 w-full">
                                                             {/* Home Team */}
-                                                            <div className="flex items-center justify-end w-[42%] space-x-1.5 md:space-x-2 min-w-0">
-                                                                <span className={`truncate text-xs md:text-sm ${getTeamNameStyle(match.homeTeam._id)}`}>
-                                                                    {match.homeTeam.shortName}
-                                                                </span>
+                                                            <div className="flex flex-col items-center justify-center w-[42%] space-y-1 min-w-0">
                                                                 {match.homeTeam.flagUrl && (
                                                                     <img
                                                                         src={match.homeTeam.flagUrl}
                                                                         alt=""
-                                                                        className="w-6 md:w-7 h-4 md:h-5 object-cover rounded shadow-3xs border border-gray-100 dark:border-slate-800 shrink-0"
+                                                                        className="w-[29px] md:w-[34px] h-[19px] md:h-6 object-cover rounded shadow-3xs border border-gray-100 dark:border-slate-800 shrink-0"
                                                                     />
                                                                 )}
+                                                                <span className={`truncate text-xs md:text-sm text-center w-full ${getTeamNameStyle(match.homeTeam._id)}`}>
+                                                                    {match.homeTeam.name}
+                                                                </span>
                                                             </div>
 
                                                             {/* VS separator */}
-                                                            <span className="text-gray-400 dark:text-gray-600 font-bold text-[10px] md:text-xs shrink-0">vs</span>
+                                                            <span className="text-gray-400 dark:text-gray-600 font-bold text-[10px] md:text-xs shrink-0 self-center">vs</span>
 
                                                             {/* Away Team */}
-                                                            <div className="flex items-center justify-start w-[42%] space-x-1.5 md:space-x-2 min-w-0">
+                                                            <div className="flex flex-col items-center justify-center w-[42%] space-y-1 min-w-0">
                                                                 {match.awayTeam.flagUrl && (
                                                                     <img
                                                                         src={match.awayTeam.flagUrl}
                                                                         alt=""
-                                                                        className="w-6 md:w-7 h-4 md:h-5 object-cover rounded shadow-3xs border border-gray-100 dark:border-slate-800 shrink-0"
+                                                                        className="w-[29px] md:w-[34px] h-[19px] md:h-6 object-cover rounded shadow-3xs border border-gray-100 dark:border-slate-800 shrink-0"
                                                                     />
                                                                 )}
-                                                                <span className={`truncate text-xs md:text-sm ${getTeamNameStyle(match.awayTeam._id)}`}>
-                                                                    {match.awayTeam.shortName}
+                                                                <span className={`truncate text-xs md:text-sm text-center w-full ${getTeamNameStyle(match.awayTeam._id)}`}>
+                                                                    {match.awayTeam.name}
                                                                 </span>
                                                             </div>
                                                         </div>
