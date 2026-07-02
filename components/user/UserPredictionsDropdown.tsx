@@ -179,6 +179,17 @@ export default function UserPredictionsDropdown({ userId, isExpanded, allowedSta
                             const isKnockoutStage = ["Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final", "3rd Place"].includes(match.stage);
                             const isKnockout = match.isKnockout || isKnockoutStage;
 
+                            const winnerName = (() => {
+                                if (!pred.predictedWinner) return "";
+                                if (typeof pred.predictedWinner === "object") {
+                                    return pred.predictedWinner.name || "";
+                                }
+                                const winnerIdStr = pred.predictedWinner.toString();
+                                if (winnerIdStr === match.homeTeam?._id?.toString()) return match.homeTeam?.name || "";
+                                if (winnerIdStr === match.awayTeam?._id?.toString()) return match.awayTeam?.name || "";
+                                return "";
+                            })();
+
                             return (
                                 <div
                                     key={pred._id}
@@ -226,8 +237,15 @@ export default function UserPredictionsDropdown({ userId, isExpanded, allowedSta
                                                     <span>{hasActualScore ? match.awayScore : "-"}</span>
                                                 </div>
                                                 {/* Predicted Score */}
-                                                <div className="text-[10px] text-gray-500 dark:text-gray-400 font-bold bg-indigo-50/50 dark:bg-indigo-950/40 text-indigo-700/80 dark:text-indigo-300 px-1.5 py-0.5 rounded-md mt-1 border border-indigo-100/50 dark:border-indigo-900/30">
-                                                    Pick: {pred.homeScore} - {pred.awayScore}
+                                                <div className="flex flex-col items-center gap-1 mt-1">
+                                                    <div className="text-[10px] text-gray-500 dark:text-gray-400 font-bold bg-indigo-50/50 dark:bg-indigo-950/40 text-indigo-700/80 dark:text-indigo-300 px-1.5 py-0.5 rounded-md border border-indigo-100/50 dark:border-indigo-900/30">
+                                                        Pick: {pred.homeScore} - {pred.awayScore}
+                                                    </div>
+                                                    {isKnockout && pred.penaltyPrediction && winnerName && (
+                                                        <div className="text-[9px] text-purple-600 dark:text-purple-400 font-bold bg-purple-50 dark:bg-purple-955/30 px-1.5 py-0.5 rounded border border-purple-100/80 dark:border-purple-900/30 whitespace-nowrap">
+                                                            PK Pick: {winnerName}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
 
@@ -264,9 +282,9 @@ export default function UserPredictionsDropdown({ userId, isExpanded, allowedSta
                                         </div>
                                         {isKnockout && (pred.penaltyPrediction || (isFinished && match.wentToPenalties)) && (
                                             <div className="text-[10px] flex flex-col items-start md:items-end gap-0.5">
-                                                {pred.penaltyPrediction && (
-                                                    <div className="text-purple-600 dark:text-purple-600 bg-purple-50 dark:bg-purple-955/30 px-2 py-0.5 rounded border border-purple-100/80 dark:border-purple-900/30 font-bold tracking-wide">
-                                                        Winner Pick: {typeof pred.predictedWinner === "object" && pred.predictedWinner ? pred.predictedWinner.name : (pred.predictedWinner?.toString() === match.homeTeam?._id?.toString() ? match.homeTeam?.name : match.awayTeam?.name)}
+                                                {pred.penaltyPrediction && winnerName && (
+                                                    <div className="text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-955/30 px-2 py-0.5 rounded border border-purple-100/80 dark:border-purple-900/30 font-bold tracking-wide">
+                                                        Winner Pick: {winnerName}
                                                     </div>
                                                 )}
                                             </div>

@@ -138,8 +138,15 @@ export default function MatchCard({ match, prediction }: MatchCardProps) {
                                         <span>{match.status === "FINISHED" ? match.awayScore : (prediction?.awayScore ?? "-")}</span>
                                     </div>
                                     {prediction && (
-                                        <div className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-indigo-600 font-medium bg-indigo-50 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full whitespace-nowrap">
-                                            Your Pick: {prediction.homeScore} - {prediction.awayScore}
+                                        <div className="flex flex-col items-center gap-1 mt-1.5 sm:mt-2">
+                                            <div className="text-xs sm:text-sm text-indigo-600 font-medium bg-indigo-50 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full whitespace-nowrap">
+                                                Your Pick: {prediction.homeScore} - {prediction.awayScore}
+                                            </div>
+                                            {isKnockout && prediction.penaltyPrediction && prediction.predictedWinner && (
+                                                <div className="text-[9px] sm:text-[10px] font-bold text-purple-650 bg-purple-50 px-1.5 sm:px-2 py-0.5 rounded border border-purple-100 whitespace-nowrap">
+                                                    PK Pick: {match.homeTeam?._id?.toString() === prediction.predictedWinner?.toString() ? match.homeTeam?.name : match.awayTeam?._id?.toString() === prediction.predictedWinner?.toString() ? match.awayTeam?.name : "Unknown"}
+                                                </div>
+                                            )}
                                         </div>
                                     )}
                                     {isFinished && prediction && prediction.points !== undefined && (

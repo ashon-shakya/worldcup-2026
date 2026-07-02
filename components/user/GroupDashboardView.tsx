@@ -250,6 +250,13 @@ export default function GroupDashboardView({ groupId, leaderboard, group, curren
                                                         <tbody className="bg-white dark:bg-slate-900/40 divide-y divide-gray-150 dark:divide-slate-850">
                                                             {group.members.map((member: any) => {
                                                                 const pred = predictionsMap[match._id]?.[member._id];
+                                                                const winnerName = (() => {
+                                                                    if (!pred || !pred.predictedWinner) return "";
+                                                                    const winnerIdStr = pred.predictedWinner.toString();
+                                                                    if (winnerIdStr === match.homeTeam?._id?.toString()) return match.homeTeam?.name || "";
+                                                                    if (winnerIdStr === match.awayTeam?._id?.toString()) return match.awayTeam?.name || "";
+                                                                    return "";
+                                                                })();
 
                                                                 // Points styling
                                                                 let pointsStyle = "bg-gray-50 dark:bg-slate-900/50 text-gray-400 dark:text-gray-550 border border-gray-150 dark:border-gray-800";
@@ -283,8 +290,8 @@ export default function GroupDashboardView({ groupId, leaderboard, group, curren
                                                                                         {pred.homeScore} - {pred.awayScore}
                                                                                     </span>
                                                                                     {isKnockout && pred.penaltyPrediction && (
-                                                                                        <span className="text-[9px] text-purple-600 dark:text-purple-400 font-semibold mt-0.5">
-                                                                                            PK Picked
+                                                                                        <span className="text-[9px] text-purple-600 dark:text-purple-400 font-semibold mt-0.5 whitespace-nowrap">
+                                                                                            {winnerName ? `PK: ${winnerName}` : "PK Picked"}
                                                                                         </span>
                                                                                     )}
                                                                                 </div>
