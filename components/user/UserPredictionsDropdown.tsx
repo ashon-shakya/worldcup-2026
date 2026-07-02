@@ -204,15 +204,15 @@ export default function UserPredictionsDropdown({ userId, isExpanded, allowedSta
                                     <div className="flex items-center justify-center flex-1 py-2 px-3 bg-gray-50 dark:bg-slate-950/50 rounded-xl border border-gray-100 dark:border-slate-800/80">
                                         <div className="flex items-center justify-between w-full max-w-sm gap-2 text-xs sm:text-sm">
                                             {/* Home Team */}
-                                            <div className="flex items-center justify-end flex-1 gap-2 text-right">
-                                                <span className="font-semibold text-gray-700 dark:text-gray-200 truncate max-w-[80px] sm:max-w-none">
+                                            <div className="flex flex-col sm:flex-row items-center sm:justify-end flex-1 gap-1.5 sm:gap-2 text-center sm:text-right min-w-0">
+                                                <span className="font-semibold text-gray-700 dark:text-gray-200 truncate max-w-[80px] sm:max-w-none order-2 sm:order-1">
                                                     {match.homeTeam?.name}
                                                 </span>
                                                 {match.homeTeam?.flagUrl && (
                                                     <img
                                                         src={match.homeTeam.flagUrl}
                                                         alt={match.homeTeam.name}
-                                                        className="w-7 h-5 object-cover rounded shadow-2xs border border-gray-200 dark:border-slate-800 shrink-0"
+                                                        className="w-7 h-5 object-cover rounded shadow-2xs border border-gray-200 dark:border-slate-800 shrink-0 order-1 sm:order-2"
                                                     />
                                                 )}
                                             </div>
@@ -232,7 +232,7 @@ export default function UserPredictionsDropdown({ userId, isExpanded, allowedSta
                                             </div>
 
                                             {/* Away Team */}
-                                            <div className="flex items-center justify-start flex-1 gap-2">
+                                            <div className="flex flex-col sm:flex-row items-center sm:justify-start flex-1 gap-1.5 sm:gap-2 text-center sm:text-left min-w-0">
                                                 {match.awayTeam?.flagUrl && (
                                                     <img
                                                         src={match.awayTeam.flagUrl}

@@ -167,7 +167,6 @@ export default async function DashboardPage() {
                                                             <img src={match.homeTeam.flagUrl} alt="" className="w-5 h-3.5 sm:w-8 sm:h-6 object-cover rounded shadow-md border border-white/20" />
                                                         )}
                                                         <div className="min-w-0">
-                                                            <p className="text-white text-[8px] sm:text-xs font-bold uppercase tracking-wider">{match.homeTeam?.shortName}</p>
                                                             <p className="text-white font-black text-[10px] sm:text-sm md:text-lg leading-tight line-clamp-1 truncate">{match.homeTeam?.name}</p>
                                                         </div>
                                                     </div>
@@ -232,7 +231,6 @@ export default async function DashboardPage() {
                                                             <img src={match.awayTeam.flagUrl} alt="" className="w-5 h-3.5 sm:w-8 sm:h-6 object-cover rounded shadow-md border border-white/20" />
                                                         )}
                                                         <div className="min-w-0">
-                                                            <p className="text-white text-[8px] sm:text-xs font-bold uppercase tracking-wider">{match.awayTeam?.shortName}</p>
                                                             <p className="text-white font-black text-[10px] sm:text-sm md:text-lg leading-tight line-clamp-1 truncate">{match.awayTeam?.name}</p>
                                                         </div>
                                                     </div>
