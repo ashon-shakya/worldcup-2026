@@ -213,6 +213,35 @@ export async function deleteGroup(groupId: string) {
     }
 }
 
+export async function removeGroupMember(groupId: string, memberId: string) {
+    const session = await auth();
+    if (!session || !session.user || !session.user.id) return { message: "Unauthorized" };
+
+    try {
+        await connectToDatabase();
+        const group = await Group.findById(groupId);
+
+        if (!group) return { message: "Group not found" };
+
+        if (group.owner.toString() !== session.user.id.toString()) {
+            return { message: "Only the group owner can remove members" };
+        }
+
+        if (memberId.toString() === group.owner.toString()) {
+            return { message: "You cannot remove the group owner" };
+        }
+
+        group.members = group.members.filter((m: any) => m.toString() !== memberId.toString());
+        await group.save();
+
+        revalidatePath(`/dashboard/groups/${groupId}`);
+        return { message: "success" };
+    } catch (error) {
+        console.error("Failed to remove group member:", error);
+        return { message: "Failed to remove group member" };
+    }
+}
+
 export async function updateGroupSettings(groupId: string, stages: string[], color: string | null, textColor: string | null, description?: string) {
     const session = await auth();
     if (!session || !session.user) return { message: "Unauthorized" };
@@ -285,10 +314,10 @@ export async function getGroupFinishedMatchesPredictions(groupId: string, page: 
 
     const [matches, totalMatches] = await Promise.all([
         Match.find(matchQuery)
-        .sort({ kickOff: -1 })
-        .skip(skip)
-        .limit(limit)
-        .populate("homeTeam awayTeam"),
+            .sort({ kickOff: -1 })
+            .skip(skip)
+            .limit(limit)
+            .populate("homeTeam awayTeam"),
         Match.countDocuments(matchQuery)
     ]);
 

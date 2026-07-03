@@ -2,8 +2,9 @@ import { auth } from "@/auth";
 import { Match, Prediction, User } from "@/models/schema";
 import connectToDatabase from "@/lib/db";
 import Link from "next/link";
-import { Calendar, Clock } from "lucide-react";
+import { Calendar, Clock, Users } from "lucide-react";
 import LocalTime from "@/components/ui/LocalTime";
+import { getUserGroups } from "@/app/actions/groups";
 
 function getStageTheme(stage: string) {
     const s = stage?.toLowerCase() || "";
@@ -98,25 +99,70 @@ export default async function DashboardPage() {
 
     const nextMatches = await getNextMatchesOfDay();
     const stats = await getUserStats(user.id);
+    const userGroups = await getUserGroups();
 
     return (
         <div className="space-y-6">
-            <h1 className="text-3xl font-bold text-gray-900">Welcome, {(user as any).nickname || user.name}</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Welcome, {(user as any).nickname || user.name}</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Points Card */}
-                <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white shadow-lg">
-                    <p className="text-indigo-100 font-medium">Total Points</p>
-                    <h2 className="text-4xl font-bold mt-2">{stats.totalPoints}</h2>
-                    <p className="text-sm text-indigo-200 mt-4">Rank: {stats.rank}</p>
+                <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white shadow-lg flex flex-col justify-between min-h-[148px]">
+                    <div>
+                        <p className="text-indigo-100 font-medium">Total Points</p>
+                        <h2 className="text-4xl font-bold mt-2">{stats.totalPoints}</h2>
+                    </div>
+                    <p className="text-sm text-indigo-200 mt-2">Rank: {stats.rank}</p>
                 </div>
 
                 {/* Status Card (optional) */}
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                    <p className="text-gray-500 font-medium">Tournament Status</p>
-                    <div className="mt-4 flex items-center text-green-600 font-bold">
-                        <div className="w-3 h-3 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-                        Live / Upcoming
+                <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-slate-800 flex flex-col justify-between min-h-[148px]">
+                    <div>
+                        <p className="text-gray-500 dark:text-gray-400 font-medium">Tournament Status</p>
+                        <div className="mt-4 flex items-center text-green-600 dark:text-green-400 font-bold">
+                            <div className="w-3 h-3 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                            Live / Upcoming
+                        </div>
+                    </div>
+                </div>
+
+                {/* My Groups Card */}
+                <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-slate-800 flex flex-col justify-between min-h-[148px]">
+                    <div>
+                        <p className="text-gray-500 dark:text-gray-400 font-medium mb-3">My Groups</p>
+                        {userGroups.length === 0 ? (
+                            <p className="text-sm text-gray-400 dark:text-gray-500">You are not in any groups yet.</p>
+                        ) : (
+                            <div className="flex flex-wrap gap-2 max-h-[50px] overflow-y-auto pr-1">
+                                {userGroups.map((group: any) => {
+                                    const hasColor = !!group.color;
+                                    const isHex = group.color?.startsWith("#");
+                                    return (
+                                        <Link
+                                            key={group._id}
+                                            href={`/dashboard/groups/${group._id}`}
+                                            title={group.name}
+                                            className={`h-9 w-9 rounded-lg flex items-center justify-center font-bold text-sm transition-all duration-200 hover:scale-105 active:scale-95 shadow-3xs hover:shadow-2xs shrink-0 border ${
+                                                hasColor 
+                                                    ? "bg-white/60 text-slate-900 border-black/5" 
+                                                    : "bg-indigo-50 dark:bg-indigo-950/40 text-indigo-650 dark:text-indigo-400 border-indigo-100/50 dark:border-indigo-950/20"
+                                            }`}
+                                            style={hasColor ? {
+                                                backgroundColor: isHex ? group.color : undefined,
+                                                color: group.textColor || "#0f172a",
+                                            } : {}}
+                                        >
+                                            {group.name.charAt(0).toUpperCase()}
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+                    <div className="mt-2.5">
+                        <Link href="/dashboard/groups" className="text-xs text-indigo-600 dark:text-cyan-400 hover:underline font-semibold flex items-center gap-1">
+                            Manage Groups &rarr;
+                        </Link>
                     </div>
                 </div>
             </div>
