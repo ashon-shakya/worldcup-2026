@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LogOut, Trophy, Home, List, Menu, X, Users, BookOpen } from "lucide-react";
+import { LogOut, Trophy, Home, List, Menu, X, Users, BookOpen, BarChart3 } from "lucide-react";
 import { useState } from "react";
 import { logout } from "@/app/actions/auth";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -46,6 +46,13 @@ export default function DashboardNav({ user }: { user: any }) {
                             >
                                 <Trophy className="w-4 h-4 mr-2" />
                                 Global
+                            </Link>
+                            <Link
+                                href="/dashboard/stats"
+                                className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                            >
+                                <BarChart3 className="w-4 h-4 mr-2" />
+                                Stats
                             </Link>
                             <Link
                                 href="/dashboard/rules"
@@ -137,6 +144,13 @@ export default function DashboardNav({ user }: { user: any }) {
                             className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
                         >
                             Global Leaderboard
+                        </Link>
+                        <Link
+                            href="/dashboard/stats"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                        >
+                            Stats
                         </Link>
                         <Link
                             href="/dashboard/rules"
