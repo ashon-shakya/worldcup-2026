@@ -224,7 +224,7 @@ export async function getUserStatsPageData() {
             userId,
             user: {
                 name: session.user.name,
-                nickname: session.user.nickname,
+                nickname: (session.user as any).nickname,
                 email: session.user.email,
                 image: session.user.image
             },
