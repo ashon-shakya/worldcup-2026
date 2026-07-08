@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Trophy, Medal, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import UserPredictionsDropdown from "./UserPredictionsDropdown";
+import Link from "next/link";
 
 interface LeaderboardRowProps {
   user: any;
@@ -66,7 +67,13 @@ export default function LeaderboardRow({
         </div>
         <div className="ml-4 flex-1">
           <div className="font-bold text-gray-900 flex items-center gap-2">
-            {user.nickname || user.name}
+            <Link
+              href={`/dashboard/stats?userId=${user._id}`}
+              onClick={(e) => e.stopPropagation()}
+              className="hover:text-indigo-600 hover:underline transition-colors cursor-pointer"
+            >
+              {user.nickname || user.name}
+            </Link>
             {user._id === currentUserId && (
               <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">
                 You

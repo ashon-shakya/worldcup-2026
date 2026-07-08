@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Trophy, ChevronDown, UserX } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import UserPredictionsDropdown from "./UserPredictionsDropdown";
+import Link from "next/link";
 import { removeGroupMember } from "@/app/actions/groups";
 import { toast } from "sonner";
 
@@ -90,7 +91,13 @@ export default function GroupMemberRow({
                 </div>
                 <div className="ml-4 flex-1">
                     <div className="font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                        {user.nickname || user.name}
+                        <Link
+                            href={`/dashboard/stats?userId=${user._id}`}
+                            onClick={(e) => e.stopPropagation()}
+                            className="hover:text-indigo-600 dark:hover:text-cyan-400 hover:underline transition-colors cursor-pointer"
+                        >
+                            {user.nickname || user.name}
+                        </Link>
                         {isSelf && (
                             <span className="text-[10px] bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded-full uppercase font-bold tracking-wide">You</span>
                         )}

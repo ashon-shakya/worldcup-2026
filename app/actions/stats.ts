@@ -7,14 +7,14 @@ import { getGlobalLeaderboard } from "./leaderboard";
 import { getPointSettings } from "./admin/settings";
 import { unstable_noStore as noStore } from "next/cache";
 
-export async function getUserStatsPageData() {
+export async function getUserStatsPageData(targetUserId?: string) {
     noStore();
     const session = await auth();
     if (!session || !session.user || !session.user.id) {
         throw new Error("Unauthorized");
     }
 
-    const userId = session.user.id;
+    const userId = targetUserId || session.user.id;
 
     await connectToDatabase();
 
@@ -219,15 +219,29 @@ export async function getUserStatsPageData() {
         kickOff: p.match.kickOff
     }));
 
+    let userObj = {
+        name: session.user.name,
+        nickname: (session.user as any).nickname,
+        email: session.user.email,
+        image: session.user.image
+    };
+
+    if (userId !== session.user.id) {
+        const dbUser = await User.findById(userId);
+        if (dbUser) {
+            userObj = {
+                name: dbUser.name,
+                nickname: dbUser.nickname,
+                email: dbUser.email ? dbUser.email.replace(/(.{2})(.*)(@.*)/, "$1***$3") : "",
+                image: dbUser.image
+            };
+        }
+    }
+
     return JSON.parse(
         JSON.stringify({
             userId,
-            user: {
-                name: session.user.name,
-                nickname: (session.user as any).nickname,
-                email: session.user.email,
-                image: session.user.image
-            },
+            user: userObj,
             globalRank: rank,
             totalCompetitors: leaderboard.length,
             totalPoints,

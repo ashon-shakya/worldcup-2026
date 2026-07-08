@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Trophy, ChevronLeft, ChevronRight, Calendar, Clock, HelpCircle, FileText, ListOrdered, ChevronDown } from "lucide-react";
 import { getGroupFinishedMatchesPredictions } from "@/app/actions/groups";
+import Link from "next/link";
 import GroupMemberRow from "./GroupMemberRow";
 import LeaderboardRace from "./LeaderboardRace";
 import LocalTime from "@/components/ui/LocalTime";
@@ -281,7 +282,12 @@ export default function GroupDashboardView({ groupId, leaderboard, group, curren
                                                                                         (member.nickname || member.name).charAt(0).toUpperCase()
                                                                                     )}
                                                                                 </div>
-                                                                                <span className="text-xs font-bold text-gray-900 dark:text-gray-200">{member.nickname || member.name}</span>
+                                                                                <Link
+                                                                                    href={`/dashboard/stats?userId=${member._id}`}
+                                                                                    className="text-xs font-bold text-gray-900 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-cyan-400 hover:underline transition-colors cursor-pointer"
+                                                                                >
+                                                                                    {member.nickname || member.name}
+                                                                                </Link>
                                                                                 {member._id === currentUserId && (
                                                                                     <span className="text-[9px] bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-400 px-1.5 py-0.5 rounded-full uppercase font-bold tracking-wide">You</span>
                                                                                 )}
