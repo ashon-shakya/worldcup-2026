@@ -147,7 +147,7 @@ export default function RulesContent() {
                         <Shield className="mr-2 text-blue-500" />
                         Leagues & Groups
                     </h3>
-                    <ul className="space-y-3 text-gray-600 text-sm">
+                    <ul className="space-y-3 text-gray-650 text-sm">
                         <li className="flex items-start">
                             <span className="mr-2 text-blue-500">•</span>
                             <div>
@@ -158,6 +158,18 @@ export default function RulesContent() {
                             <span className="mr-2 text-blue-500">•</span>
                             <div>
                                 <strong>Private Groups:</strong> Create a group and share the code with friends to compete in a private league. Group admins can configure which rounds contribute to the group points calculation.
+                            </div>
+                        </li>
+                        <li className="flex items-start">
+                            <span className="mr-2 text-indigo-500">•</span>
+                            <div>
+                                <strong>Round Multipliers:</strong> Group admins can apply weight multipliers to rounds (default is 1.0). Any points a user receives for matches in that round will be multiplied by the configured weight.
+                            </div>
+                        </li>
+                        <li className="flex items-start">
+                            <span className="mr-2 text-emerald-500">•</span>
+                            <div>
+                                <strong>Player Statistics:</strong> Click on any player's name on any leaderboard to open their detailed statistics page, including their accuracy, exact score rates, and prediction timeline.
                             </div>
                         </li>
                     </ul>
