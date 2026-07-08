@@ -117,6 +117,19 @@ export async function getGroupDetails(groupId: string) {
         ? group.includedStages
         : ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final"];
 
+    const validStages = ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final"];
+    const stageMultipliers = group.stageMultipliers || {};
+    const branches = validStages.map(stage => ({
+        case: { $eq: ["$matchInfo.stage", stage] },
+        then: typeof stageMultipliers[stage] === "number" ? stageMultipliers[stage] : 1
+    }));
+    const multiplierExpr = {
+        $switch: {
+            branches,
+            default: 1
+        }
+    };
+
     const leaderboard = await Prediction.aggregate([
         {
             $match: {
@@ -142,7 +155,11 @@ export async function getGroupDetails(groupId: string) {
         {
             $group: {
                 _id: "$user",
-                totalPoints: { $sum: "$points" }
+                totalPoints: {
+                    $sum: {
+                        $multiply: ["$points", multiplierExpr]
+                    }
+                }
             }
         },
         {
@@ -242,7 +259,7 @@ export async function removeGroupMember(groupId: string, memberId: string) {
     }
 }
 
-export async function updateGroupSettings(groupId: string, stages: string[], color: string | null, textColor: string | null, description?: string) {
+export async function updateGroupSettings(groupId: string, stages: string[], multipliers: Record<string, number>, color: string | null, textColor: string | null, description?: string) {
     const session = await auth();
     if (!session || !session.user) return { message: "Unauthorized" };
 
@@ -262,7 +279,15 @@ export async function updateGroupSettings(groupId: string, stages: string[], col
             return { message: "You must include at least one round" };
         }
 
+        // Sanitize multipliers: ensure they are positive numbers or default to 1
+        const cleanedMultipliers: Record<string, number> = {};
+        validStages.forEach(stage => {
+            const m = multipliers?.[stage];
+            cleanedMultipliers[stage] = (typeof m === "number" && m >= 0) ? m : 1;
+        });
+
         group.includedStages = filteredStages;
+        group.stageMultipliers = cleanedMultipliers;
         group.color = color;
         group.textColor = textColor;
         group.description = description || "";
@@ -323,24 +348,35 @@ export async function getGroupFinishedMatchesPredictions(groupId: string, page: 
 
     const matchIds = matches.map(m => m._id);
 
+    const matchStageMap = new Map<string, string>();
+    matches.forEach(m => {
+        matchStageMap.set(m._id.toString(), m.stage);
+    });
+
     // Fetch predictions of all members for these matches
     const predictions = await Prediction.find({
         match: { $in: matchIds },
         user: { $in: group.members }
     });
 
+    const stageMultipliers = group.stageMultipliers || {};
+
     // Structure predictions by matchId and userId
     const predictionsMap: Record<string, Record<string, any>> = {};
     predictions.forEach((p) => {
         const mId = p.match.toString();
         const uId = p.user.toString();
+        const stage = matchStageMap.get(mId) || "";
+        const mult = typeof stageMultipliers[stage] === "number" ? stageMultipliers[stage] : 1;
+        const multipliedPoints = (p.points || 0) * mult;
+
         if (!predictionsMap[mId]) {
             predictionsMap[mId] = {};
         }
         predictionsMap[mId][uId] = {
             homeScore: p.homeScore,
             awayScore: p.awayScore,
-            points: p.points,
+            points: multipliedPoints,
             penaltyPrediction: p.penaltyPrediction,
             predictedWinner: p.predictedWinner ? p.predictedWinner.toString() : null
         };

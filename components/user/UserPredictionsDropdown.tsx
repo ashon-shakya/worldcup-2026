@@ -10,9 +10,10 @@ interface UserPredictionsDropdownProps {
     userId: string;
     isExpanded: boolean;
     allowedStages?: string[];
+    stageMultipliers?: Record<string, number>;
 }
 
-export default function UserPredictionsDropdown({ userId, isExpanded, allowedStages }: UserPredictionsDropdownProps) {
+export default function UserPredictionsDropdown({ userId, isExpanded, allowedStages, stageMultipliers }: UserPredictionsDropdownProps) {
     const [predictions, setPredictions] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
@@ -126,7 +127,7 @@ export default function UserPredictionsDropdown({ userId, isExpanded, allowedSta
     };
 
     // Style helper for points display
-    const getPointsBadge = (points: number, status: string) => {
+    const getPointsBadge = (points: number, status: string, multiplier: number = 1) => {
         if (status !== "FINISHED" && status !== "LIVE") {
             return (
                 <span className="text-xs font-bold bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-900/40 px-2 py-1 rounded-lg">
@@ -135,24 +136,26 @@ export default function UserPredictionsDropdown({ userId, isExpanded, allowedSta
             );
         }
 
+        const multiplierText = multiplier !== 1 ? ` (x${multiplier})` : "";
+
         if (points >= 13) {
             return (
                 <span className="text-xs font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/40 px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-xs">
                     <Trophy className="w-3.5 h-3.5" />
-                    +{points} PTS
+                    +{points} PTS{multiplierText}
                 </span>
             );
         }
         if (points > 0) {
             return (
                 <span className="text-xs font-bold bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-900/40 px-2.5 py-1 rounded-lg">
-                    +{points} PTS
+                    +{points} PTS{multiplierText}
                 </span>
             );
         }
         return (
             <span className="text-xs font-semibold bg-gray-50 dark:bg-slate-900/50 text-gray-400 dark:text-gray-500 border border-gray-100 dark:border-gray-800 px-2.5 py-1 rounded-lg">
-                0 PTS
+                0 PTS{multiplierText}
             </span>
         );
     };
@@ -178,6 +181,11 @@ export default function UserPredictionsDropdown({ userId, isExpanded, allowedSta
                             // Inferred Knockout Status (Fallback for legacy matches)
                             const isKnockoutStage = ["Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final", "3rd Place"].includes(match.stage);
                             const isKnockout = match.isKnockout || isKnockoutStage;
+
+                            const multiplier = stageMultipliers && typeof stageMultipliers[match.stage] === "number"
+                                ? stageMultipliers[match.stage]
+                                : 1;
+                            const multipliedPoints = (pred.points || 0) * multiplier;
 
                             const winnerName = (() => {
                                 if (!pred.predictedWinner) return "";
@@ -223,7 +231,7 @@ export default function UserPredictionsDropdown({ userId, isExpanded, allowedSta
                                                     <img
                                                         src={match.homeTeam.flagUrl}
                                                         alt={match.homeTeam.name}
-                                                        className="w-7 h-5 object-cover rounded shadow-2xs border border-gray-200 dark:border-slate-800 shrink-0 order-1 sm:order-2"
+                                                        className="w-7 h-5 object-cover rounded shadow-2xs order-1 sm:order-2 border border-gray-200 dark:border-slate-800 shrink-0"
                                                     />
                                                 )}
                                             </div>
@@ -278,7 +286,7 @@ export default function UserPredictionsDropdown({ userId, isExpanded, allowedSta
                                             </div>
                                         )}
                                         <div>
-                                            {getPointsBadge(pred.points || 0, match.status)}
+                                            {getPointsBadge(multipliedPoints, match.status, multiplier)}
                                         </div>
                                         {isKnockout && (pred.penaltyPrediction || (isFinished && match.wentToPenalties)) && (
                                             <div className="text-[10px] flex flex-col items-start md:items-end gap-0.5">

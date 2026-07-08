@@ -69,7 +69,15 @@ export default async function GroupDetailsPage({ params }: { params: Promise<{ i
 
             {/* Settings Section - Admin Only */}
             {currentUserId === group.owner && (
-                <GroupSettingsForm groupId={group._id} currentStages={group.includedStages || []} currentColor={group.color || null} currentTextColor={group.textColor || null} groupName={group.name} currentDescription={group.description || ""} />
+                <GroupSettingsForm
+                    groupId={group._id}
+                    currentStages={group.includedStages || []}
+                    currentMultipliers={group.stageMultipliers || {}}
+                    currentColor={group.color || null}
+                    currentTextColor={group.textColor || null}
+                    groupName={group.name}
+                    currentDescription={group.description || ""}
+                />
             )}
         </div>
     );

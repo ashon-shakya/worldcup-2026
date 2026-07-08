@@ -102,6 +102,7 @@ export default function GroupDashboardView({ groupId, leaderboard, group, curren
                                     index={index}
                                     currentUserId={currentUserId}
                                     allowedStages={group.includedStages || []}
+                                    stageMultipliers={group.stageMultipliers || {}}
                                     groupId={groupId}
                                     isPrivate={group.isPrivate}
                                     isAdmin={currentUserId?.toString() === group.owner?.toString()}

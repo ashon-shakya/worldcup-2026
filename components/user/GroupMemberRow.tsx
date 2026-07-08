@@ -12,6 +12,7 @@ interface GroupMemberRowProps {
     index: number;
     currentUserId?: string;
     allowedStages?: string[];
+    stageMultipliers?: Record<string, number>;
     groupId: string;
     isPrivate?: boolean;
     isAdmin?: boolean;
@@ -22,6 +23,7 @@ export default function GroupMemberRow({
     index, 
     currentUserId, 
     allowedStages,
+    stageMultipliers,
     groupId,
     isPrivate = false,
     isAdmin = false
@@ -128,7 +130,12 @@ export default function GroupMemberRow({
                         transition={{ duration: 0.25, ease: "easeInOut" }}
                         className="overflow-hidden"
                     >
-                        <UserPredictionsDropdown userId={user._id} isExpanded={isExpanded} allowedStages={allowedStages} />
+                        <UserPredictionsDropdown 
+                            userId={user._id} 
+                            isExpanded={isExpanded} 
+                            allowedStages={allowedStages} 
+                            stageMultipliers={stageMultipliers} 
+                        />
                     </motion.div>
                 )}
             </AnimatePresence>

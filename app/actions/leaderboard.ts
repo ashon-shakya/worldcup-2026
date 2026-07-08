@@ -52,6 +52,7 @@ export async function getLeaderboardTimeline(groupId?: string) {
 
     let userFilter: any = {};
     let matchFilter: any = { status: "FINISHED" };
+    let stageMultipliers: Record<string, number> = {};
 
     if (groupId) {
         const group = await Group.findById(groupId);
@@ -62,6 +63,7 @@ export async function getLeaderboardTimeline(groupId?: string) {
             ? group.includedStages
             : ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final"];
         matchFilter.stage = { $in: stagesToInclude };
+        stageMultipliers = group.stageMultipliers || {};
     } else {
         userFilter = { optOutGlobal: { $ne: true } };
     }
@@ -82,6 +84,11 @@ export async function getLeaderboardTimeline(groupId?: string) {
 
     const matchIds = matches.map(m => m._id);
 
+    const matchStageMap = new Map<string, string>();
+    matches.forEach(m => {
+        matchStageMap.set(m._id.toString(), m.stage);
+    });
+
     // Fetch all predictions for these users and matches
     const predictions = await Prediction.find({
         match: { $in: matchIds },
@@ -93,10 +100,17 @@ export async function getLeaderboardTimeline(groupId?: string) {
     predictions.forEach(p => {
         const mId = p.match.toString();
         const uId = p.user.toString();
+        let pts = p.points || 0;
+        if (groupId) {
+            const stage = matchStageMap.get(mId) || "";
+            const mult = typeof stageMultipliers[stage] === "number" ? stageMultipliers[stage] : 1;
+            pts = pts * mult;
+        }
+
         if (!predictionPointsMap.has(mId)) {
             predictionPointsMap.set(mId, new Map());
         }
-        predictionPointsMap.get(mId)!.set(uId, p.points || 0);
+        predictionPointsMap.get(mId)!.set(uId, pts);
     });
 
     // Initialize running scores

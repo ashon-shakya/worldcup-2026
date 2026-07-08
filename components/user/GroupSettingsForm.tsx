@@ -9,6 +9,7 @@ import { toast } from "sonner";
 interface GroupSettingsFormProps {
     groupId: string;
     currentStages: string[];
+    currentMultipliers?: Record<string, number>;
     currentColor: string | null;
     currentTextColor: string | null;
     groupName: string;
@@ -54,12 +55,21 @@ const TEXT_COLORS = [
     { hex: "#111827", name: "Jet Black" }
 ];
 
-export default function GroupSettingsForm({ groupId, currentStages, currentColor, currentTextColor, groupName, currentDescription = "" }: GroupSettingsFormProps) {
+export default function GroupSettingsForm({ groupId, currentStages, currentMultipliers, currentColor, currentTextColor, groupName, currentDescription = "" }: GroupSettingsFormProps) {
     const validStages = ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final"];
-    
+
     // Default to all stages if currentStages is empty or null
     const initialStages = currentStages && currentStages.length > 0 ? currentStages : validStages;
     const [selectedStages, setSelectedStages] = useState<string[]>(initialStages);
+    const [selectedMultipliers, setSelectedMultipliers] = useState<Record<string, number>>(() => {
+        const initial: Record<string, number> = {};
+        validStages.forEach(stage => {
+            initial[stage] = (currentMultipliers && currentMultipliers[stage] !== undefined)
+                ? currentMultipliers[stage]
+                : 1;
+        });
+        return initial;
+    });
     const [selectedColor, setSelectedColor] = useState<string | null>(currentColor);
     const [selectedTextColor, setSelectedTextColor] = useState<string | null>(currentTextColor);
     const [description, setDescription] = useState(currentDescription);
@@ -87,7 +97,7 @@ export default function GroupSettingsForm({ groupId, currentStages, currentColor
         }
 
         startTransition(async () => {
-            const result = await updateGroupSettings(groupId, selectedStages, selectedColor, selectedTextColor, description);
+            const result = await updateGroupSettings(groupId, selectedStages, selectedMultipliers, selectedColor, selectedTextColor, description);
             if (result.message === "success") {
                 toast.success("Group settings updated successfully!");
             } else {
@@ -98,40 +108,61 @@ export default function GroupSettingsForm({ groupId, currentStages, currentColor
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 bg-white dark:bg-slate-900/60 rounded-xl shadow-sm border border-gray-200 dark:border-slate-800 p-6">
-            
+
             {/* Configure Scoring Rounds */}
             <div className="lg:col-span-2 space-y-5">
                 <div className="space-y-1">
                     <h2 className="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
                         <Settings className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-                        Configure Scoring Rounds
+                        Configure Scoring Rounds & Multipliers
                     </h2>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                        Select which rounds should contribute to the group's leaderboard points. 
-                        Rounds that are unchecked will be excluded from the group score calculation.
+                        Select which rounds contribute to points. Admin can apply a multiplier weight so points are scaled accordingly (default is 1.0).
                     </p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 pt-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                     {validStages.map((stage) => {
                         const isChecked = selectedStages.includes(stage);
                         return (
-                            <label
+                            <div
                                 key={stage}
-                                className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer select-none transition-all duration-200 ${
-                                    isChecked
+                                className={`flex flex-col gap-2 p-3.5 rounded-xl border transition-all duration-200 ${isChecked
                                         ? "bg-indigo-50/50 dark:bg-indigo-950/20 border-indigo-200 dark:border-indigo-900/40 text-indigo-955 dark:text-indigo-200 font-semibold"
                                         : "bg-white dark:bg-slate-900/20 border-gray-200 dark:border-slate-800 hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-300"
-                                }`}
+                                    }`}
                             >
-                                <input
-                                    type="checkbox"
-                                    checked={isChecked}
-                                    onChange={() => handleCheckboxChange(stage)}
-                                    className="h-4.5 w-4.5 text-indigo-600 focus:ring-indigo-500 border-gray-300 dark:border-slate-700 rounded-md transition-colors"
-                                />
-                                <span className="text-xs sm:text-sm">{stage}</span>
-                            </label>
+                                <label className="flex items-center gap-3 cursor-pointer select-none">
+                                    <input
+                                        type="checkbox"
+                                        checked={isChecked}
+                                        onChange={() => handleCheckboxChange(stage)}
+                                        className="h-4.5 w-4.5 text-indigo-600 focus:ring-indigo-500 border-gray-300 dark:border-slate-700 rounded-md transition-colors"
+                                    />
+                                    <span className="text-xs sm:text-sm">{stage}</span>
+                                </label>
+                                {isChecked && (
+                                    <div className="flex items-center gap-2 mt-1.5 pt-1.5 border-t border-indigo-100/50 dark:border-indigo-900/30 animate-in fade-in slide-in-from-top-1 duration-200">
+                                        <span className="text-[10px] text-indigo-600 dark:text-indigo-400 font-bold uppercase tracking-wider">
+                                            Multiplier:
+                                        </span>
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            step="1"
+                                            value={selectedMultipliers[stage] ?? 1}
+                                            onChange={(e) => {
+                                                const val = parseFloat(e.target.value);
+                                                setSelectedMultipliers(prev => ({
+                                                    ...prev,
+                                                    [stage]: isNaN(val) ? 1 : val
+                                                }));
+                                            }}
+                                            className="w-20 px-2 py-0.5 text-xs text-gray-900 dark:text-white bg-white dark:bg-slate-950 border border-gray-200 dark:border-slate-800 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500 font-medium"
+                                        />
+                                    </div>
+                                )}
+                            </div>
                         );
                     })}
                 </div>
@@ -154,11 +185,10 @@ export default function GroupSettingsForm({ groupId, currentStages, currentColor
                             <button
                                 type="button"
                                 onClick={handleResetColors}
-                                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg border text-xs font-semibold transition-all duration-200 cursor-pointer ${
-                                    selectedColor === null
+                                className={`flex items-center gap-1.5 px-3 py-2 rounded-lg border text-xs font-semibold transition-all duration-200 cursor-pointer ${selectedColor === null
                                         ? "bg-gray-100 dark:bg-slate-800 border-gray-400 dark:border-slate-600 text-gray-900 dark:text-white"
                                         : "bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800"
-                                }`}
+                                    }`}
                                 title="Reset to default theme"
                             >
                                 <XCircle size={14} className="text-red-500" />
@@ -184,11 +214,10 @@ export default function GroupSettingsForm({ groupId, currentStages, currentColor
                                                         setSelectedTextColor("#0f172a");
                                                     }
                                                 }}
-                                                className={`w-6 h-6 rounded-full border transition-all duration-200 cursor-pointer ${
-                                                    isSelected
+                                                className={`w-6 h-6 rounded-full border transition-all duration-200 cursor-pointer ${isSelected
                                                         ? "ring-2 ring-indigo-500 dark:ring-indigo-400 scale-110 border-white dark:border-slate-900"
                                                         : "border-black/5 dark:border-white/5 hover:scale-105"
-                                                }`}
+                                                    }`}
                                                 style={{ backgroundColor: color.hex }}
                                                 title={color.name}
                                             />
@@ -214,11 +243,10 @@ export default function GroupSettingsForm({ groupId, currentStages, currentColor
                                                         setSelectedTextColor("#0f172a");
                                                     }
                                                 }}
-                                                className={`w-6 h-6 rounded-full border transition-all duration-200 cursor-pointer ${bg.className} ${
-                                                    isSelected
+                                                className={`w-6 h-6 rounded-full border transition-all duration-200 cursor-pointer ${bg.className} ${isSelected
                                                         ? "ring-2 ring-indigo-500 dark:ring-indigo-400 scale-110 border-white dark:border-slate-900"
                                                         : "border-black/5 dark:border-white/5 hover:scale-105"
-                                                }`}
+                                                    }`}
                                                 title={bg.name}
                                             />
                                         );
@@ -251,11 +279,10 @@ export default function GroupSettingsForm({ groupId, currentStages, currentColor
                                             key={color.hex}
                                             type="button"
                                             onClick={() => setSelectedTextColor(color.hex)}
-                                            className={`w-6 h-6 rounded-full border transition-all duration-200 cursor-pointer ${
-                                                isSelected
+                                            className={`w-6 h-6 rounded-full border transition-all duration-200 cursor-pointer ${isSelected
                                                     ? "ring-2 ring-indigo-500 dark:ring-indigo-400 scale-110 border-white dark:border-slate-900"
                                                     : "border-white/20 hover:scale-105"
-                                            }`}
+                                                }`}
                                             style={{ backgroundColor: color.hex }}
                                             title={color.name}
                                         />
@@ -305,15 +332,14 @@ export default function GroupSettingsForm({ groupId, currentStages, currentColor
                 </div>
 
                 <div className="flex-1 flex items-center justify-center p-4 bg-gray-50/40 dark:bg-slate-950/10 border border-dashed border-gray-200 dark:border-slate-800 rounded-2xl">
-                    <div 
-                        className={`w-full rounded-xl shadow-xs border p-6 transition-all duration-200 group flex flex-col justify-between max-w-[260px] h-[175px] ${
-                            selectedColor 
-                                ? `border-black/10 shadow-md ${!selectedColor.startsWith("#") ? selectedColor : ""}` 
+                    <div
+                        className={`w-full rounded-xl shadow-xs border p-6 transition-all duration-200 group flex flex-col justify-between max-w-[260px] h-[175px] ${selectedColor
+                                ? `border-black/10 shadow-md ${!selectedColor.startsWith("#") ? selectedColor : ""}`
                                 : "bg-white dark:bg-slate-900/60 border-gray-200 dark:border-slate-800 hover:border-indigo-300"
-                        }`}
-                        style={selectedColor ? { 
-                            ...(selectedColor.startsWith("#") ? { backgroundColor: selectedColor } : {}), 
-                            color: selectedTextColor || "#0f172a" 
+                            }`}
+                        style={selectedColor ? {
+                            ...(selectedColor.startsWith("#") ? { backgroundColor: selectedColor } : {}),
+                            color: selectedTextColor || "#0f172a"
                         } : {}}
                     >
                         <div>

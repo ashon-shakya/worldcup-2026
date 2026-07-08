@@ -82,6 +82,17 @@ const GroupSchema = new Schema(
             type: [String],
             default: ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final"]
         },
+        stageMultipliers: {
+            type: Schema.Types.Mixed,
+            default: {
+                "Group Stage": 1,
+                "Round of 32": 1,
+                "Round of 16": 1,
+                "Quarter Final": 1,
+                "Semi Final": 1,
+                "Final": 1
+            }
+        },
         color: { type: String, default: null },
         textColor: { type: String, default: null },
         description: { type: String, default: "" },
@@ -119,8 +130,8 @@ if (models.Prediction && (!models.Prediction.schema.paths.penaltyPrediction || !
 }
 export const Prediction = models.Prediction || model("Prediction", PredictionSchema);
 
-// Force schema update for Group model when includedStages, color, textColor, or description is added
-if (models.Group && (!models.Group.schema.paths.includedStages || !models.Group.schema.paths.color || !models.Group.schema.paths.textColor || !models.Group.schema.paths.description)) {
+// Force schema update for Group model when includedStages, color, textColor, description, or stageMultipliers is added
+if (models.Group && (!models.Group.schema.paths.includedStages || !models.Group.schema.paths.color || !models.Group.schema.paths.textColor || !models.Group.schema.paths.description || !models.Group.schema.paths.stageMultipliers)) {
     delete models.Group;
 }
 export const Group = models.Group || model("Group", GroupSchema);
