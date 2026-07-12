@@ -22,7 +22,7 @@ export default async function MatchesSchedulePage() {
         matchesByStage[match.stage].push(match);
     });
 
-    const stagesOrder = ["Final", "Semi Final", "Quarter Final", "Round of 16", "Round of 32", "Group Stage"];
+    const stagesOrder = ["Final", "3rd Place", "Semi Final", "Quarter Final", "Round of 16", "Round of 32", "Group Stage"];
     const extraStages = Object.keys(matchesByStage).filter(s => !stagesOrder.includes(s));
 
     return (

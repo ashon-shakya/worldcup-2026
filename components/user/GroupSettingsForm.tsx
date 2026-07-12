@@ -56,7 +56,7 @@ const TEXT_COLORS = [
 ];
 
 export default function GroupSettingsForm({ groupId, currentStages, currentMultipliers, currentColor, currentTextColor, groupName, currentDescription = "" }: GroupSettingsFormProps) {
-    const validStages = ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final"];
+    const validStages = ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "3rd Place", "Final"];
 
     // Default to all stages if currentStages is empty or null
     const initialStages = currentStages && currentStages.length > 0 ? currentStages : validStages;

@@ -20,6 +20,7 @@ const STAGES = [
   "Round of 16",
   "Quarter Final",
   "Semi Final",
+  "3rd Place",
   "Final",
 ];
 const STATUSES = ["SCHEDULED", "LIVE", "FINISHED"];

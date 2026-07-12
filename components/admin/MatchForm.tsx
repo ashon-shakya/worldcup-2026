@@ -111,6 +111,7 @@ export default function MatchForm({ onClose, match }: { onClose?: () => void; ma
                         <option value="Round of 16">Round of 16</option>
                         <option value="Quarter Final">Quarter Final</option>
                         <option value="Semi Final">Semi Final</option>
+                        <option value="3rd Place">3rd Place</option>
                         <option value="Final">Final</option>
                     </select>
                 </div>

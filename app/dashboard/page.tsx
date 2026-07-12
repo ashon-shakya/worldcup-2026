@@ -24,6 +24,14 @@ function getStageTheme(stage: string) {
             badgeClass: "bg-gradient-to-r from-red-600 to-orange-600 text-white font-black border border-orange-500/40",
             title: "Semi Final"
         };
+    } else if (s.includes("3rd") || s.includes("third")) {
+        // 3rd Place Play-off
+        return {
+            level: "third-place",
+            glowClass: "fiery-level-third-place",
+            badgeClass: "bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-500 text-white font-black border border-yellow-450/40",
+            title: "3rd Place Play-off"
+        };
     } else if (s.includes("quarter")) {
         // Quarter Final
         return {

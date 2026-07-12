@@ -61,7 +61,7 @@ export async function getLeaderboardTimeline(groupId?: string) {
         userFilter = { _id: { $in: group.members } };
         const stagesToInclude = group.includedStages && group.includedStages.length > 0
             ? group.includedStages
-            : ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final"];
+            : ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "3rd Place", "Final"];
         matchFilter.stage = { $in: stagesToInclude };
         stageMultipliers = group.stageMultipliers || {};
     } else {

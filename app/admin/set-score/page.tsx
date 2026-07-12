@@ -75,6 +75,7 @@ export default function SetScorePage() {
                                     match.stage === "Round of 16" ? "bg-blue-50 text-blue-700 ring-blue-700/10" :
                                     match.stage === "Quarter Final" ? "bg-amber-50 text-amber-700 ring-amber-700/10" :
                                     match.stage === "Semi Final" ? "bg-purple-50 text-purple-700 ring-purple-700/10" :
+                                    match.stage === "3rd Place" ? "bg-yellow-50 text-yellow-800 ring-yellow-600/20" :
                                     match.stage === "Final" ? "bg-rose-50 text-rose-700 ring-rose-700/10" :
                                     "bg-indigo-50 text-indigo-700 ring-indigo-700/10"
                                 }`}>

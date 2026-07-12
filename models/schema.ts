@@ -80,7 +80,7 @@ const GroupSchema = new Schema(
         members: [{ type: Schema.Types.ObjectId, ref: "User" }],
         includedStages: {
             type: [String],
-            default: ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final"]
+            default: ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "3rd Place", "Final"]
         },
         stageMultipliers: {
             type: Schema.Types.Mixed,
@@ -90,6 +90,7 @@ const GroupSchema = new Schema(
                 "Round of 16": 1,
                 "Quarter Final": 1,
                 "Semi Final": 1,
+                "3rd Place": 1,
                 "Final": 1
             }
         },

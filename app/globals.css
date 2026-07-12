@@ -532,6 +532,35 @@
   }
 }
 
+/* Level 4.5: 3rd Place */
+.fiery-level-third-place {
+  animation: fire-flicker-third-place 2.8s infinite ease-in-out;
+}
+.fiery-level-third-place::before {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    #d97706 60deg,
+    #f59e0b 180deg,
+    #b45309 240deg,
+    transparent 360deg
+  );
+  animation: rotate-fire 4s linear infinite;
+}
+.fiery-level-third-place::after {
+  background: linear-gradient(to bottom, #0d0e1b, #06060c);
+}
+
+@keyframes fire-flicker-third-place {
+  0%, 100% {
+    filter: drop-shadow(0 0 7px rgba(217, 119, 6, 0.55)) drop-shadow(0 0 18px rgba(245, 158, 11, 0.35));
+  }
+  50% {
+    filter: drop-shadow(0 0 14px rgba(217, 119, 6, 0.8)) drop-shadow(0 0 28px rgba(245, 158, 11, 0.55));
+  }
+}
+
+
 /* Level 5: Final (Intense Blazing) */
 .fiery-level-final {
   animation: fire-flicker-final 1.8s infinite ease-in-out, pulse-final 4s infinite ease-in-out;
