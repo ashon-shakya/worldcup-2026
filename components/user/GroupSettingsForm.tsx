@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Settings, Palette, Eye, Users, ArrowRight, XCircle, Type } from "lucide-react";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
+import { ALL_STAGES } from "@/lib/constants";
 
 interface GroupSettingsFormProps {
     groupId: string;
@@ -56,7 +57,7 @@ const TEXT_COLORS = [
 ];
 
 export default function GroupSettingsForm({ groupId, currentStages, currentMultipliers, currentColor, currentTextColor, groupName, currentDescription = "" }: GroupSettingsFormProps) {
-    const validStages = ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "3rd Place", "Final"];
+    const validStages = ALL_STAGES;
 
     // Default to all stages if currentStages is empty or null
     const initialStages = currentStages && currentStages.length > 0 ? currentStages : validStages;

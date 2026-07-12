@@ -3,6 +3,7 @@
 import { auth } from "@/auth";
 import { Match, Prediction, Team } from "@/models/schema";
 import connectToDatabase from "@/lib/db";
+import { isKnockoutStage } from "@/lib/constants";
 import { revalidatePath, unstable_noStore as noStore } from "next/cache";
 import { z } from "zod";
 
@@ -45,8 +46,7 @@ export async function submitPrediction(prevState: any, formData: FormData) {
         }
 
         // Enforce penalty prediction only if it's a draw
-        const isKnockoutStage = ["Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final", "3rd Place"].includes(match.stage);
-        const isKnockout = match.isKnockout || isKnockoutStage;
+        const isKnockout = match.isKnockout || isKnockoutStage(match.stage);
 
         const isDraw = homeScore === awayScore;
 

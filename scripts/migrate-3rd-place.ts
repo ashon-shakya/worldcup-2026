@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import { Group } from "../models/schema";
 import path from "path";
+import { ALL_STAGES, DEFAULT_STAGE_MULTIPLIERS } from "../lib/constants";
 
 // Load environment variables from .env.local or .env
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
@@ -30,7 +31,7 @@ async function migrate() {
 
             // Initialize/update includedStages
             if (!group.includedStages) {
-                group.includedStages = ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "3rd Place", "Final"];
+                group.includedStages = [...ALL_STAGES];
                 modified = true;
             } else if (!group.includedStages.includes("3rd Place")) {
                 // Insert 3rd Place before Final if Final exists, otherwise append
@@ -47,15 +48,7 @@ async function migrate() {
 
             // Initialize/update stageMultipliers
             if (!group.stageMultipliers) {
-                group.stageMultipliers = {
-                    "Group Stage": 1,
-                    "Round of 32": 1,
-                    "Round of 16": 1,
-                    "Quarter Final": 1,
-                    "Semi Final": 1,
-                    "3rd Place": 1,
-                    "Final": 1
-                };
+                group.stageMultipliers = { ...DEFAULT_STAGE_MULTIPLIERS };
                 modified = true;
             } else if (group.stageMultipliers["3rd Place"] === undefined) {
                 group.stageMultipliers["3rd Place"] = 1;

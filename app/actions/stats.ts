@@ -3,6 +3,7 @@
 import { auth } from "@/auth";
 import { Match, Prediction, User, Team } from "@/models/schema";
 import connectToDatabase from "@/lib/db";
+import { isKnockoutStage } from "@/lib/constants";
 import { getGlobalLeaderboard } from "./leaderboard";
 import { getPointSettings } from "./admin/settings";
 import { unstable_noStore as noStore } from "next/cache";
@@ -90,7 +91,7 @@ export async function getUserStatsPageData(targetUserId?: string) {
         }
 
         // Check if outcome is correct
-        const isKnockout = match.isKnockout || ["Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final", "3rd Place"].includes(match.stage);
+        const isKnockout = match.isKnockout || isKnockoutStage(match.stage);
         const predOutcome = Math.sign(p.homeScore - p.awayScore);
         const actualOutcome = Math.sign(match.homeScore - match.awayScore);
 

@@ -2,6 +2,7 @@
 
 import { submitPrediction } from "@/app/actions/predictions";
 import { useActionState, useEffect, useState } from "react";
+import { isKnockoutStage } from "@/lib/constants";
 import { useFormStatus } from "react-dom";
 import { Calendar, Lock, CheckCircle } from "lucide-react";
 import TeamMatchesModal from "./TeamMatchesModal";
@@ -55,9 +56,7 @@ export default function MatchCard({ match, prediction }: MatchCardProps) {
     const isLocked = new Date() > new Date(new Date(match.kickOff).getTime() - 5 * 60000);
     const isFinished = match.status === "FINISHED";
 
-    // Inferred Knockout Status (Fallback for legacy matches)
-    const isKnockoutStage = ["Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final", "3rd Place"].includes(match.stage);
-    const isKnockout = match.isKnockout || isKnockoutStage;
+    const isKnockout = match.isKnockout || isKnockoutStage(match.stage);
 
     useEffect(() => {
         if (isKnockout && isDraw) {

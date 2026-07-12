@@ -1,4 +1,5 @@
 import mongoose, { Schema, model, models } from "mongoose";
+import { ALL_STAGES, DEFAULT_STAGE_MULTIPLIERS } from "../lib/constants";
 
 // --- User Schema ---
 const UserSchema = new Schema(
@@ -80,19 +81,11 @@ const GroupSchema = new Schema(
         members: [{ type: Schema.Types.ObjectId, ref: "User" }],
         includedStages: {
             type: [String],
-            default: ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "3rd Place", "Final"]
+            default: ALL_STAGES
         },
         stageMultipliers: {
             type: Schema.Types.Mixed,
-            default: {
-                "Group Stage": 1,
-                "Round of 32": 1,
-                "Round of 16": 1,
-                "Quarter Final": 1,
-                "Semi Final": 1,
-                "3rd Place": 1,
-                "Final": 1
-            }
+            default: DEFAULT_STAGE_MULTIPLIERS
         },
         color: { type: String, default: null },
         textColor: { type: String, default: null },

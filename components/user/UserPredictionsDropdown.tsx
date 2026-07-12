@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { getPublicPredictions } from "@/app/actions/predictions";
 import { ChevronLeft, ChevronRight, Calendar, Clock, Trophy, HelpCircle } from "lucide-react";
+import { isKnockoutStage } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
 import LocalTime from "@/components/ui/LocalTime";
 
@@ -179,8 +180,7 @@ export default function UserPredictionsDropdown({ userId, isExpanded, allowedSta
                             const hasActualScore = isFinished || isLive;
 
                             // Inferred Knockout Status (Fallback for legacy matches)
-                            const isKnockoutStage = ["Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final", "3rd Place"].includes(match.stage);
-                            const isKnockout = match.isKnockout || isKnockoutStage;
+                            const isKnockout = match.isKnockout || isKnockoutStage(match.stage);
 
                             const multiplier = stageMultipliers && typeof stageMultipliers[match.stage] === "number"
                                 ? stageMultipliers[match.stage]

@@ -7,13 +7,14 @@ import { getStoredFilters, setStoredFilters } from "@/lib/filterStorage";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import Pagination from "@/components/admin/Pagination";
 import { toast } from "sonner";
+import { ALL_STAGES } from "@/lib/constants";
 
 import ScoreModal from "@/components/admin/ScoreModal";
 
 type SortKey = "kickOff" | "stage" | "status";
 type SortDir = "asc" | "desc";
 
-const STAGES = ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "3rd Place", "Final"];
+const STAGES = ALL_STAGES;
 const STATUSES = ["SCHEDULED", "LIVE", "FINISHED"];
 
 export default function MatchesPage() {

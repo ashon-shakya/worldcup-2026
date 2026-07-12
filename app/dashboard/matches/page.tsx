@@ -3,6 +3,7 @@ import { getMatches } from "@/app/actions/admin/matches";
 import { getUserPredictions } from "@/app/actions/predictions";
 import PaginatedMatchList from "@/components/user/PaginatedMatchList";
 import { redirect } from "next/navigation";
+import { ALL_STAGES } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +23,7 @@ export default async function MatchesSchedulePage() {
         matchesByStage[match.stage].push(match);
     });
 
-    const stagesOrder = ["Final", "3rd Place", "Semi Final", "Quarter Final", "Round of 16", "Round of 32", "Group Stage"];
+    const stagesOrder = [...ALL_STAGES].reverse();
     const extraStages = Object.keys(matchesByStage).filter(s => !stagesOrder.includes(s));
 
     return (

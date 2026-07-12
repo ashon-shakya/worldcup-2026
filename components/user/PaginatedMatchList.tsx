@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from "react";
 import { getStoredFilters, setStoredFilters } from "@/lib/filterStorage";
 import MatchCard from "@/components/user/MatchCard";
+import { ALL_STAGES } from "@/lib/constants";
 import {
   ChevronLeft,
   ChevronRight,
@@ -14,15 +15,7 @@ import {
 } from "lucide-react";
 
 const MATCHES_PER_PAGE = 10;
-const STAGES = [
-  "Group Stage",
-  "Round of 32",
-  "Round of 16",
-  "Quarter Final",
-  "Semi Final",
-  "3rd Place",
-  "Final",
-];
+const STAGES = ALL_STAGES;
 const STATUSES = ["SCHEDULED", "LIVE", "FINISHED"];
 
 type SortKey = "kickOff" | "stage";

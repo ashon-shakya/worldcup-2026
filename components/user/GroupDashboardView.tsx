@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Trophy, ChevronLeft, ChevronRight, Calendar, Clock, HelpCircle, FileText, ListOrdered, ChevronDown } from "lucide-react";
 import { getGroupFinishedMatchesPredictions } from "@/app/actions/groups";
 import Link from "next/link";
+import { isKnockoutStage } from "@/lib/constants";
 import GroupMemberRow from "./GroupMemberRow";
 import LeaderboardRace from "./LeaderboardRace";
 import LocalTime from "@/components/ui/LocalTime";
@@ -148,8 +149,7 @@ export default function GroupDashboardView({ groupId, leaderboard, group, curren
                             {/* Accordion List */}
                             <div className="space-y-3">
                                 {matches.map((match: any) => {
-                                    const isKnockoutStage = ["Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final", "3rd Place"].includes(match.stage);
-                                    const isKnockout = match.isKnockout || isKnockoutStage;
+                                    const isKnockout = match.isKnockout || isKnockoutStage(match.stage);
                                     const isExpanded = expandedMatchId === match._id;
 
                                     return (

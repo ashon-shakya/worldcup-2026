@@ -4,6 +4,7 @@ import { createMatch, updateMatch } from "@/app/actions/admin/matches";
 import { getTeams } from "@/app/actions/admin/teams";
 import { useActionState, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
+import { ALL_STAGES } from "@/lib/constants";
 
 function SubmitButton() {
     const { pending } = useFormStatus();
@@ -106,13 +107,9 @@ export default function MatchForm({ onClose, match }: { onClose?: () => void; ma
                         defaultValue={match?.stage || "Group Stage"}
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     >
-                        <option value="Group Stage">Group Stage</option>
-                        <option value="Round of 32">Round of 32</option>
-                        <option value="Round of 16">Round of 16</option>
-                        <option value="Quarter Final">Quarter Final</option>
-                        <option value="Semi Final">Semi Final</option>
-                        <option value="3rd Place">3rd Place</option>
-                        <option value="Final">Final</option>
+                        {ALL_STAGES.map(stage => (
+                            <option key={stage} value={stage}>{stage}</option>
+                        ))}
                     </select>
                 </div>
                 {state?.errors?.stage && <p className="text-red-500 text-sm">{state.errors.stage[0]}</p>}

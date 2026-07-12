@@ -3,6 +3,7 @@
 import connectToDatabase from "@/lib/db";
 import { Group, Prediction, User, Match } from "@/models/schema";
 import { auth } from "@/auth";
+import { ALL_STAGES } from "@/lib/constants";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -115,9 +116,9 @@ export async function getGroupDetails(groupId: string) {
     // Default to all stages if includedStages is missing or empty
     const stagesToInclude = group.includedStages && group.includedStages.length > 0
         ? group.includedStages
-        : ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "3rd Place", "Final"];
+        : ALL_STAGES;
 
-    const validStages = ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "3rd Place", "Final"];
+    const validStages = ALL_STAGES;
     const stageMultipliers = group.stageMultipliers || {};
     const branches = validStages.map(stage => ({
         case: { $eq: ["$matchInfo.stage", stage] },
@@ -272,7 +273,7 @@ export async function updateGroupSettings(groupId: string, stages: string[], mul
             return { message: "Only the group owner can modify settings" };
         }
 
-        const validStages = ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "3rd Place", "Final"];
+        const validStages = ALL_STAGES;
         const filteredStages = stages.filter(s => validStages.includes(s));
 
         if (filteredStages.length === 0) {
@@ -318,7 +319,7 @@ export async function getGroupFinishedMatchesPredictions(groupId: string, page: 
 
     const stagesToInclude = group.includedStages && group.includedStages.length > 0
         ? group.includedStages
-        : ["Group Stage", "Round of 32", "Round of 16", "Quarter Final", "Semi Final", "3rd Place", "Final"];
+        : ALL_STAGES;
 
     const limit = 10;
     const skip = (page - 1) * limit;

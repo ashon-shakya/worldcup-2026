@@ -3,6 +3,7 @@
 import { Match } from "@/models/schema";
 import connectToDatabase from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { isKnockoutStage } from "@/lib/constants";
 import { z } from "zod";
 import { Prediction } from "@/models/schema";
 import { calculatePoints } from "@/lib/scoring";
@@ -137,7 +138,7 @@ export async function updateMatchScore(id: string, prevState: any, formData: For
         await connectToDatabase();
         // First get the match to check stage if isKnockout is missing
         const existingMatch = await Match.findById(id);
-        const isKnockoutStage = ["Round of 32", "Round of 16", "Quarter Final", "Semi Final", "Final", "3rd Place"].includes(existingMatch?.stage);
+        const isKnockout = existingMatch?.isKnockout || isKnockoutStage(existingMatch?.stage);
 
         // Determine winner logic
         let winnerId = null;
@@ -157,7 +158,7 @@ export async function updateMatchScore(id: string, prevState: any, formData: For
             penaltyWinner: penaltyWinner || null,
             winner: winnerId,
             // Ensure isKnockout is set if it wasn't
-            isKnockout: existingMatch?.isKnockout || isKnockoutStage
+            isKnockout: existingMatch?.isKnockout || isKnockout
         };
 
         // Filled by the name of the moderator who updates the score
