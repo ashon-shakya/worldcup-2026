@@ -120,8 +120,8 @@ export default function PaginatedMatchList({
           aVal = new Date(a.match.kickOff).getTime();
           bVal = new Date(b.match.kickOff).getTime();
         } else if (sortKey === "stage") {
-          aVal = STAGES.indexOf(a.stage);
-          bVal = STAGES.indexOf(b.stage);
+          aVal = STAGES.indexOf(a.stage as any);
+          bVal = STAGES.indexOf(b.stage as any);
           if (aVal === -1) aVal = 999;
           if (bVal === -1) bVal = 999;
         }

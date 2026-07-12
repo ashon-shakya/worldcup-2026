@@ -60,7 +60,7 @@ export default function GroupSettingsForm({ groupId, currentStages, currentMulti
     const validStages = ALL_STAGES;
 
     // Default to all stages if currentStages is empty or null
-    const initialStages = currentStages && currentStages.length > 0 ? currentStages : validStages;
+    const initialStages = currentStages && currentStages.length > 0 ? currentStages : [...validStages];
     const [selectedStages, setSelectedStages] = useState<string[]>(initialStages);
     const [selectedMultipliers, setSelectedMultipliers] = useState<Record<string, number>>(() => {
         const initial: Record<string, number> = {};

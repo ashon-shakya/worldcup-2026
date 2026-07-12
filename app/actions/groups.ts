@@ -274,7 +274,7 @@ export async function updateGroupSettings(groupId: string, stages: string[], mul
         }
 
         const validStages = ALL_STAGES;
-        const filteredStages = stages.filter(s => validStages.includes(s));
+        const filteredStages = stages.filter(s => validStages.includes(s as any));
 
         if (filteredStages.length === 0) {
             return { message: "You must include at least one round" };

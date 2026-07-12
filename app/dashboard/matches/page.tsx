@@ -24,7 +24,7 @@ export default async function MatchesSchedulePage() {
     });
 
     const stagesOrder = [...ALL_STAGES].reverse();
-    const extraStages = Object.keys(matchesByStage).filter(s => !stagesOrder.includes(s));
+    const extraStages = Object.keys(matchesByStage).filter(s => !stagesOrder.includes(s as any));
 
     return (
         <div>
