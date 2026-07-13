@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getUnsetMatches } from "@/app/actions/admin/matches";
+import { getPointSettings } from "@/app/actions/admin/settings";
 import ScoreModal from "@/components/admin/ScoreModal";
 import { Calendar, MapPin, Trophy, Clock, CheckCircle2 } from "lucide-react";
 
@@ -9,6 +10,7 @@ export default function SetScorePage() {
     const [matches, setMatches] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [scoreModalMatch, setScoreModalMatch] = useState<any>(null);
+    const [settings, setSettings] = useState<any>(null);
 
     const fetchUnsetMatches = async () => {
         setIsLoading(true);
@@ -22,8 +24,18 @@ export default function SetScorePage() {
         }
     };
 
+    const fetchSettings = async () => {
+        try {
+            const data = await getPointSettings();
+            setSettings(data);
+        } catch (error) {
+            console.error("Failed to fetch settings:", error);
+        }
+    };
+
     useEffect(() => {
         fetchUnsetMatches();
+        fetchSettings();
     }, [scoreModalMatch]);
 
     const formatDate = (dateString: string) => {
@@ -141,9 +153,10 @@ export default function SetScorePage() {
             )}
 
             {/* Score Entry Modal */}
-            {scoreModalMatch && (
+            {scoreModalMatch && settings && (
                 <ScoreModal
                     match={scoreModalMatch}
+                    settings={settings}
                     onClose={() => setScoreModalMatch(null)}
                 />
             )}

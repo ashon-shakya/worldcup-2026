@@ -26,6 +26,7 @@ interface PaginatedMatchListProps {
   stagesOrder: string[];
   extraStages: string[];
   userPredictions: Record<string, any>;
+  settings?: any;
 }
 
 export default function PaginatedMatchList({
@@ -33,6 +34,7 @@ export default function PaginatedMatchList({
   stagesOrder,
   extraStages,
   userPredictions,
+  settings,
 }: PaginatedMatchListProps) {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -337,6 +339,7 @@ export default function PaginatedMatchList({
                     key={match._id}
                     match={match}
                     prediction={userPredictions[match._id]}
+                    settings={settings}
                   />
                 ))}
               </div>

@@ -53,6 +53,12 @@ const MatchSchema = new Schema(
         penaltyWinner: { type: Schema.Types.ObjectId, ref: "Team" },
         winner: { type: Schema.Types.ObjectId, ref: "Team" }, // Null if draw
         scoreUpdatedBy: { type: String, default: null },
+        spRedCards: { type: Boolean, default: null },
+        spTotalCards: { type: String, enum: ["UNDER", "OVER"], default: null },
+        spExtraTime: { type: Boolean, default: null },
+        spInGamePenalty: { type: Boolean, default: null },
+        spOwnGoal: { type: Boolean, default: null },
+        spFirstTeamToScore: { type: Schema.Types.ObjectId, ref: "Team", default: null },
     },
     { timestamps: true },
 );
@@ -67,6 +73,12 @@ const PredictionSchema = new Schema(
         penaltyPrediction: { type: Boolean, default: false }, // true = "Yes", false = "No"
         predictedWinner: { type: Schema.Types.ObjectId, ref: "Team" }, // User's pick for winner if penalties
         points: { type: Number, default: 0 },
+        spRedCards: { type: Boolean, default: null },
+        spTotalCards: { type: String, enum: ["UNDER", "OVER"], default: null },
+        spExtraTime: { type: Boolean, default: null },
+        spInGamePenalty: { type: Boolean, default: null },
+        spOwnGoal: { type: Boolean, default: null },
+        spFirstTeamToScore: { type: Schema.Types.ObjectId, ref: "Team", default: null },
     },
     { timestamps: true },
 );
@@ -113,13 +125,13 @@ if (models.Team && !models.Team.schema.paths.championImageUrl) {
 }
 export const Team = models.Team || model("Team", TeamSchema);
 // Force schema update if hot reload kept old version without new fields
-if (models.Match && (!models.Match.schema.paths.wentToPenalties || !models.Match.schema.paths.isKnockout || !models.Match.schema.paths.penaltyWinner || !models.Match.schema.paths.winner || !models.Match.schema.paths.scoreUpdatedBy)) {
+if (models.Match && (!models.Match.schema.paths.wentToPenalties || !models.Match.schema.paths.isKnockout || !models.Match.schema.paths.penaltyWinner || !models.Match.schema.paths.winner || !models.Match.schema.paths.scoreUpdatedBy || !models.Match.schema.paths.spRedCards)) {
     delete models.Match;
 }
 export const Match = models.Match || model("Match", MatchSchema);
 
 // Force schema update if hot reload kept old version without penaltyPrediction
-if (models.Prediction && (!models.Prediction.schema.paths.penaltyPrediction || !models.Prediction.schema.paths.predictedWinner)) {
+if (models.Prediction && (!models.Prediction.schema.paths.penaltyPrediction || !models.Prediction.schema.paths.predictedWinner || !models.Prediction.schema.paths.spRedCards)) {
     delete models.Prediction;
 }
 export const Prediction = models.Prediction || model("Prediction", PredictionSchema);

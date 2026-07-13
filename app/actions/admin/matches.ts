@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { isKnockoutStage } from "@/lib/constants";
 import { z } from "zod";
 import { Prediction } from "@/models/schema";
-import { calculatePoints } from "@/lib/scoring";
+import { calculatePoints, isEventEnabled } from "@/lib/scoring";
 import { getPointSettings } from "@/app/actions/admin/settings";
 import { auth } from "@/auth";
 
@@ -117,6 +117,12 @@ const ScoreSchema = z.object({
     awayScore: z.coerce.number().min(0),
     wentToPenalties: z.coerce.boolean().optional(),
     penaltyWinner: z.string().optional(),
+    spRedCards: z.preprocess(val => val === "true" || val === true, z.boolean()).optional(),
+    spTotalCards: z.enum(["UNDER", "OVER"]).optional(),
+    spExtraTime: z.preprocess(val => val === "true" || val === true, z.boolean()).optional(),
+    spInGamePenalty: z.preprocess(val => val === "true" || val === true, z.boolean()).optional(),
+    spOwnGoal: z.preprocess(val => val === "true" || val === true, z.boolean()).optional(),
+    spFirstTeamToScore: z.string().optional(),
 });
 
 export async function updateMatchScore(id: string, prevState: any, formData: FormData) {
@@ -129,10 +135,22 @@ export async function updateMatchScore(id: string, prevState: any, formData: For
     const parsed = ScoreSchema.safeParse(data);
 
     if (!parsed.success) {
-        return { message: "Invalid score" };
+        console.error("Score validation failed details:", parsed.error.flatten());
+        return { message: "Invalid score or special predictions" };
     }
 
-    const { homeScore, awayScore, wentToPenalties, penaltyWinner } = parsed.data;
+    const {
+        homeScore,
+        awayScore,
+        wentToPenalties,
+        penaltyWinner,
+        spRedCards,
+        spTotalCards,
+        spExtraTime,
+        spInGamePenalty,
+        spOwnGoal,
+        spFirstTeamToScore
+    } = parsed.data;
 
     try {
         await connectToDatabase();
@@ -150,6 +168,9 @@ export async function updateMatchScore(id: string, prevState: any, formData: For
             winnerId = penaltyWinner;
         }
 
+        // Fetch point settings
+        const settings = await getPointSettings();
+
         const updateFields: any = {
             homeScore,
             awayScore,
@@ -158,7 +179,13 @@ export async function updateMatchScore(id: string, prevState: any, formData: For
             penaltyWinner: penaltyWinner || null,
             winner: winnerId,
             // Ensure isKnockout is set if it wasn't
-            isKnockout: existingMatch?.isKnockout || isKnockout
+            isKnockout: existingMatch?.isKnockout || isKnockout,
+            spRedCards: isEventEnabled(existingMatch.stage, "spRedCards", settings) ? (spRedCards !== undefined ? spRedCards : null) : null,
+            spTotalCards: isEventEnabled(existingMatch.stage, "spTotalCards", settings) ? (spTotalCards || null) : null,
+            spExtraTime: isEventEnabled(existingMatch.stage, "spExtraTime", settings) ? (spExtraTime !== undefined ? spExtraTime : null) : null,
+            spInGamePenalty: isEventEnabled(existingMatch.stage, "spInGamePenalty", settings) ? (spInGamePenalty !== undefined ? spInGamePenalty : null) : null,
+            spOwnGoal: isEventEnabled(existingMatch.stage, "spOwnGoal", settings) ? (spOwnGoal !== undefined ? spOwnGoal : null) : null,
+            spFirstTeamToScore: isEventEnabled(existingMatch.stage, "spFirstTeamToScore", settings) ? ((spFirstTeamToScore && spFirstTeamToScore !== "" && spFirstTeamToScore !== "none") ? spFirstTeamToScore : null) : null,
         };
 
         // Filled by the name of the moderator who updates the score
@@ -173,9 +200,6 @@ export async function updateMatchScore(id: string, prevState: any, formData: For
 
         const predictions = await Prediction.find({ match: id });
 
-        // Fetch point settings
-        const settings = await getPointSettings();
-
         // Update all predictions for this match with calculated points
         await Promise.all(predictions.map(async (prediction: any) => {
             const points = calculatePoints(
@@ -188,7 +212,24 @@ export async function updateMatchScore(id: string, prevState: any, formData: For
                 wentToPenalties || false,
                 updatedMatch.isKnockout,
                 prediction.predictedWinner,
-                updatedMatch.winner
+                updatedMatch.winner,
+                updatedMatch.stage,
+                {
+                    spRedCards: prediction.spRedCards,
+                    spTotalCards: prediction.spTotalCards,
+                    spExtraTime: prediction.spExtraTime,
+                    spInGamePenalty: prediction.spInGamePenalty,
+                    spOwnGoal: prediction.spOwnGoal,
+                    spFirstTeamToScore: prediction.spFirstTeamToScore,
+                },
+                {
+                    spRedCards: updatedMatch.spRedCards,
+                    spTotalCards: updatedMatch.spTotalCards,
+                    spExtraTime: updatedMatch.spExtraTime,
+                    spInGamePenalty: updatedMatch.spInGamePenalty,
+                    spOwnGoal: updatedMatch.spOwnGoal,
+                    spFirstTeamToScore: updatedMatch.spFirstTeamToScore,
+                }
             );
 
             await Prediction.findByIdAndUpdate(prediction._id, { points });

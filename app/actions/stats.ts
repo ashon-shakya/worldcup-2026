@@ -80,11 +80,11 @@ export async function getUserStatsPageData(targetUserId?: string) {
         // Categorize points distribution
         if (pts >= 13) {
             perfectCount++;
-        } else if (pts === 8) {
+        } else if (pts >= 8) {
             nearMissCount++;
-        } else if (pts === 5) {
+        } else if (pts >= 5) {
             scoreOnlyCount++;
-        } else if (pts === 3 || pts === 6) {
+        } else if (pts > 0) {
             outcomeOnlyCount++;
         } else {
             zeroPointsCount++;

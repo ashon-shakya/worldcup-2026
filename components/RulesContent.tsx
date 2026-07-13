@@ -119,6 +119,57 @@ export default function RulesContent() {
                 </div>
             </div>
 
+            {/* Special Predictions Rules */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div className="bg-gradient-to-r from-teal-600 to-indigo-650 px-6 py-4">
+                    <h2 className="text-xl font-bold text-white flex items-center">
+                        <Target className="mr-2" />
+                        Special Event Predictions
+                    </h2>
+                </div>
+                <div className="p-6 space-y-6 text-gray-900">
+                    <p className="text-gray-600">
+                        In enabled stages, you can make optional event-based predictions for additional points. Correct answers yield positive points, while incorrect answers result in negative markings.
+                    </p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg border border-slate-100 dark:border-slate-800">
+                            <div className="font-bold text-gray-900 dark:text-white text-sm mb-1">Red Cards?</div>
+                            <p className="text-xs text-gray-600 dark:text-gray-400">Predict if any player (including players on the bench) will be shown a red card during the match.</p>
+                        </div>
+                        <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg border border-slate-100 dark:border-slate-800">
+                            <div className="font-bold text-gray-900 dark:text-white text-sm mb-1">Total Cards?</div>
+                            <p className="text-xs text-gray-600 dark:text-gray-400">Predict whether total yellow + red cards shown to both teams will be Under 5 or 5 and over (a red card counts as 1 card).</p>
+                        </div>
+                        <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg border border-slate-100 dark:border-slate-800">
+                            <div className="font-bold text-gray-900 dark:text-white text-sm mb-1">Extra Time?</div>
+                            <p className="text-xs text-gray-600 dark:text-gray-400">Predict if the match will go to extra time (the score at the end of 90 minutes is a tie).</p>
+                        </div>
+                        <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg border border-slate-100 dark:border-slate-800">
+                            <div className="font-bold text-gray-900 dark:text-white text-sm mb-1">In-Game PK?</div>
+                            <p className="text-xs text-gray-600 dark:text-gray-400">Predict if any penalty kick is awarded and taken during normal play or extra time (excluding shootouts).</p>
+                        </div>
+                        <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg border border-slate-100 dark:border-slate-800">
+                            <div className="font-bold text-gray-900 dark:text-white text-sm mb-1">Own Goal?</div>
+                            <p className="text-xs text-gray-600 dark:text-gray-400">Predict if any player scores a goal against their own team during normal play or extra time.</p>
+                        </div>
+                        <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-lg border border-slate-100 dark:border-slate-800">
+                            <div className="font-bold text-gray-900 dark:text-white text-sm mb-1">1st to Score?</div>
+                            <p className="text-xs text-gray-600 dark:text-gray-400">Predict which team will score the first goal. Choose 'No Goal' if you predict a 0-0 final score.</p>
+                        </div>
+                    </div>
+
+                    <div className="bg-amber-50 dark:bg-amber-955/20 border border-amber-250 dark:border-amber-900/50 rounded-lg p-4 text-xs text-amber-800 dark:text-amber-300">
+                        <strong>Important Rules:</strong>
+                        <ul className="list-disc pl-4 mt-2 space-y-1.5 leading-relaxed">
+                            <li>Special predictions are completely optional. Leaving a category blank (None) will result in 0 points for that event.</li>
+                            <li>If you make a prediction: Correct answers add points, whereas Incorrect answers subtract points (as configured in points settings).</li>
+                            <li>Round multipliers (e.g. x2 for Semi-Finals) apply to both regular match outcome scores AND special prediction outcome points.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
             {/* Rules & Deadlines */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">

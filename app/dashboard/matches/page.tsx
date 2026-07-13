@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { getMatches } from "@/app/actions/admin/matches";
 import { getUserPredictions } from "@/app/actions/predictions";
+import { getPointSettings } from "@/app/actions/admin/settings";
 import PaginatedMatchList from "@/components/user/PaginatedMatchList";
 import { redirect } from "next/navigation";
 import { ALL_STAGES } from "@/lib/constants";
@@ -13,6 +14,7 @@ export default async function MatchesSchedulePage() {
 
     const matches = await getMatches();
     const userPredictions = await getUserPredictions(session.user.id);
+    const settings = await getPointSettings();
 
     // Group matches by stage
     const matchesByStage: Record<string, any[]> = {};
@@ -34,6 +36,7 @@ export default async function MatchesSchedulePage() {
                 stagesOrder={stagesOrder}
                 extraStages={extraStages}
                 userPredictions={userPredictions}
+                settings={settings}
             />
         </div>
     );

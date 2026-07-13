@@ -264,11 +264,13 @@ export default function GroupDashboardView({ groupId, leaderboard, group, curren
                                                                 })();
 
                                                                 // Points styling
-                                                                let pointsStyle = "bg-gray-50 dark:bg-slate-900/50 text-gray-400 dark:text-gray-550 border border-gray-150 dark:border-gray-800";
+                                                                let pointsStyle = "bg-gray-50 dark:bg-slate-900/50 text-gray-400 dark:text-gray-555 border border-gray-150 dark:border-gray-800";
                                                                 if (pred && pred.points >= 13) {
                                                                     pointsStyle = "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/50 font-bold";
                                                                 } else if (pred && pred.points > 0) {
                                                                     pointsStyle = "bg-indigo-50 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/50 font-bold";
+                                                                } else if (pred && pred.points < 0) {
+                                                                    pointsStyle = "bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-455 border border-rose-100 dark:border-rose-900/50 font-bold";
                                                                 }
 
                                                                 return (
@@ -312,7 +314,7 @@ export default function GroupDashboardView({ groupId, leaderboard, group, curren
                                                                         <td className="px-4 py-3 text-center">
                                                                             {pred ? (
                                                                                 <span className={`inline-block text-[10px] px-2 py-0.5 rounded ${pointsStyle}`}>
-                                                                                    +{pred.points} PTS
+                                                                                    {pred.points >= 0 ? "+" : ""}{pred.points} PTS
                                                                                 </span>
                                                                             ) : (
                                                                                 <span className="text-[10px] text-gray-400 dark:text-gray-600 font-medium">-</span>

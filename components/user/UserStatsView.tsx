@@ -495,6 +495,9 @@ export default function UserStatsView({ stats }: StatsProps) {
                                     } else if (item.points === 3 || item.points === 6) {
                                         barColor = "bg-gradient-to-t from-cyan-600 to-cyan-400";
                                         barGlow = "shadow-md shadow-cyan-500/20 dark:shadow-cyan-400/10";
+                                    } else if (item.points < 0) {
+                                        barColor = "bg-gradient-to-t from-rose-600 to-rose-400";
+                                        barGlow = "shadow-md shadow-rose-500/20 dark:shadow-rose-400/10";
                                     }
 
                                     return (
@@ -584,9 +587,9 @@ export default function UserStatsView({ stats }: StatsProps) {
                                         <span className="bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 px-2 py-1 rounded-lg border border-indigo-100/50 dark:border-indigo-900/30">
                                             Actual score: <span className="font-mono font-black">{recentPredictions[hoveredBar].actualScore}</span>
                                         </span>
-                                        <span className="bg-amber-400 text-slate-900 px-2.5 py-1 rounded-lg font-black text-xs">
-                                            +{recentPredictions[hoveredBar].points} PTS
-                                        </span>
+                                         <span className={`px-2.5 py-1 rounded-lg font-black text-xs ${recentPredictions[hoveredBar].points >= 0 ? "bg-amber-400 text-slate-900" : "bg-red-500 text-white shadow-xs"}`}>
+                                             {recentPredictions[hoveredBar].points >= 0 ? "+" : ""}{recentPredictions[hoveredBar].points} PTS
+                                         </span>
                                     </div>
                                 </motion.div>
                             ) : (

@@ -4,8 +4,10 @@ import { auth } from "@/auth";
 import { Match, Prediction, Team } from "@/models/schema";
 import connectToDatabase from "@/lib/db";
 import { isKnockoutStage } from "@/lib/constants";
+import { getPointSettings } from "@/app/actions/admin/settings";
 import { revalidatePath, unstable_noStore as noStore } from "next/cache";
 import { z } from "zod";
+import { isEventEnabled } from "@/lib/scoring";
 
 const PredictionSchema = z.object({
     matchId: z.string(),
@@ -13,6 +15,12 @@ const PredictionSchema = z.object({
     awayScore: z.coerce.number().min(0),
     penaltyPrediction: z.coerce.boolean().optional(),
     predictedWinner: z.string().optional(),
+    spRedCards: z.preprocess(val => val === "" || val === "none" ? null : val === "true" || val === true, z.boolean().nullable()).optional(),
+    spTotalCards: z.preprocess(val => val === "" || val === "none" ? null : val, z.enum(["UNDER", "OVER"]).nullable()).optional(),
+    spExtraTime: z.preprocess(val => val === "" || val === "none" ? null : val === "true" || val === true, z.boolean().nullable()).optional(),
+    spInGamePenalty: z.preprocess(val => val === "" || val === "none" ? null : val === "true" || val === true, z.boolean().nullable()).optional(),
+    spOwnGoal: z.preprocess(val => val === "" || val === "none" ? null : val === "true" || val === true, z.boolean().nullable()).optional(),
+    spFirstTeamToScore: z.preprocess(val => val === "" || val === "none" ? null : val, z.string().nullable()).optional(),
 });
 
 export async function submitPrediction(prevState: any, formData: FormData) {
@@ -28,7 +36,19 @@ export async function submitPrediction(prevState: any, formData: FormData) {
         return { message: "Invalid prediction" };
     }
 
-    const { matchId, homeScore, awayScore, penaltyPrediction, predictedWinner } = parsed.data;
+    const {
+        matchId,
+        homeScore,
+        awayScore,
+        penaltyPrediction,
+        predictedWinner,
+        spRedCards,
+        spTotalCards,
+        spExtraTime,
+        spInGamePenalty,
+        spOwnGoal,
+        spFirstTeamToScore
+    } = parsed.data;
 
     try {
         await connectToDatabase();
@@ -59,6 +79,16 @@ export async function submitPrediction(prevState: any, formData: FormData) {
         const finalPenaltyPrediction = isDraw ? (isKnockout ? true : !!penaltyPrediction) : false;
         const finalPredictedWinner = isDraw && finalPenaltyPrediction && predictedWinner && predictedWinner.trim() !== "" ? predictedWinner : null;
 
+        // Fetch settings to check if special predictions are enabled for this stage and specific events
+        const settings = await getPointSettings();
+
+        const finalSpRedCards = isEventEnabled(match.stage, "spRedCards", settings) ? (spRedCards !== undefined ? spRedCards : null) : null;
+        const finalSpTotalCards = isEventEnabled(match.stage, "spTotalCards", settings) ? (spTotalCards !== undefined ? spTotalCards : null) : null;
+        const finalSpExtraTime = isEventEnabled(match.stage, "spExtraTime", settings) ? (spExtraTime !== undefined ? spExtraTime : null) : null;
+        const finalSpInGamePenalty = isEventEnabled(match.stage, "spInGamePenalty", settings) ? (spInGamePenalty !== undefined ? spInGamePenalty : null) : null;
+        const finalSpOwnGoal = isEventEnabled(match.stage, "spOwnGoal", settings) ? (spOwnGoal !== undefined ? spOwnGoal : null) : null;
+        const finalSpFirstTeamToScore = isEventEnabled(match.stage, "spFirstTeamToScore", settings) ? (spFirstTeamToScore !== undefined ? spFirstTeamToScore : null) : null;
+
         // Upsert prediction
         await Prediction.findOneAndUpdate(
             { user: session.user.id, match: matchId },
@@ -68,7 +98,13 @@ export async function submitPrediction(prevState: any, formData: FormData) {
                 homeScore,
                 awayScore,
                 penaltyPrediction: finalPenaltyPrediction,
-                predictedWinner: finalPredictedWinner
+                predictedWinner: finalPredictedWinner,
+                spRedCards: finalSpRedCards,
+                spTotalCards: finalSpTotalCards,
+                spExtraTime: finalSpExtraTime,
+                spInGamePenalty: finalSpInGamePenalty,
+                spOwnGoal: finalSpOwnGoal,
+                spFirstTeamToScore: finalSpFirstTeamToScore,
             },
             { upsert: true, new: true }
         );
@@ -94,7 +130,13 @@ export async function getUserPredictions(userId: string) {
             awayScore: p.awayScore,
             penaltyPrediction: p.penaltyPrediction,
             predictedWinner: p.predictedWinner,
-            points: p.points
+            points: p.points,
+            spRedCards: p.spRedCards,
+            spTotalCards: p.spTotalCards,
+            spExtraTime: p.spExtraTime,
+            spInGamePenalty: p.spInGamePenalty,
+            spOwnGoal: p.spOwnGoal,
+            spFirstTeamToScore: p.spFirstTeamToScore,
         };
     });
     return predictionMap;
@@ -110,10 +152,12 @@ export async function getPublicPredictions(userId: string) {
             populate: [
                 { path: "homeTeam", model: "Team" },
                 { path: "awayTeam", model: "Team" },
-                { path: "winner", model: "Team" }
+                { path: "winner", model: "Team" },
+                { path: "spFirstTeamToScore", model: "Team" }
             ]
         })
-        .populate("predictedWinner");
+        .populate("predictedWinner")
+        .populate("spFirstTeamToScore");
 
     const now = new Date();
 
