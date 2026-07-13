@@ -4,7 +4,7 @@ import { submitPrediction } from "@/app/actions/predictions";
 import { useActionState, useEffect, useState } from "react";
 import { isKnockoutStage } from "@/lib/constants";
 import { useFormStatus } from "react-dom";
-import { Calendar, Lock, CheckCircle, HelpCircle } from "lucide-react";
+import { Calendar, Lock, CheckCircle, HelpCircle, ChevronDown } from "lucide-react";
 import TeamMatchesModal from "./TeamMatchesModal";
 import LocalTime from "@/components/ui/LocalTime";
 import { calculateSpecialPoints, isEventEnabled } from "@/lib/scoring";
@@ -340,6 +340,7 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                         <span className="bg-indigo-50 border border-indigo-250 text-indigo-700 px-2 py-0.5 rounded-full text-[9px] font-bold">Predicted</span>
                                     )}
                                 </span>
+                                <ChevronDown size={14} className={`text-gray-400 transition-transform duration-200 ${showSpecialPanel ? "rotate-180" : ""}`} />
                             </button>
                             {showSpecialPanel && (
                                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 mt-3 bg-gray-50/50 dark:bg-slate-950/40 p-4 rounded-xl border border-gray-100 dark:border-slate-800 text-xs w-full">
