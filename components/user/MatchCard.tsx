@@ -189,11 +189,11 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                         </div>
                                         {prediction && (
                                             <div className="flex flex-col items-center gap-1 mt-1.5 sm:mt-2">
-                                                <div className="text-xs sm:text-sm text-indigo-650 font-medium bg-indigo-50 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full whitespace-nowrap">
+                                                <div className="text-xs sm:text-sm text-indigo-650 dark:text-indigo-300 font-medium bg-indigo-50 dark:bg-indigo-955/30 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border border-transparent dark:border-indigo-900/30 whitespace-nowrap">
                                                     Your Pick: {prediction.homeScore} - {prediction.awayScore}
                                                 </div>
                                                 {isKnockout && prediction.penaltyPrediction && prediction.predictedWinner && (
-                                                    <div className="text-[9px] sm:text-[10px] font-bold text-purple-650 bg-purple-50 px-1.5 sm:px-2 py-0.5 rounded border border-purple-100 whitespace-nowrap">
+                                                    <div className="text-[9px] sm:text-[10px] font-bold text-purple-650 dark:text-purple-300 bg-purple-50 dark:bg-purple-955/30 px-1.5 sm:px-2 py-0.5 rounded border border-purple-100 dark:border-purple-900/30 whitespace-nowrap">
                                                         PK Pick: {match.homeTeam?._id?.toString() === prediction.predictedWinner?.toString() ? match.homeTeam?.name : match.awayTeam?._id?.toString() === prediction.predictedWinner?.toString() ? match.awayTeam?.name : "Unknown"}
                                                     </div>
                                                 )}
@@ -203,7 +203,7 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                             const specialPoints = calculateSpecialPoints(match.stage, prediction, match, settings);
                                             const matchPoints = prediction.points - specialPoints;
                                             return (
-                                                <div className="mt-1 text-[10px] sm:text-xs font-bold text-gray-500 flex flex-col items-center gap-0.5">
+                                                <div className="mt-1 text-[10px] sm:text-xs font-bold text-gray-550 flex flex-col items-center gap-0.5">
                                                     <span className={prediction.points >= 0 ? "text-emerald-600" : "text-rose-600"}>
                                                         {prediction.points >= 0 ? "+" : ""}{prediction.points} PTS Total
                                                     </span>
@@ -214,7 +214,7 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                             );
                                         })()}
                                         {isFinished && isKnockout && match.wentToPenalties && (
-                                            <div className="mt-1 text-[9px] sm:text-xs font-bold text-purple-655 bg-purple-50 px-1.5 sm:px-2 py-0.5 rounded border border-purple-100 uppercase tracking-wide whitespace-nowrap">
+                                            <div className="mt-1 text-[9px] sm:text-xs font-bold text-purple-655 dark:text-purple-300 bg-purple-50 dark:bg-purple-955/30 px-1.5 sm:px-2 py-0.5 rounded border border-purple-100 dark:border-purple-900/30 uppercase tracking-wide whitespace-nowrap">
                                                 Won on Penalties
                                             </div>
                                         )}
@@ -281,10 +281,10 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                 {isKnockout && (isLocked || isFinished) && (
                                     <div className="mt-2 flex flex-col items-center gap-1">
                                         <div className="text-[10px] sm:text-xs font-medium text-gray-500 whitespace-nowrap">
-                                            Predicted Penalties: <span className={prediction?.penaltyPrediction ? "text-purple-650 font-bold" : ""}>{prediction?.penaltyPrediction ? "Yes" : "No"}</span>
+                                            Predicted Penalties: <span className={prediction?.penaltyPrediction ? "text-purple-650 dark:text-purple-400 font-bold" : ""}>{prediction?.penaltyPrediction ? "Yes" : "No"}</span>
                                         </div>
                                         {prediction?.penaltyPrediction && prediction.predictedWinner && (
-                                            <div className="text-[9px] sm:text-[10px] text-purple-650 bg-purple-50 px-1.5 sm:px-2 py-0.5 rounded border border-purple-100 font-bold uppercase tracking-wide whitespace-nowrap">
+                                            <div className="text-[9px] sm:text-[10px] text-purple-650 dark:text-purple-300 bg-purple-50 dark:bg-purple-955/30 px-1.5 sm:px-2 py-0.5 rounded border border-purple-100 dark:border-purple-900/30 font-bold uppercase tracking-wide whitespace-nowrap">
                                                 Winner Pick: {match.homeTeam?._id === prediction.predictedWinner ? match.homeTeam?.name : match.awayTeam?._id === prediction.predictedWinner ? match.awayTeam?.name : "Unknown"}
                                             </div>
                                         )}
