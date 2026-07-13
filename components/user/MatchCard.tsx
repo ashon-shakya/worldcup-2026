@@ -203,18 +203,18 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                             const specialPoints = calculateSpecialPoints(match.stage, prediction, match, settings);
                                             const matchPoints = prediction.points - specialPoints;
                                             return (
-                                                <div className="mt-1 text-[10px] sm:text-xs font-bold text-gray-550 flex flex-col items-center gap-0.5">
+                                                <div className="mt-1 text-xs sm:text-sm font-bold text-gray-550 flex flex-col items-center gap-0.5">
                                                     <span className={prediction.points >= 0 ? "text-emerald-600" : "text-rose-600"}>
                                                         {prediction.points >= 0 ? "+" : ""}{prediction.points} PTS Total
                                                     </span>
-                                                    <span className="text-[9px] text-gray-405 dark:text-gray-555 font-medium">
+                                                    <span className="text-[11px] text-gray-405 dark:text-gray-555 font-medium">
                                                         (Match: <span className={matchPoints >= 0 ? "text-emerald-600" : "text-rose-600"}>{matchPoints >= 0 ? `+${matchPoints}` : matchPoints}</span> | Special: <span className={specialPoints >= 0 ? "text-emerald-600" : "text-rose-600"}>{specialPoints >= 0 ? `+${specialPoints}` : specialPoints}</span>)
                                                     </span>
                                                 </div>
                                             );
                                         })()}
                                         {isFinished && isKnockout && match.wentToPenalties && (
-                                            <div className="mt-1 text-[9px] sm:text-xs font-bold text-purple-655 dark:text-purple-300 bg-purple-50 dark:bg-purple-955/30 px-1.5 sm:px-2 py-0.5 rounded border border-purple-100 dark:border-purple-900/30 uppercase tracking-wide whitespace-nowrap">
+                                            <div className="mt-1 text-[11px] sm:text-xs font-bold text-purple-655 dark:text-purple-300 bg-purple-50 dark:bg-purple-955/30 px-1.5 sm:px-2 py-0.5 rounded border border-purple-100 dark:border-purple-900/30 uppercase tracking-wide whitespace-nowrap">
                                                 Won on Penalties
                                             </div>
                                         )}
@@ -262,8 +262,8 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                                 value={predictedWinner}
                                                 onChange={(e) => setPredictedWinner(e.target.value)}
                                                 className={`text-[10px] sm:text-xs w-full max-w-[150px] sm:max-w-[200px] rounded-lg focus:ring-1 focus:ring-indigo-500 bg-white text-gray-900 py-1 px-2 transition-all ${isPenaltyWinnerRequired
-                                                        ? "border-amber-400 bg-amber-50/30 text-amber-900 animate-pulse"
-                                                        : "border-gray-200"
+                                                    ? "border-amber-400 bg-amber-50/30 text-amber-900 animate-pulse"
+                                                    : "border-gray-200"
                                                     }`}
                                             >
                                                 <option value="" disabled>Select Winner</option>
@@ -341,298 +341,297 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                     )}
                                 </span>
                             </button>
-
                             {showSpecialPanel && (
                                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 mt-3 bg-gray-50/50 dark:bg-slate-950/40 p-4 rounded-xl border border-gray-100 dark:border-slate-800 text-xs w-full">
                                     {/* Red Cards */}
                                     {isEventEnabled(match.stage, "spRedCards", settings) && (
                                         <div className="flex flex-col gap-1 min-w-0">
-                                        <label className="font-bold text-gray-700 dark:text-slate-300 flex flex-wrap items-center gap-0.5">
-                                            <span>Red Cards?</span>
-                                            <button
-                                                type="button"
-                                                onClick={() => setActiveTooltip({
-                                                    title: "Red Cards?",
-                                                    desc: "Predict if any player (on the pitch or on the bench) will be shown a red card during the match."
-                                                })}
-                                                className="text-gray-400 hover:text-indigo-600 transition-colors focus:outline-none"
-                                            >
-                                                <HelpCircle size={10} />
-                                            </button>
-                                            <span className="font-normal text-[9px] text-gray-400 dark:text-gray-550 ml-1">
-                                                ({getPointRuleText(settings?.spRedCardsCorrect, settings?.spRedCardsIncorrect)})
-                                            </span>
-                                        </label>
-                                        {isLocked || isFinished ? (
-                                            <div className="flex flex-col gap-1 items-start">
-                                                <span className="font-semibold text-gray-900 dark:text-gray-200">
-                                                    {prediction?.spRedCards === null ? "None" : prediction?.spRedCards ? "Yes" : "No"}
+                                            <label className="font-bold text-gray-700 dark:text-slate-300 flex flex-wrap items-center gap-0.5 text-sm">
+                                                <span>Red Cards?</span>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setActiveTooltip({
+                                                        title: "Red Cards?",
+                                                        desc: "Predict if any player (on the pitch or on the bench) will be shown a red card during the match."
+                                                    })}
+                                                    className="text-gray-400 hover:text-indigo-600 transition-colors focus:outline-none"
+                                                >
+                                                    <HelpCircle size={10} />
+                                                </button>
+                                                <span className="font-normal text-[11px] text-gray-400 dark:text-gray-550 ml-1">
+                                                    ({getPointRuleText(settings?.spRedCardsCorrect, settings?.spRedCardsIncorrect)})
                                                 </span>
-                                                {isFinished && prediction?.spRedCards !== null && match.spRedCards !== null && (() => {
-                                                    const isCorrect = prediction?.spRedCards === match.spRedCards;
-                                                    const val = isCorrect ? (settings?.spRedCardsCorrect ?? 3) : (settings?.spRedCardsIncorrect ?? -2);
-                                                    return (
-                                                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[9px] font-bold ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-455 border border-rose-200 dark:border-rose-900/30"}`}>
-                                                            {isCorrect ? "Correct" : "Incorrect"} ({val >= 0 ? "+" : ""}{val})
-                                                        </span>
-                                                    );
-                                                })()}
-                                            </div>
-                                        ) : (
-                                            <select
-                                                name="spRedCards"
-                                                defaultValue={prediction?.spRedCards?.toString() ?? ""}
-                                                className="rounded-lg border-gray-250 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
-                                            >
-                                                <option value="">Select...</option>
-                                                <option value="true">Yes</option>
-                                                <option value="false">No</option>
-                                            </select>
-                                        )}
-                                    </div>
+                                            </label>
+                                            {isLocked || isFinished ? (
+                                                <div className="flex flex-col gap-1 items-start">
+                                                    <span className="font-semibold text-gray-900 dark:text-gray-200">
+                                                        {prediction?.spRedCards === null ? "None" : prediction?.spRedCards ? "Yes" : "No"}
+                                                    </span>
+                                                    {isFinished && prediction?.spRedCards !== null && match.spRedCards !== null && (() => {
+                                                        const isCorrect = prediction?.spRedCards === match.spRedCards;
+                                                        const val = isCorrect ? (settings?.spRedCardsCorrect ?? 3) : (settings?.spRedCardsIncorrect ?? -2);
+                                                        return (
+                                                            <span className={`px-1.5 py-0.5 rounded-[4px] text-[11px] font-bold ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-455 border border-rose-200 dark:border-rose-900/30"}`}>
+                                                                {isCorrect ? "Correct" : "Incorrect"} ({val >= 0 ? "+" : ""}{val})
+                                                            </span>
+                                                        );
+                                                    })()}
+                                                </div>
+                                            ) : (
+                                                <select
+                                                    name="spRedCards"
+                                                    defaultValue={prediction?.spRedCards?.toString() ?? ""}
+                                                    className="rounded-lg border-gray-250 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
+                                                >
+                                                    <option value="">Select...</option>
+                                                    <option value="true">Yes</option>
+                                                    <option value="false">No</option>
+                                                </select>
+                                            )}
+                                        </div>
                                     )}
 
                                     {/* Total Cards */}
                                     {isEventEnabled(match.stage, "spTotalCards", settings) && (
                                         <div className="flex flex-col gap-1 min-w-0">
-                                        <label className="font-bold text-gray-700 dark:text-slate-300 flex flex-wrap items-center gap-0.5">
-                                            <span>Total Cards?</span>
-                                            <button
-                                                type="button"
-                                                onClick={() => setActiveTooltip({
-                                                    title: "Total Cards?",
-                                                    desc: "Predict whether the total yellow + red cards shown to both teams will be Under 5 or 5 and over (a red card counts as 1 card)."
-                                                })}
-                                                className="text-gray-400 hover:text-indigo-600 transition-colors focus:outline-none"
-                                            >
-                                                <HelpCircle size={10} />
-                                            </button>
-                                            <span className="font-normal text-[9px] text-gray-400 dark:text-gray-550 ml-1">
-                                                ({getPointRuleText(settings?.spTotalCardsCorrect, settings?.spTotalCardsIncorrect)})
-                                            </span>
-                                        </label>
-                                        {isLocked || isFinished ? (
-                                            <div className="flex flex-col gap-1 items-start">
-                                                <span className="font-semibold text-gray-900 dark:text-gray-200">
-                                                    {prediction?.spTotalCards === null ? "None" : prediction?.spTotalCards === "UNDER" ? "Under 5" : "5 and over"}
+                                            <label className="font-bold text-gray-700 dark:text-slate-300 flex flex-wrap items-center gap-0.5 text-sm">
+                                                <span>Total Cards?</span>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setActiveTooltip({
+                                                        title: "Total Cards?",
+                                                        desc: "Predict whether the total yellow + red cards shown to both teams will be Under 5 or 5 and over (a red card counts as 1 card)."
+                                                    })}
+                                                    className="text-gray-400 hover:text-indigo-600 transition-colors focus:outline-none"
+                                                >
+                                                    <HelpCircle size={10} />
+                                                </button>
+                                                <span className="font-normal text-[11px] text-gray-400 dark:text-gray-550 ml-1">
+                                                    ({getPointRuleText(settings?.spTotalCardsCorrect, settings?.spTotalCardsIncorrect)})
                                                 </span>
-                                                {isFinished && prediction?.spTotalCards !== null && match.spTotalCards !== null && (() => {
-                                                    const isCorrect = prediction?.spTotalCards === match.spTotalCards;
-                                                    const val = isCorrect ? (settings?.spTotalCardsCorrect ?? 3) : (settings?.spTotalCardsIncorrect ?? -2);
-                                                    return (
-                                                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[9px] font-bold ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-455 border border-rose-200 dark:border-rose-900/30"}`}>
-                                                            {isCorrect ? "Correct" : "Incorrect"} ({val >= 0 ? "+" : ""}{val})
-                                                        </span>
-                                                    );
-                                                })()}
-                                            </div>
-                                        ) : (
-                                            <select
-                                                name="spTotalCards"
-                                                defaultValue={prediction?.spTotalCards ?? ""}
-                                                className="rounded-lg border-gray-250 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
-                                            >
-                                                <option value="">Select...</option>
-                                                <option value="UNDER">Under 5</option>
-                                                <option value="OVER">5 and over</option>
-                                            </select>
-                                        )}
-                                    </div>
+                                            </label>
+                                            {isLocked || isFinished ? (
+                                                <div className="flex flex-col gap-1 items-start">
+                                                    <span className="font-semibold text-gray-900 dark:text-gray-200">
+                                                        {prediction?.spTotalCards === null ? "None" : prediction?.spTotalCards === "UNDER" ? "Under 5" : "5 and over"}
+                                                    </span>
+                                                    {isFinished && prediction?.spTotalCards !== null && match.spTotalCards !== null && (() => {
+                                                        const isCorrect = prediction?.spTotalCards === match.spTotalCards;
+                                                        const val = isCorrect ? (settings?.spTotalCardsCorrect ?? 3) : (settings?.spTotalCardsIncorrect ?? -2);
+                                                        return (
+                                                            <span className={`px-1.5 py-0.5 rounded-[4px] text-[11px] font-bold ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-455 border border-rose-200 dark:border-rose-900/30"}`}>
+                                                                {isCorrect ? "Correct" : "Incorrect"} ({val >= 0 ? "+" : ""}{val})
+                                                            </span>
+                                                        );
+                                                    })()}
+                                                </div>
+                                            ) : (
+                                                <select
+                                                    name="spTotalCards"
+                                                    defaultValue={prediction?.spTotalCards ?? ""}
+                                                    className="rounded-lg border-gray-250 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
+                                                >
+                                                    <option value="">Select...</option>
+                                                    <option value="UNDER">Under 5</option>
+                                                    <option value="OVER">5 and over</option>
+                                                </select>
+                                            )}
+                                        </div>
                                     )}
 
                                     {/* Extra Time */}
                                     {isEventEnabled(match.stage, "spExtraTime", settings) && (
                                         <div className="flex flex-col gap-1 min-w-0">
-                                        <label className="font-bold text-gray-700 dark:text-slate-300 flex flex-wrap items-center gap-0.5">
-                                            <span>Extra Time?</span>
-                                            <button
-                                                type="button"
-                                                onClick={() => setActiveTooltip({
-                                                    title: "Extra Time?",
-                                                    desc: "Predict if the match will go to extra time (the score at the end of 90 minutes is a tie)."
-                                                })}
-                                                className="text-gray-400 hover:text-indigo-600 transition-colors focus:outline-none"
-                                            >
-                                                <HelpCircle size={10} />
-                                            </button>
-                                            <span className="font-normal text-[9px] text-gray-400 dark:text-gray-550 ml-1">
-                                                ({getPointRuleText(settings?.spExtraTimeCorrect, settings?.spExtraTimeIncorrect)})
-                                            </span>
-                                        </label>
-                                        {isLocked || isFinished ? (
-                                            <div className="flex flex-col gap-1 items-start">
-                                                <span className="font-semibold text-gray-900 dark:text-gray-200">
-                                                    {prediction?.spExtraTime === null ? "None" : prediction?.spExtraTime ? "Yes" : "No"}
+                                            <label className="font-bold text-gray-700 dark:text-slate-300 flex flex-wrap items-center gap-0.5 text-sm">
+                                                <span>Extra Time?</span>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setActiveTooltip({
+                                                        title: "Extra Time?",
+                                                        desc: "Predict if the match will go to extra time (the score at the end of 90 minutes is a tie)."
+                                                    })}
+                                                    className="text-gray-400 hover:text-indigo-600 transition-colors focus:outline-none"
+                                                >
+                                                    <HelpCircle size={10} />
+                                                </button>
+                                                <span className="font-normal text-[11px] text-gray-400 dark:text-gray-555 ml-1">
+                                                    ({getPointRuleText(settings?.spExtraTimeCorrect, settings?.spExtraTimeIncorrect)})
                                                 </span>
-                                                {isFinished && prediction?.spExtraTime !== null && match.spExtraTime !== null && (() => {
-                                                    const isCorrect = prediction?.spExtraTime === match.spExtraTime;
-                                                    const val = isCorrect ? (settings?.spExtraTimeCorrect ?? 3) : (settings?.spExtraTimeIncorrect ?? -2);
-                                                    return (
-                                                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[9px] font-bold ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-455 border border-rose-200 dark:border-rose-900/30"}`}>
-                                                            {isCorrect ? "Correct" : "Incorrect"} ({val >= 0 ? "+" : ""}{val})
-                                                        </span>
-                                                    );
-                                                })()}
-                                            </div>
-                                        ) : (
-                                            <select
-                                                name="spExtraTime"
-                                                defaultValue={prediction?.spExtraTime?.toString() ?? ""}
-                                                className="rounded-lg border-gray-250 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
-                                            >
-                                                <option value="">Select...</option>
-                                                <option value="true">Yes</option>
-                                                <option value="false">No</option>
-                                            </select>
-                                        )}
-                                    </div>
+                                            </label>
+                                            {isLocked || isFinished ? (
+                                                <div className="flex flex-col gap-1 items-start">
+                                                    <span className="font-semibold text-gray-900 dark:text-gray-200">
+                                                        {prediction?.spExtraTime === null ? "None" : prediction?.spExtraTime ? "Yes" : "No"}
+                                                    </span>
+                                                    {isFinished && prediction?.spExtraTime !== null && match.spExtraTime !== null && (() => {
+                                                        const isCorrect = prediction?.spExtraTime === match.spExtraTime;
+                                                        const val = isCorrect ? (settings?.spExtraTimeCorrect ?? 3) : (settings?.spExtraTimeIncorrect ?? -2);
+                                                        return (
+                                                            <span className={`px-1.5 py-0.5 rounded-[4px] text-[11px] font-bold ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-455 border border-rose-200 dark:border-rose-900/30"}`}>
+                                                                {isCorrect ? "Correct" : "Incorrect"} ({val >= 0 ? "+" : ""}{val})
+                                                            </span>
+                                                        );
+                                                    })()}
+                                                </div>
+                                            ) : (
+                                                <select
+                                                    name="spExtraTime"
+                                                    defaultValue={prediction?.spExtraTime?.toString() ?? ""}
+                                                    className="rounded-lg border-gray-250 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
+                                                >
+                                                    <option value="">Select...</option>
+                                                    <option value="true">Yes</option>
+                                                    <option value="false">No</option>
+                                                </select>
+                                            )}
+                                        </div>
                                     )}
 
                                     {/* In Game Penalty */}
                                     {isEventEnabled(match.stage, "spInGamePenalty", settings) && (
                                         <div className="flex flex-col gap-1 min-w-0">
-                                        <label className="font-bold text-gray-700 dark:text-slate-300 flex flex-wrap items-center gap-0.5">
-                                            <span>In-Game PK?</span>
-                                            <button
-                                                type="button"
-                                                onClick={() => setActiveTooltip({
-                                                    title: "In-Game PK?",
-                                                    desc: "Predict if any penalty kick is awarded and taken during normal play or extra time (excluding shootouts)."
-                                                })}
-                                                className="text-gray-400 hover:text-indigo-600 transition-colors focus:outline-none"
-                                            >
-                                                <HelpCircle size={10} />
-                                            </button>
-                                            <span className="font-normal text-[9px] text-gray-400 dark:text-gray-555 ml-1">
-                                                ({getPointRuleText(settings?.spInGamePenaltyCorrect, settings?.spInGamePenaltyIncorrect)})
-                                            </span>
-                                        </label>
-                                        {isLocked || isFinished ? (
-                                            <div className="flex flex-col gap-1 items-start">
-                                                <span className="font-semibold text-gray-900 dark:text-gray-200">
-                                                    {prediction?.spInGamePenalty === null ? "None" : prediction?.spInGamePenalty ? "Yes" : "No"}
+                                            <label className="font-bold text-gray-700 dark:text-slate-300 flex flex-wrap items-center gap-0.5 text-sm">
+                                                <span>In-Game PK?</span>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setActiveTooltip({
+                                                        title: "In-Game PK?",
+                                                        desc: "Predict if any penalty kick is awarded and taken during normal play or extra time (excluding shootouts)."
+                                                    })}
+                                                    className="text-gray-400 hover:text-indigo-600 transition-colors focus:outline-none"
+                                                >
+                                                    <HelpCircle size={10} />
+                                                </button>
+                                                <span className="font-normal text-[11px] text-gray-400 dark:text-gray-555 ml-1">
+                                                    ({getPointRuleText(settings?.spInGamePenaltyCorrect, settings?.spInGamePenaltyIncorrect)})
                                                 </span>
-                                                {isFinished && prediction?.spInGamePenalty !== null && match.spInGamePenalty !== null && (() => {
-                                                    const isCorrect = prediction?.spInGamePenalty === match.spInGamePenalty;
-                                                    const val = isCorrect ? (settings?.spInGamePenaltyCorrect ?? 3) : (settings?.spInGamePenaltyIncorrect ?? -2);
-                                                    return (
-                                                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[9px] font-bold ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-455 border border-rose-200 dark:border-rose-900/30"}`}>
-                                                            {isCorrect ? "Correct" : "Incorrect"} ({val >= 0 ? "+" : ""}{val})
-                                                        </span>
-                                                    );
-                                                })()}
-                                            </div>
-                                        ) : (
-                                            <select
-                                                name="spInGamePenalty"
-                                                defaultValue={prediction?.spInGamePenalty?.toString() ?? ""}
-                                                className="rounded-lg border-gray-250 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
-                                            >
-                                                <option value="">Select...</option>
-                                                <option value="true">Yes</option>
-                                                <option value="false">No</option>
-                                            </select>
-                                        )}
-                                    </div>
+                                            </label>
+                                            {isLocked || isFinished ? (
+                                                <div className="flex flex-col gap-1 items-start">
+                                                    <span className="font-semibold text-gray-900 dark:text-gray-200">
+                                                        {prediction?.spInGamePenalty === null ? "None" : prediction?.spInGamePenalty ? "Yes" : "No"}
+                                                    </span>
+                                                    {isFinished && prediction?.spInGamePenalty !== null && match.spInGamePenalty !== null && (() => {
+                                                        const isCorrect = prediction?.spInGamePenalty === match.spInGamePenalty;
+                                                        const val = isCorrect ? (settings?.spInGamePenaltyCorrect ?? 3) : (settings?.spInGamePenaltyIncorrect ?? -2);
+                                                        return (
+                                                            <span className={`px-1.5 py-0.5 rounded-[4px] text-[11px] font-bold ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-455 border border-rose-200 dark:border-rose-900/30"}`}>
+                                                                {isCorrect ? "Correct" : "Incorrect"} ({val >= 0 ? "+" : ""}{val})
+                                                            </span>
+                                                        );
+                                                    })()}
+                                                </div>
+                                            ) : (
+                                                <select
+                                                    name="spInGamePenalty"
+                                                    defaultValue={prediction?.spInGamePenalty?.toString() ?? ""}
+                                                    className="rounded-lg border-gray-250 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
+                                                >
+                                                    <option value="">Select...</option>
+                                                    <option value="true">Yes</option>
+                                                    <option value="false">No</option>
+                                                </select>
+                                            )}
+                                        </div>
                                     )}
 
                                     {/* Own Goal */}
                                     {isEventEnabled(match.stage, "spOwnGoal", settings) && (
                                         <div className="flex flex-col gap-1 min-w-0">
-                                        <label className="font-bold text-gray-700 dark:text-slate-300 flex flex-wrap items-center gap-0.5">
-                                            <span>Own Goal?</span>
-                                            <button
-                                                type="button"
-                                                onClick={() => setActiveTooltip({
-                                                    title: "Own Goal?",
-                                                    desc: "Predict if any player scores a goal against their own team during normal play or extra time."
-                                                })}
-                                                className="text-gray-400 hover:text-indigo-600 transition-colors focus:outline-none"
-                                            >
-                                                <HelpCircle size={10} />
-                                            </button>
-                                            <span className="font-normal text-[9px] text-gray-400 dark:text-gray-550 ml-1">
-                                                ({getPointRuleText(settings?.spOwnGoalCorrect, settings?.spOwnGoalIncorrect)})
-                                            </span>
-                                        </label>
-                                        {isLocked || isFinished ? (
-                                            <div className="flex flex-col gap-1 items-start">
-                                                <span className="font-semibold text-gray-900 dark:text-gray-200">
-                                                    {prediction?.spOwnGoal === null ? "None" : prediction?.spOwnGoal ? "Yes" : "No"}
+                                            <label className="font-bold text-gray-700 dark:text-slate-300 flex flex-wrap items-center gap-0.5 text-sm">
+                                                <span>Own Goal?</span>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setActiveTooltip({
+                                                        title: "Own Goal?",
+                                                        desc: "Predict if any player scores a goal against their own team during normal play or extra time."
+                                                    })}
+                                                    className="text-gray-400 hover:text-indigo-600 transition-colors focus:outline-none"
+                                                >
+                                                    <HelpCircle size={10} />
+                                                </button>
+                                                <span className="font-normal text-[11px] text-gray-400 dark:text-gray-555 ml-1">
+                                                    ({getPointRuleText(settings?.spOwnGoalCorrect, settings?.spOwnGoalIncorrect)})
                                                 </span>
-                                                {isFinished && prediction?.spOwnGoal !== null && match.spOwnGoal !== null && (() => {
-                                                    const isCorrect = prediction?.spOwnGoal === match.spOwnGoal;
-                                                    const val = isCorrect ? (settings?.spOwnGoalCorrect ?? 3) : (settings?.spOwnGoalIncorrect ?? -2);
-                                                    return (
-                                                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[9px] font-bold ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-455 border border-rose-200 dark:border-rose-900/30"}`}>
-                                                            {isCorrect ? "Correct" : "Incorrect"} ({val >= 0 ? "+" : ""}{val})
-                                                        </span>
-                                                    );
-                                                })()}
-                                            </div>
-                                        ) : (
-                                            <select
-                                                name="spOwnGoal"
-                                                defaultValue={prediction?.spOwnGoal?.toString() ?? ""}
-                                                className="rounded-lg border-gray-250 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
-                                            >
-                                                <option value="">Select...</option>
-                                                <option value="true">Yes</option>
-                                                <option value="false">No</option>
-                                            </select>
-                                        )}
-                                    </div>
+                                            </label>
+                                            {isLocked || isFinished ? (
+                                                <div className="flex flex-col gap-1 items-start">
+                                                    <span className="font-semibold text-gray-900 dark:text-gray-200">
+                                                        {prediction?.spOwnGoal === null ? "None" : prediction?.spOwnGoal ? "Yes" : "No"}
+                                                    </span>
+                                                    {isFinished && prediction?.spOwnGoal !== null && match.spOwnGoal !== null && (() => {
+                                                        const isCorrect = prediction?.spOwnGoal === match.spOwnGoal;
+                                                        const val = isCorrect ? (settings?.spOwnGoalCorrect ?? 3) : (settings?.spOwnGoalIncorrect ?? -2);
+                                                        return (
+                                                            <span className={`px-1.5 py-0.5 rounded-[4px] text-[11px] font-bold ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-455 border border-rose-200 dark:border-rose-900/30"}`}>
+                                                                {isCorrect ? "Correct" : "Incorrect"} ({val >= 0 ? "+" : ""}{val})
+                                                            </span>
+                                                        );
+                                                    })()}
+                                                </div>
+                                            ) : (
+                                                <select
+                                                    name="spOwnGoal"
+                                                    defaultValue={prediction?.spOwnGoal?.toString() ?? ""}
+                                                    className="rounded-lg border-gray-250 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
+                                                >
+                                                    <option value="">Select...</option>
+                                                    <option value="true">Yes</option>
+                                                    <option value="false">No</option>
+                                                </select>
+                                            )}
+                                        </div>
                                     )}
 
                                     {/* First Team to Score */}
                                     {isEventEnabled(match.stage, "spFirstTeamToScore", settings) && (
                                         <div className="flex flex-col gap-1 min-w-0">
-                                        <label className="font-bold text-gray-700 dark:text-slate-300 flex flex-wrap items-center gap-0.5">
-                                            <span>1st to Score?</span>
-                                            <button
-                                                type="button"
-                                                onClick={() => setActiveTooltip({
-                                                    title: "1st to Score?",
-                                                    desc: "Predict which team will score the first goal of the match. You can select 'No Goal' if you predict a 0-0 score."
-                                                })}
-                                                className="text-gray-400 hover:text-indigo-600 transition-colors focus:outline-none"
-                                            >
-                                                <HelpCircle size={10} />
-                                            </button>
-                                            <span className="font-normal text-[9px] text-gray-400 dark:text-gray-550 ml-1">
-                                                ({getPointRuleText(settings?.spFirstTeamScoreCorrect, settings?.spFirstTeamScoreIncorrect)})
-                                            </span>
-                                        </label>
-                                        {isLocked || isFinished ? (
-                                            <div className="flex flex-col gap-1 items-start">
-                                                <span className="font-semibold text-gray-900 dark:text-gray-200 truncate w-full">
-                                                    {prediction?.spFirstTeamToScore === null ? "None" :
-                                                        prediction?.spFirstTeamToScore?.toString() === match.homeTeam?._id?.toString() ? match.homeTeam?.name :
-                                                            prediction?.spFirstTeamToScore?.toString() === match.awayTeam?._id?.toString() ? match.awayTeam?.name : "No Goal"}
+                                            <label className="font-bold text-gray-700 dark:text-slate-300 flex flex-wrap items-center gap-0.5 text-sm">
+                                                <span>1st to Score?</span>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setActiveTooltip({
+                                                        title: "1st to Score?",
+                                                        desc: "Predict which team will score the first goal of the match. You can select 'No Goal' if you predict a 0-0 score."
+                                                    })}
+                                                    className="text-gray-400 hover:text-indigo-600 transition-colors focus:outline-none"
+                                                >
+                                                    <HelpCircle size={10} />
+                                                </button>
+                                                <span className="font-normal text-[11px] text-gray-400 dark:text-gray-550 ml-1">
+                                                    ({getPointRuleText(settings?.spFirstTeamScoreCorrect, settings?.spFirstTeamScoreIncorrect)})
                                                 </span>
-                                                {isFinished && prediction?.spFirstTeamToScore !== null && match.spFirstTeamToScore !== null && (() => {
-                                                    const isCorrect = prediction?.spFirstTeamToScore?.toString() === match.spFirstTeamToScore?.toString();
-                                                    const val = isCorrect ? (settings?.spFirstTeamScoreCorrect ?? 3) : (settings?.spFirstTeamScoreIncorrect ?? -2);
-                                                    return (
-                                                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[9px] font-bold ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-455 border border-rose-200 dark:border-rose-900/30"}`}>
-                                                            {isCorrect ? "Correct" : "Incorrect"} ({val >= 0 ? "+" : ""}{val})
-                                                        </span>
-                                                    );
-                                                })()}
-                                            </div>
-                                        ) : (
-                                            <select
-                                                name="spFirstTeamToScore"
-                                                defaultValue={prediction?.spFirstTeamToScore ?? ""}
-                                                className="rounded-lg border-gray-250 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
-                                            >
-                                                <option value="">Select...</option>
-                                                <option value={match.homeTeam?._id}>{match.homeTeam?.name}</option>
-                                                <option value={match.awayTeam?._id}>{match.awayTeam?.name}</option>
-                                                <option value="none">No Goal</option>
-                                            </select>
-                                        )}
-                                    </div>
+                                            </label>
+                                            {isLocked || isFinished ? (
+                                                <div className="flex flex-col gap-1 items-start">
+                                                    <span className="font-semibold text-gray-900 dark:text-gray-200 truncate w-full">
+                                                        {prediction?.spFirstTeamToScore === null ? "None" :
+                                                            prediction?.spFirstTeamToScore?.toString() === match.homeTeam?._id?.toString() ? match.homeTeam?.name :
+                                                                prediction?.spFirstTeamToScore?.toString() === match.awayTeam?._id?.toString() ? match.awayTeam?.name : "No Goal"}
+                                                    </span>
+                                                    {isFinished && prediction?.spFirstTeamToScore !== null && match.spFirstTeamToScore !== null && (() => {
+                                                        const isCorrect = prediction?.spFirstTeamToScore?.toString() === match.spFirstTeamToScore?.toString();
+                                                        const val = isCorrect ? (settings?.spFirstTeamScoreCorrect ?? 3) : (settings?.spFirstTeamScoreIncorrect ?? -2);
+                                                        return (
+                                                            <span className={`px-1.5 py-0.5 rounded-[4px] text-[11px] font-bold ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-455 border border-rose-200 dark:border-rose-900/30"}`}>
+                                                                {isCorrect ? "Correct" : "Incorrect"} ({val >= 0 ? "+" : ""}{val})
+                                                            </span>
+                                                        );
+                                                    })()}
+                                                </div>
+                                            ) : (
+                                                <select
+                                                    name="spFirstTeamToScore"
+                                                    defaultValue={prediction?.spFirstTeamToScore ?? ""}
+                                                    className="rounded-lg border-gray-250 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
+                                                >
+                                                    <option value="">Select...</option>
+                                                    <option value={match.homeTeam?._id}>{match.homeTeam?.name}</option>
+                                                    <option value={match.awayTeam?._id}>{match.awayTeam?.name}</option>
+                                                    <option value="none">No Goal</option>
+                                                </select>
+                                            )}
+                                        </div>
                                     )}
                                 </div>
                             )}
@@ -660,12 +659,18 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
 
             {activeTooltip && (
                 <div className="fixed inset-0 bg-black/45 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-2xl p-6 max-w-sm w-full border border-gray-100 shadow-2xl transform scale-100 transition-transform duration-200">
-                        <h4 className="font-bold text-gray-900 text-base mb-2 flex items-center gap-1.5">
+                    <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 max-w-sm w-full border border-gray-100 dark:border-slate-800 shadow-2xl transform scale-100 transition-transform duration-200">
+                        <h4 className="font-bold text-gray-900 dark:text-gray-100 text-base mb-2 flex items-center gap-1.5">
                             <HelpCircle className="text-indigo-650" size={16} />
                             {activeTooltip.title}
                         </h4>
-                        <p className="text-xs text-gray-600 leading-relaxed mb-5">{activeTooltip.desc}</p>
+                        <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed mb-5">{activeTooltip.desc}</p>
+                        {["Red Cards?", "Total Cards?", "Extra Time?", "In-Game PK?", "Own Goal?", "1st to Score?"].includes(activeTooltip.title) && (
+                            <div className="bg-amber-50/40 dark:bg-amber-800/10 border border-amber-100 dark:border-amber-950/20 text-amber-800 dark:text-amber-300 text-[11px] rounded-lg p-2.5 mb-5 flex items-start gap-1.5 font-medium leading-normal">
+                                <span className="shrink-0 text-amber-500 font-bold">⚠️ Caution:</span>
+                                <span>Incorrect predictions will result in negative points (e.g. -2 points).</span>
+                            </div>
+                        )}
                         <button
                             type="button"
                             onClick={() => setActiveTooltip(null)}

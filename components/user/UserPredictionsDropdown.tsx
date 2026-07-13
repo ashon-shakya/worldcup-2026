@@ -314,7 +314,7 @@ export default function UserPredictionsDropdown({ userId, isExpanded, allowedSta
                                                     const multipliedSpecialPoints = specialPoints * multiplier;
                                                     const multipliedMatchPoints = multipliedPoints - multipliedSpecialPoints;
                                                     return (
-                                                        <span className="text-[9px] text-gray-400 dark:text-gray-555 font-semibold mt-0.5 text-right whitespace-nowrap">
+                                                        <span className="text-[11px] text-gray-400 dark:text-gray-555 font-semibold mt-0.5 text-right whitespace-nowrap">
                                                             Match: <span className={multipliedMatchPoints >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-455"}>{multipliedMatchPoints >= 0 ? `+${multipliedMatchPoints}` : multipliedMatchPoints}</span> | Sp: <span className={multipliedSpecialPoints >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-455"}>{multipliedSpecialPoints >= 0 ? `+${multipliedSpecialPoints}` : multipliedSpecialPoints}</span>
                                                         </span>
                                                     );
