@@ -159,7 +159,7 @@ export default function RulesContent() {
                         </div>
                     </div>
 
-                    <div className="bg-amber-50 dark:bg-amber-955/20 border border-amber-250 dark:border-amber-900/50 rounded-lg p-4 text-xs text-amber-800 dark:text-amber-300">
+                    <div className="bg-amber-50 dark:bg-amber-800/20 border border-amber-250 dark:border-amber-900/50 rounded-lg p-4 text-xs text-amber-800 dark:text-amber-300">
                         <strong>Important Rules:</strong>
                         <ul className="list-disc pl-4 mt-2 space-y-1.5 leading-relaxed">
                             <li>Special predictions are completely optional. Leaving a category blank (None) will result in 0 points for that event.</li>
