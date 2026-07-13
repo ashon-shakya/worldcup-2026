@@ -20,6 +20,8 @@ const UserSchema = new Schema(
     },
     { timestamps: true },
 );
+UserSchema.index({ verificationToken: 1 });
+UserSchema.index({ resetPasswordToken: 1 });
 
 // --- Team Schema ---
 const TeamSchema = new Schema(
@@ -62,6 +64,9 @@ const MatchSchema = new Schema(
     },
     { timestamps: true },
 );
+MatchSchema.index({ kickOff: -1 });
+MatchSchema.index({ stage: 1 });
+MatchSchema.index({ status: 1 });
 
 // --- Prediction Schema ---
 const PredictionSchema = new Schema(
@@ -82,6 +87,8 @@ const PredictionSchema = new Schema(
     },
     { timestamps: true },
 );
+PredictionSchema.index({ user: 1, match: 1 }, { unique: true });
+PredictionSchema.index({ match: 1 });
 
 // --- Group (League) Schema ---
 const GroupSchema = new Schema(
@@ -105,6 +112,8 @@ const GroupSchema = new Schema(
     },
     { timestamps: true },
 );
+GroupSchema.index({ owner: 1 });
+GroupSchema.index({ members: 1 });
 
 // --- System Settings Schema ---
 const SystemSettingsSchema = new Schema(
