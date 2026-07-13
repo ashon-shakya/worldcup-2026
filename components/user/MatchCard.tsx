@@ -340,15 +340,14 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                         <span className="bg-indigo-50 border border-indigo-250 text-indigo-700 px-2 py-0.5 rounded-full text-[9px] font-bold">Predicted</span>
                                     )}
                                 </span>
-                                <span className="text-gray-400">{showSpecialPanel ? "Hide ▲" : "Show ▼"}</span>
                             </button>
 
                             {showSpecialPanel && (
-                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 mt-3 bg-gray-50/50 p-4 rounded-xl border border-gray-100 text-xs w-full">
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 mt-3 bg-gray-50/50 dark:bg-slate-950/40 p-4 rounded-xl border border-gray-100 dark:border-slate-800 text-xs w-full">
                                     {/* Red Cards */}
                                     {isEventEnabled(match.stage, "spRedCards", settings) && (
                                         <div className="flex flex-col gap-1 min-w-0">
-                                        <label className="font-bold text-gray-700 flex flex-wrap items-center gap-0.5">
+                                        <label className="font-bold text-gray-700 dark:text-slate-300 flex flex-wrap items-center gap-0.5">
                                             <span>Red Cards?</span>
                                             <button
                                                 type="button"
@@ -366,14 +365,14 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                         </label>
                                         {isLocked || isFinished ? (
                                             <div className="flex flex-col gap-1 items-start">
-                                                <span className="font-semibold text-gray-955">
+                                                <span className="font-semibold text-gray-900 dark:text-gray-200">
                                                     {prediction?.spRedCards === null ? "None" : prediction?.spRedCards ? "Yes" : "No"}
                                                 </span>
                                                 {isFinished && prediction?.spRedCards !== null && match.spRedCards !== null && (() => {
                                                     const isCorrect = prediction?.spRedCards === match.spRedCards;
                                                     const val = isCorrect ? (settings?.spRedCardsCorrect ?? 3) : (settings?.spRedCardsIncorrect ?? -2);
                                                     return (
-                                                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[9px] font-bold ${isCorrect ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-rose-50 text-rose-700 border border-rose-200"}`}>
+                                                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[9px] font-bold ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-455 border border-rose-200 dark:border-rose-900/30"}`}>
                                                             {isCorrect ? "Correct" : "Incorrect"} ({val >= 0 ? "+" : ""}{val})
                                                         </span>
                                                     );
@@ -383,7 +382,7 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                             <select
                                                 name="spRedCards"
                                                 defaultValue={prediction?.spRedCards?.toString() ?? ""}
-                                                className="rounded-lg border-gray-250 bg-white text-gray-900 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
+                                                className="rounded-lg border-gray-250 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
                                             >
                                                 <option value="">Select...</option>
                                                 <option value="true">Yes</option>
@@ -396,7 +395,7 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                     {/* Total Cards */}
                                     {isEventEnabled(match.stage, "spTotalCards", settings) && (
                                         <div className="flex flex-col gap-1 min-w-0">
-                                        <label className="font-bold text-gray-700 flex flex-wrap items-center gap-0.5">
+                                        <label className="font-bold text-gray-700 dark:text-slate-300 flex flex-wrap items-center gap-0.5">
                                             <span>Total Cards?</span>
                                             <button
                                                 type="button"
@@ -414,14 +413,14 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                         </label>
                                         {isLocked || isFinished ? (
                                             <div className="flex flex-col gap-1 items-start">
-                                                <span className="font-semibold text-gray-955">
+                                                <span className="font-semibold text-gray-900 dark:text-gray-200">
                                                     {prediction?.spTotalCards === null ? "None" : prediction?.spTotalCards === "UNDER" ? "Under 5" : "5 and over"}
                                                 </span>
                                                 {isFinished && prediction?.spTotalCards !== null && match.spTotalCards !== null && (() => {
                                                     const isCorrect = prediction?.spTotalCards === match.spTotalCards;
                                                     const val = isCorrect ? (settings?.spTotalCardsCorrect ?? 3) : (settings?.spTotalCardsIncorrect ?? -2);
                                                     return (
-                                                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[9px] font-bold ${isCorrect ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-rose-50 text-rose-700 border border-rose-200"}`}>
+                                                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[9px] font-bold ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-455 border border-rose-200 dark:border-rose-900/30"}`}>
                                                             {isCorrect ? "Correct" : "Incorrect"} ({val >= 0 ? "+" : ""}{val})
                                                         </span>
                                                     );
@@ -431,7 +430,7 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                             <select
                                                 name="spTotalCards"
                                                 defaultValue={prediction?.spTotalCards ?? ""}
-                                                className="rounded-lg border-gray-250 bg-white text-gray-900 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
+                                                className="rounded-lg border-gray-250 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
                                             >
                                                 <option value="">Select...</option>
                                                 <option value="UNDER">Under 5</option>
@@ -444,7 +443,7 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                     {/* Extra Time */}
                                     {isEventEnabled(match.stage, "spExtraTime", settings) && (
                                         <div className="flex flex-col gap-1 min-w-0">
-                                        <label className="font-bold text-gray-700 flex flex-wrap items-center gap-0.5">
+                                        <label className="font-bold text-gray-700 dark:text-slate-300 flex flex-wrap items-center gap-0.5">
                                             <span>Extra Time?</span>
                                             <button
                                                 type="button"
@@ -462,14 +461,14 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                         </label>
                                         {isLocked || isFinished ? (
                                             <div className="flex flex-col gap-1 items-start">
-                                                <span className="font-semibold text-gray-955">
+                                                <span className="font-semibold text-gray-900 dark:text-gray-200">
                                                     {prediction?.spExtraTime === null ? "None" : prediction?.spExtraTime ? "Yes" : "No"}
                                                 </span>
                                                 {isFinished && prediction?.spExtraTime !== null && match.spExtraTime !== null && (() => {
                                                     const isCorrect = prediction?.spExtraTime === match.spExtraTime;
                                                     const val = isCorrect ? (settings?.spExtraTimeCorrect ?? 3) : (settings?.spExtraTimeIncorrect ?? -2);
                                                     return (
-                                                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[9px] font-bold ${isCorrect ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-rose-50 text-rose-700 border border-rose-200"}`}>
+                                                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[9px] font-bold ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-455 border border-rose-200 dark:border-rose-900/30"}`}>
                                                             {isCorrect ? "Correct" : "Incorrect"} ({val >= 0 ? "+" : ""}{val})
                                                         </span>
                                                     );
@@ -479,7 +478,7 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                             <select
                                                 name="spExtraTime"
                                                 defaultValue={prediction?.spExtraTime?.toString() ?? ""}
-                                                className="rounded-lg border-gray-250 bg-white text-gray-900 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
+                                                className="rounded-lg border-gray-250 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
                                             >
                                                 <option value="">Select...</option>
                                                 <option value="true">Yes</option>
@@ -492,7 +491,7 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                     {/* In Game Penalty */}
                                     {isEventEnabled(match.stage, "spInGamePenalty", settings) && (
                                         <div className="flex flex-col gap-1 min-w-0">
-                                        <label className="font-bold text-gray-700 flex flex-wrap items-center gap-0.5">
+                                        <label className="font-bold text-gray-700 dark:text-slate-300 flex flex-wrap items-center gap-0.5">
                                             <span>In-Game PK?</span>
                                             <button
                                                 type="button"
@@ -504,20 +503,20 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                             >
                                                 <HelpCircle size={10} />
                                             </button>
-                                            <span className="font-normal text-[9px] text-gray-400 dark:text-gray-550 ml-1">
+                                            <span className="font-normal text-[9px] text-gray-400 dark:text-gray-555 ml-1">
                                                 ({getPointRuleText(settings?.spInGamePenaltyCorrect, settings?.spInGamePenaltyIncorrect)})
                                             </span>
                                         </label>
                                         {isLocked || isFinished ? (
                                             <div className="flex flex-col gap-1 items-start">
-                                                <span className="font-semibold text-gray-955">
+                                                <span className="font-semibold text-gray-900 dark:text-gray-200">
                                                     {prediction?.spInGamePenalty === null ? "None" : prediction?.spInGamePenalty ? "Yes" : "No"}
                                                 </span>
                                                 {isFinished && prediction?.spInGamePenalty !== null && match.spInGamePenalty !== null && (() => {
                                                     const isCorrect = prediction?.spInGamePenalty === match.spInGamePenalty;
                                                     const val = isCorrect ? (settings?.spInGamePenaltyCorrect ?? 3) : (settings?.spInGamePenaltyIncorrect ?? -2);
                                                     return (
-                                                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[9px] font-bold ${isCorrect ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-rose-50 text-rose-700 border border-rose-200"}`}>
+                                                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[9px] font-bold ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-455 border border-rose-200 dark:border-rose-900/30"}`}>
                                                             {isCorrect ? "Correct" : "Incorrect"} ({val >= 0 ? "+" : ""}{val})
                                                         </span>
                                                     );
@@ -527,7 +526,7 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                             <select
                                                 name="spInGamePenalty"
                                                 defaultValue={prediction?.spInGamePenalty?.toString() ?? ""}
-                                                className="rounded-lg border-gray-250 bg-white text-gray-900 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
+                                                className="rounded-lg border-gray-250 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
                                             >
                                                 <option value="">Select...</option>
                                                 <option value="true">Yes</option>
@@ -540,7 +539,7 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                     {/* Own Goal */}
                                     {isEventEnabled(match.stage, "spOwnGoal", settings) && (
                                         <div className="flex flex-col gap-1 min-w-0">
-                                        <label className="font-bold text-gray-700 flex flex-wrap items-center gap-0.5">
+                                        <label className="font-bold text-gray-700 dark:text-slate-300 flex flex-wrap items-center gap-0.5">
                                             <span>Own Goal?</span>
                                             <button
                                                 type="button"
@@ -558,14 +557,14 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                         </label>
                                         {isLocked || isFinished ? (
                                             <div className="flex flex-col gap-1 items-start">
-                                                <span className="font-semibold text-gray-955">
+                                                <span className="font-semibold text-gray-900 dark:text-gray-200">
                                                     {prediction?.spOwnGoal === null ? "None" : prediction?.spOwnGoal ? "Yes" : "No"}
                                                 </span>
                                                 {isFinished && prediction?.spOwnGoal !== null && match.spOwnGoal !== null && (() => {
                                                     const isCorrect = prediction?.spOwnGoal === match.spOwnGoal;
                                                     const val = isCorrect ? (settings?.spOwnGoalCorrect ?? 3) : (settings?.spOwnGoalIncorrect ?? -2);
                                                     return (
-                                                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[9px] font-bold ${isCorrect ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-rose-50 text-rose-700 border border-rose-200"}`}>
+                                                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[9px] font-bold ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-455 border border-rose-200 dark:border-rose-900/30"}`}>
                                                             {isCorrect ? "Correct" : "Incorrect"} ({val >= 0 ? "+" : ""}{val})
                                                         </span>
                                                     );
@@ -575,7 +574,7 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                             <select
                                                 name="spOwnGoal"
                                                 defaultValue={prediction?.spOwnGoal?.toString() ?? ""}
-                                                className="rounded-lg border-gray-250 bg-white text-gray-900 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
+                                                className="rounded-lg border-gray-250 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
                                             >
                                                 <option value="">Select...</option>
                                                 <option value="true">Yes</option>
@@ -588,7 +587,7 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                     {/* First Team to Score */}
                                     {isEventEnabled(match.stage, "spFirstTeamToScore", settings) && (
                                         <div className="flex flex-col gap-1 min-w-0">
-                                        <label className="font-bold text-gray-700 flex flex-wrap items-center gap-0.5">
+                                        <label className="font-bold text-gray-700 dark:text-slate-300 flex flex-wrap items-center gap-0.5">
                                             <span>1st to Score?</span>
                                             <button
                                                 type="button"
@@ -606,7 +605,7 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                         </label>
                                         {isLocked || isFinished ? (
                                             <div className="flex flex-col gap-1 items-start">
-                                                <span className="font-semibold text-gray-955 truncate w-full">
+                                                <span className="font-semibold text-gray-900 dark:text-gray-200 truncate w-full">
                                                     {prediction?.spFirstTeamToScore === null ? "None" :
                                                         prediction?.spFirstTeamToScore?.toString() === match.homeTeam?._id?.toString() ? match.homeTeam?.name :
                                                             prediction?.spFirstTeamToScore?.toString() === match.awayTeam?._id?.toString() ? match.awayTeam?.name : "No Goal"}
@@ -615,7 +614,7 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                                     const isCorrect = prediction?.spFirstTeamToScore?.toString() === match.spFirstTeamToScore?.toString();
                                                     const val = isCorrect ? (settings?.spFirstTeamScoreCorrect ?? 3) : (settings?.spFirstTeamScoreIncorrect ?? -2);
                                                     return (
-                                                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[9px] font-bold ${isCorrect ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-rose-50 text-rose-700 border border-rose-200"}`}>
+                                                        <span className={`px-1.5 py-0.5 rounded-[4px] text-[9px] font-bold ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-455 border border-rose-200 dark:border-rose-900/30"}`}>
                                                             {isCorrect ? "Correct" : "Incorrect"} ({val >= 0 ? "+" : ""}{val})
                                                         </span>
                                                     );
@@ -625,7 +624,7 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                             <select
                                                 name="spFirstTeamToScore"
                                                 defaultValue={prediction?.spFirstTeamToScore ?? ""}
-                                                className="rounded-lg border-gray-250 bg-white text-gray-900 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
+                                                className="rounded-lg border-gray-250 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
                                             >
                                                 <option value="">Select...</option>
                                                 <option value={match.homeTeam?._id}>{match.homeTeam?.name}</option>
