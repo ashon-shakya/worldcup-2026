@@ -1,5 +1,13 @@
 import { PointSettings } from "@/app/actions/admin/settings";
 
+function getTeamId(val: any): string {
+    if (!val) return "";
+    if (typeof val === "object") {
+        return (val._id || val).toString();
+    }
+    return val.toString();
+}
+
 export function calculatePoints(
     predictionHome: number,
     predictionAway: number,
@@ -44,8 +52,8 @@ export function calculatePoints(
     // Special logic for knockout matches where the user predicts penalties (i.e. predicts a draw)
     let outcomePointsCalculated = false;
     if (isKnockout && predictionHome === predictionAway) {
-        const predictedWinnerStr = predictedWinnerId?.toString();
-        const actualWinnerStr = actualWinnerId?.toString();
+        const predictedWinnerStr = getTeamId(predictedWinnerId);
+        const actualWinnerStr = getTeamId(actualWinnerId);
 
         // In a knockout round if a user predicts penalty and predicts the correct winner
         // then the user gets penalty +3 (correctPenaltyPrediction) plus winner +3 (correctOutcome)
@@ -162,8 +170,8 @@ export function calculateSpecialPoints(
     }
     // First Team to Score
     if (isEventEnabled(stage, "spFirstTeamToScore", settings) && predictionSpecial.spFirstTeamToScore !== undefined && predictionSpecial.spFirstTeamToScore !== null && predictionSpecial.spFirstTeamToScore !== "") {
-        const predTeam = predictionSpecial.spFirstTeamToScore.toString();
-        const actualTeam = actualSpecial.spFirstTeamToScore?.toString();
+        const predTeam = getTeamId(predictionSpecial.spFirstTeamToScore);
+        const actualTeam = getTeamId(actualSpecial.spFirstTeamToScore);
         if (actualTeam && predTeam === actualTeam) {
             points += (settings.spFirstTeamScoreCorrect ?? 3);
         } else {
