@@ -607,7 +607,7 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                                 <div className="flex flex-col gap-1 items-start">
                                                     <span className="font-semibold text-gray-900 dark:text-gray-200 truncate w-full">
                                                         {(() => {
-                                                            const val = prediction?.spFirstTeamToScore;
+                                                            const val = prediction?.spFirstTeamToScore as any;
                                                             if (val === null || val === undefined) return "None";
                                                             const valStr = typeof val === "object" && val._id ? val._id.toString() : val.toString();
                                                             if (valStr === "none") return "No Goal";
@@ -618,13 +618,13 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                                     </span>
                                                     {isFinished && prediction?.spFirstTeamToScore !== null && match.spFirstTeamToScore !== null && (() => {
                                                         const predId = (() => {
-                                                            const val = prediction?.spFirstTeamToScore;
+                                                            const val = prediction?.spFirstTeamToScore as any;
                                                             if (!val) return "";
                                                             if (typeof val === "object" && val._id) return val._id.toString();
                                                             return val.toString();
                                                         })();
                                                         const actualId = (() => {
-                                                            const val = match.spFirstTeamToScore;
+                                                            const val = match.spFirstTeamToScore as any;
                                                             if (!val) return "";
                                                             if (typeof val === "object" && val._id) return val._id.toString();
                                                             return val.toString();
@@ -642,7 +642,7 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                                 <select
                                                     name="spFirstTeamToScore"
                                                     defaultValue={(() => {
-                                                        const val = prediction?.spFirstTeamToScore;
+                                                        const val = prediction?.spFirstTeamToScore as any;
                                                         if (val === null || val === undefined) return "";
                                                         if (typeof val === "object" && val._id) return val._id.toString();
                                                         return val.toString();
