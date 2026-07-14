@@ -129,14 +129,14 @@ export async function getUserPredictions(userId: string) {
             homeScore: p.homeScore,
             awayScore: p.awayScore,
             penaltyPrediction: p.penaltyPrediction,
-            predictedWinner: p.predictedWinner,
+            predictedWinner: p.predictedWinner ? p.predictedWinner.toString() : null,
             points: p.points,
             spRedCards: p.spRedCards,
             spTotalCards: p.spTotalCards,
             spExtraTime: p.spExtraTime,
             spInGamePenalty: p.spInGamePenalty,
             spOwnGoal: p.spOwnGoal,
-            spFirstTeamToScore: p.spFirstTeamToScore,
+            spFirstTeamToScore: p.spFirstTeamToScore ? p.spFirstTeamToScore.toString() : null,
         };
     });
     return predictionMap;

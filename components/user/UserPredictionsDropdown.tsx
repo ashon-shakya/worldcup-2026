@@ -438,17 +438,36 @@ export default function UserPredictionsDropdown({ userId, isExpanded, allowedSta
                                             {/* First Team to Score */}
                                             {pred.spFirstTeamToScore !== null && isEventEnabled(match.stage, "spFirstTeamToScore", settings) && (
                                                 <div className="flex flex-col gap-0.5 bg-gray-50/50 dark:bg-slate-950/30 p-1.5 rounded border border-gray-100 dark:border-slate-800/80">
-                                                    <span className="text-gray-400 dark:text-gray-550 font-medium">1st to Score?</span>
+                                                    <span className="text-gray-400 dark:text-gray-555 font-medium">1st to Score?</span>
                                                     <span className="font-bold text-gray-800 dark:text-gray-200 truncate">
-                                                        {pred.spFirstTeamToScore?.toString() === match.homeTeam?._id?.toString() ? match.homeTeam?.name :
-                                                         pred.spFirstTeamToScore?.toString() === match.awayTeam?._id?.toString() ? match.awayTeam?.name : "No Goal"}
+                                                        {(() => {
+                                                            const val = pred.spFirstTeamToScore;
+                                                            if (val === null || val === undefined) return "None";
+                                                            const valStr = typeof val === "object" && val._id ? val._id.toString() : val.toString();
+                                                            if (valStr === "none") return "No Goal";
+                                                            if (valStr === match.homeTeam?._id?.toString()) return match.homeTeam?.name;
+                                                            if (valStr === match.awayTeam?._id?.toString()) return match.awayTeam?.name;
+                                                            return "No Goal";
+                                                        })()}
                                                     </span>
                                                     {isFinished && match.spFirstTeamToScore !== null && (() => {
-                                                        const isCorrect = pred.spFirstTeamToScore?.toString() === match.spFirstTeamToScore?.toString();
+                                                        const predId = (() => {
+                                                            const val = pred.spFirstTeamToScore;
+                                                            if (!val) return "";
+                                                            if (typeof val === "object" && val._id) return val._id.toString();
+                                                            return val.toString();
+                                                        })();
+                                                        const actualId = (() => {
+                                                            const val = match.spFirstTeamToScore;
+                                                            if (!val) return "";
+                                                            if (typeof val === "object" && val._id) return val._id.toString();
+                                                            return val.toString();
+                                                        })();
+                                                        const isCorrect = predId !== "" && predId === actualId;
                                                         const rawVal = isCorrect ? (settings?.spFirstTeamScoreCorrect ?? 3) : (settings?.spFirstTeamScoreIncorrect ?? -2);
                                                         const val = rawVal * multiplier;
                                                         return (
-                                                            <span className={`px-1 py-0.2 rounded-[3px] text-[8px] font-bold text-center mt-0.5 ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-450 border border-rose-100 dark:border-rose-900/30"}`}>
+                                                            <span className={`px-1 py-0.2 rounded-[3px] text-[8px] font-bold text-center mt-0.5 ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-455 border border-rose-100 dark:border-rose-900/30"}`}>
                                                                 {isCorrect ? "Correct" : "Incorrect"} ({val >= 0 ? "+" : ""}{val})
                                                             </span>
                                                         );

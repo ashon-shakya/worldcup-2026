@@ -606,12 +606,30 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                             {isLocked || isFinished ? (
                                                 <div className="flex flex-col gap-1 items-start">
                                                     <span className="font-semibold text-gray-900 dark:text-gray-200 truncate w-full">
-                                                        {prediction?.spFirstTeamToScore === null ? "None" :
-                                                            prediction?.spFirstTeamToScore?.toString() === match.homeTeam?._id?.toString() ? match.homeTeam?.name :
-                                                                prediction?.spFirstTeamToScore?.toString() === match.awayTeam?._id?.toString() ? match.awayTeam?.name : "No Goal"}
+                                                        {(() => {
+                                                            const val = prediction?.spFirstTeamToScore;
+                                                            if (val === null || val === undefined) return "None";
+                                                            const valStr = typeof val === "object" && val._id ? val._id.toString() : val.toString();
+                                                            if (valStr === "none") return "No Goal";
+                                                            if (valStr === match.homeTeam?._id?.toString()) return match.homeTeam?.name;
+                                                            if (valStr === match.awayTeam?._id?.toString()) return match.awayTeam?.name;
+                                                            return "No Goal";
+                                                        })()}
                                                     </span>
                                                     {isFinished && prediction?.spFirstTeamToScore !== null && match.spFirstTeamToScore !== null && (() => {
-                                                        const isCorrect = prediction?.spFirstTeamToScore?.toString() === match.spFirstTeamToScore?.toString();
+                                                        const predId = (() => {
+                                                            const val = prediction?.spFirstTeamToScore;
+                                                            if (!val) return "";
+                                                            if (typeof val === "object" && val._id) return val._id.toString();
+                                                            return val.toString();
+                                                        })();
+                                                        const actualId = (() => {
+                                                            const val = match.spFirstTeamToScore;
+                                                            if (!val) return "";
+                                                            if (typeof val === "object" && val._id) return val._id.toString();
+                                                            return val.toString();
+                                                        })();
+                                                        const isCorrect = predId !== "" && predId === actualId;
                                                         const val = isCorrect ? (settings?.spFirstTeamScoreCorrect ?? 3) : (settings?.spFirstTeamScoreIncorrect ?? -2);
                                                         return (
                                                             <span className={`px-1.5 py-0.5 rounded-[4px] text-[11px] font-bold ${isCorrect ? "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30" : "bg-rose-50 dark:bg-rose-955/30 text-rose-700 dark:text-rose-455 border border-rose-200 dark:border-rose-900/30"}`}>
@@ -623,7 +641,12 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                                             ) : (
                                                 <select
                                                     name="spFirstTeamToScore"
-                                                    defaultValue={prediction?.spFirstTeamToScore ?? ""}
+                                                    defaultValue={(() => {
+                                                        const val = prediction?.spFirstTeamToScore;
+                                                        if (val === null || val === undefined) return "";
+                                                        if (typeof val === "object" && val._id) return val._id.toString();
+                                                        return val.toString();
+                                                    })()}
                                                     className="rounded-lg border-gray-250 dark:border-slate-800 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 py-1 px-1.5 focus:ring-1 focus:ring-indigo-500 text-xs w-full"
                                                 >
                                                     <option value="">Select...</option>
