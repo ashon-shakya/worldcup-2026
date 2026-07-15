@@ -155,3 +155,49 @@ export async function getLeaderboardTimeline(groupId?: string) {
     };
 }
 
+export async function getLatestHeroPredictors() {
+    await connectToDatabase();
+
+    // Find the most recently finished match
+    const lastFinishedMatch = await Match.findOne({ status: "FINISHED" })
+        .sort({ kickOff: -1 })
+        .populate("homeTeam", "name shortName flagUrl")
+        .populate("awayTeam", "name shortName flagUrl");
+
+    if (!lastFinishedMatch) {
+        return { match: null, predictors: [] };
+    }
+
+    // Get predictions for this match, sorted by points descending
+    const predictions = await Prediction.find({ match: lastFinishedMatch._id })
+        .populate("user", "name nickname image optOutGlobal")
+        .sort({ points: -1 })
+        .lean();
+
+    // Filter out users who opted out of global leaderboard or don't exist
+    const optedInPredictors = predictions
+        .filter((p: any) => p.user && p.user.optOutGlobal !== true)
+        .slice(0, 5)
+        .map((p: any) => ({
+            user: {
+                _id: p.user._id.toString(),
+                name: p.user.name,
+                nickname: p.user.nickname,
+                image: p.user.image,
+            },
+            homeScore: p.homeScore,
+            awayScore: p.awayScore,
+            penaltyPrediction: p.penaltyPrediction,
+            predictedWinner: p.predictedWinner ? p.predictedWinner.toString() : null,
+            points: p.points || 0,
+        }));
+
+    return JSON.parse(
+        JSON.stringify({
+            match: lastFinishedMatch,
+            predictors: optedInPredictors,
+        })
+    );
+}
+
+

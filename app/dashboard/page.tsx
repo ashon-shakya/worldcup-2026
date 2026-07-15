@@ -2,9 +2,10 @@ import { auth } from "@/auth";
 import { Match, Prediction, User } from "@/models/schema";
 import connectToDatabase from "@/lib/db";
 import Link from "next/link";
-import { Calendar, Clock, Users } from "lucide-react";
+import { Calendar, Clock, Users, Flame, Trophy, Medal } from "lucide-react";
 import LocalTime from "@/components/ui/LocalTime";
 import { getUserGroups } from "@/app/actions/groups";
+import { getLatestHeroPredictors } from "@/app/actions/leaderboard";
 
 function getStageTheme(stage: string) {
     const s = stage?.toLowerCase() || "";
@@ -108,6 +109,7 @@ export default async function DashboardPage() {
     const nextMatches = await getNextMatchesOfDay();
     const stats = await getUserStats(user.id);
     const userGroups = await getUserGroups();
+    const heroPredictorData = await getLatestHeroPredictors();
 
     return (
         <div className="space-y-6">
@@ -172,6 +174,107 @@ export default async function DashboardPage() {
                             Manage Groups &rarr;
                         </Link>
                     </div>
+                </div>
+            </div>
+
+            {/* Latest Hero Predictors */}
+            <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-xl border border-gray-200 dark:border-slate-800 overflow-hidden transition-all duration-300">
+                <div className="p-6 border-b border-gray-100 dark:border-slate-800 flex flex-col sm:flex-row justify-between sm:items-center gap-3 bg-gray-50/50 dark:bg-slate-900/50">
+                    <div className="flex items-center gap-2">
+                        <Flame className="w-5 h-5 text-orange-500 animate-pulse animate-duration-1000" />
+                        <div>
+                            <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                                Latest Hero Predictors
+                            </h3>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                                Top 5 predictors from the last finished match
+                            </p>
+                        </div>
+                    </div>
+                    {heroPredictorData.match && (
+                        /* Last Match Score Mini-Card */
+                        <div className="flex items-center gap-3 bg-slate-105 dark:bg-slate-800/80 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700/50 self-start sm:self-auto">
+                            <span className="text-xs font-bold text-gray-705 dark:text-slate-300">Last Match:</span>
+                            <div className="flex items-center gap-1.5 text-xs font-black text-gray-900 dark:text-white">
+                                <span>{heroPredictorData.match.homeTeam?.name}</span>
+                                {heroPredictorData.match.homeTeam?.flagUrl && (
+                                    <img src={heroPredictorData.match.homeTeam.flagUrl} alt="" className="w-4 h-3 object-cover rounded-xs" />
+                                )}
+                                <span className="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded font-mono text-[11px]">
+                                    {heroPredictorData.match.homeScore} - {heroPredictorData.match.awayScore}
+                                </span>
+                                {heroPredictorData.match.awayTeam?.flagUrl && (
+                                    <img src={heroPredictorData.match.awayTeam.flagUrl} alt="" className="w-4 h-3 object-cover rounded-xs" />
+                                )}
+                                <span>{heroPredictorData.match.awayTeam?.name}</span>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                <div className="p-6 bg-gray-50/10 dark:bg-slate-900/20">
+                    {!heroPredictorData.match ? (
+                        <div className="text-center text-gray-500 dark:text-slate-400 py-6">
+                            No matches finished yet. Once the action starts, the top predictors for the last match will be featured here!
+                        </div>
+                    ) : heroPredictorData.predictors.length === 0 ? (
+                        <div className="text-center text-gray-500 dark:text-slate-400 py-6">
+                            No predictions were submitted for this match.
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                            {heroPredictorData.predictors.map((predictor: any, index: number) => {
+                                const getRankBadge = (idx: number) => {
+                                    if (idx === 0) return <div className="absolute -top-2 -left-2 bg-yellow-500 text-white rounded-full p-1 shadow-md animate-bounce"><Trophy className="w-4 h-4" /></div>;
+                                    if (idx === 1) return <div className="absolute -top-2 -left-2 bg-slate-300 text-slate-800 rounded-full p-1 shadow-md"><Medal className="w-4 h-4" /></div>;
+                                    if (idx === 2) return <div className="absolute -top-2 -left-2 bg-amber-600 text-white rounded-full p-1 shadow-md"><Medal className="w-4 h-4" /></div>;
+                                    return <div className="absolute -top-2 -left-2 bg-indigo-605 text-white rounded-full w-6 h-6 flex items-center justify-center font-bold text-xs shadow-md">{idx + 1}</div>;
+                                };
+
+                                return (
+                                    <div 
+                                        key={predictor.user._id}
+                                        className="relative flex flex-col items-center justify-between p-4 rounded-2xl bg-white dark:bg-slate-950 border border-gray-100 dark:border-slate-850 shadow-sm hover:shadow-md transition-all duration-300 group"
+                                    >
+                                        {getRankBadge(index)}
+
+                                        <div className="flex flex-col items-center text-center mt-2 w-full">
+                                            {/* Avatar */}
+                                            <div className="h-14 w-14 rounded-full bg-indigo-100 dark:bg-indigo-950/50 flex items-center justify-center text-indigo-700 dark:text-indigo-300 font-extrabold text-lg border-2 border-indigo-100 dark:border-indigo-900/50 overflow-hidden shadow-inner group-hover:scale-105 transition-transform duration-300">
+                                                {predictor.user.image ? (
+                                                    <img
+                                                        src={predictor.user.image}
+                                                        alt={predictor.user.nickname || predictor.user.name}
+                                                        className="h-full w-full object-cover"
+                                                    />
+                                                ) : (
+                                                    (predictor.user.nickname || predictor.user.name).charAt(0).toUpperCase()
+                                                )}
+                                            </div>
+
+                                            {/* Username */}
+                                            <Link
+                                                href={`/dashboard/stats?userId=${predictor.user._id}`}
+                                                className="font-bold text-gray-950 dark:text-white text-sm mt-3 hover:text-indigo-600 dark:hover:text-cyan-400 hover:underline truncate w-full px-1"
+                                            >
+                                                {predictor.user.nickname || predictor.user.name}
+                                            </Link>
+                                            
+                                            {/* Prediction text */}
+                                            <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-1 font-medium bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded-full border border-slate-200/40 dark:border-slate-800/40">
+                                                Predicted: <span className="font-bold font-mono">{predictor.homeScore}-{predictor.awayScore}</span>
+                                            </p>
+                                        </div>
+
+                                        {/* Points badge */}
+                                        <div className="mt-4 w-full flex items-center justify-center bg-gradient-to-r from-orange-500 to-red-600 text-white font-black text-xs py-1.5 px-3 rounded-xl shadow-xs group-hover:shadow-sm transition-all duration-300">
+                                            +{predictor.points} PTS
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    )}
                 </div>
             </div>
 
