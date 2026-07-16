@@ -300,8 +300,20 @@ export default async function DashboardPage() {
                           <Medal className="w-4 h-4" />
                         </div>
                       );
+                    if (idx === 3)
+                      return (
+                        <div className="absolute -top-2 -left-2 bg-slate-700 text-white rounded-full w-7 h-7 flex items-center justify-center font-black text-[11px] shadow-md border border-white/20">
+                          4
+                        </div>
+                      );
+                    if (idx === 4)
+                      return (
+                        <div className="absolute -top-2 -left-2 bg-slate-600 text-white rounded-full w-7 h-7 flex items-center justify-center font-black text-[11px] shadow-md border border-white/20">
+                          5
+                        </div>
+                      );
                     return (
-                      <div className="absolute -top-2 -left-2 bg-indigo-605 text-white rounded-full w-6 h-6 flex items-center justify-center font-bold text-xs shadow-md">
+                      <div className="absolute -top-2 -left-2 bg-indigo-600 text-white rounded-full w-7 h-7 flex items-center justify-center font-black text-[11px] shadow-md border border-white/20">
                         {idx + 1}
                       </div>
                     );
