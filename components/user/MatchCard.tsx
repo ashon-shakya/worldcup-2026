@@ -150,6 +150,13 @@ export default function MatchCard({ match, prediction, settings }: MatchCardProp
                 >
                     <input type="hidden" name="matchId" value={match._id} />
 
+                    {match.matchHighlights && (
+                        <div className="bg-indigo-50/40 dark:bg-indigo-950/15 border border-indigo-100/50 dark:border-indigo-955/20 rounded-xl p-3.5 text-xs text-indigo-950 dark:text-indigo-200 leading-relaxed font-medium">
+                            <span className="font-bold text-indigo-700 dark:text-cyan-400 block mb-1 uppercase tracking-wide text-[10px]">💡 Match Insights & Highlights</span>
+                            {match.matchHighlights}
+                        </div>
+                    )}
+
                     <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6 w-full">
                         {/* Matchup row: always horizontal */}
                         <div className="flex flex-row items-center justify-between flex-1 w-full gap-2 sm:gap-4">

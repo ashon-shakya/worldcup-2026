@@ -173,7 +173,7 @@ export default function PaginatedMatchList({
           new Date(b.match.kickOff).getTime(),
       )[0];
 
-    setFilterStage(nextScheduledMatch?.stage ?? "");
+    setFilterStage("");
     setFilterStatus("SCHEDULED");
     setSortKey("kickOff");
     setSortDir("asc");
@@ -231,11 +231,10 @@ export default function PaginatedMatchList({
   }) => (
     <button
       onClick={() => handleSort(sortKeyVal)}
-      className={`flex items-center gap-1 px-3 py-2 rounded-lg border text-sm font-medium transition-colors ${
-        sortKey === sortKeyVal
-          ? "bg-indigo-50 border-indigo-300 text-indigo-700"
-          : "bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
-      }`}
+      className={`flex items-center gap-1 px-3 py-2 rounded-lg border text-sm font-medium transition-colors ${sortKey === sortKeyVal
+        ? "bg-indigo-50 border-indigo-300 text-indigo-700"
+        : "bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
+        }`}
     >
       {label}
       {sortKey !== sortKeyVal ? (
@@ -366,11 +365,10 @@ export default function PaginatedMatchList({
                   <button
                     key={page}
                     onClick={() => goToPage(page)}
-                    className={`min-w-[36px] h-9 rounded-lg text-sm font-medium transition-colors ${
-                      safeCurrentPage === page
-                        ? "bg-indigo-600 text-white"
-                        : "text-gray-700 hover:bg-gray-100"
-                    }`}
+                    className={`min-w-[36px] h-9 rounded-lg text-sm font-medium transition-colors ${safeCurrentPage === page
+                      ? "bg-indigo-600 text-white"
+                      : "text-gray-700 hover:bg-gray-100"
+                      }`}
                   >
                     {page}
                   </button>

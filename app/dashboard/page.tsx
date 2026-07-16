@@ -70,7 +70,17 @@ function getStageTheme(stage: string) {
 async function getNextMatchesOfDay() {
   await connectToDatabase();
   const now = new Date();
-  // 1. Find the first upcoming scheduled match
+
+  // Find all high-priority matches that are scheduled (and not finished)
+  const highPriorityMatches = await Match.find({
+    status: "SCHEDULED",
+    priority: "high"
+  })
+    .sort({ kickOff: 1 })
+    .populate("homeTeam")
+    .populate("awayTeam");
+
+  // Find the first upcoming scheduled match to establish the date
   const nextMatch = await Match.findOne({
     kickOff: { $gt: now },
     status: "SCHEDULED",
@@ -79,38 +89,50 @@ async function getNextMatchesOfDay() {
     .populate("homeTeam")
     .populate("awayTeam");
 
-  if (!nextMatch) return [];
+  if (!nextMatch && highPriorityMatches.length === 0) return [];
 
-  // 2. Find all matches scheduled on that same calendar day
-  const kickOffDate = new Date(nextMatch.kickOff);
-  const startOfDay = new Date(
-    kickOffDate.getFullYear(),
-    kickOffDate.getMonth(),
-    kickOffDate.getDate(),
-    0,
-    0,
-    0,
-    0,
-  );
-  const endOfDay = new Date(
-    kickOffDate.getFullYear(),
-    kickOffDate.getMonth(),
-    kickOffDate.getDate(),
-    23,
-    59,
-    59,
-    999,
-  );
+  let nextNormalMatches: any[] = [];
+  if (nextMatch) {
+    const kickOffDate = new Date(nextMatch.kickOff);
+    const startOfDay = new Date(
+      kickOffDate.getFullYear(),
+      kickOffDate.getMonth(),
+      kickOffDate.getDate(),
+      0,
+      0,
+      0,
+      0,
+    );
+    const endOfDay = new Date(
+      kickOffDate.getFullYear(),
+      kickOffDate.getMonth(),
+      kickOffDate.getDate(),
+      23,
+      59,
+      59,
+      999,
+    );
 
-  const matches = await Match.find({
-    kickOff: { $gte: startOfDay, $lte: endOfDay },
-    status: "SCHEDULED",
-  })
-    .sort({ kickOff: 1 })
-    .populate("homeTeam")
-    .populate("awayTeam");
+    nextNormalMatches = await Match.find({
+      kickOff: { $gte: startOfDay, $lte: endOfDay },
+      status: "SCHEDULED",
+      priority: { $ne: "high" }
+    })
+      .sort({ kickOff: 1 })
+      .populate("homeTeam")
+      .populate("awayTeam");
+  }
 
-  return JSON.parse(JSON.stringify(matches));
+  // Combine high priority ones first, followed by normal ones of the day
+  // Filter out any duplicates
+  const combined = [...highPriorityMatches];
+  nextNormalMatches.forEach(m => {
+    if (!combined.some(c => c._id.toString() === m._id.toString())) {
+      combined.push(m);
+    }
+  });
+
+  return JSON.parse(JSON.stringify(combined));
 }
 
 // Placeholder for user stats
@@ -189,17 +211,16 @@ export default async function DashboardPage() {
                       key={group._id}
                       href={`/dashboard/groups/${group._id}`}
                       title={group.name}
-                      className={`h-9 w-9 rounded-lg flex items-center justify-center font-bold text-sm transition-all duration-200 hover:scale-105 active:scale-95 shadow-3xs hover:shadow-2xs shrink-0 border ${
-                        hasColor
-                          ? "bg-white/60 text-slate-900 border-black/5"
-                          : "bg-indigo-50 dark:bg-indigo-950/40 text-indigo-650 dark:text-indigo-400 border-indigo-100/50 dark:border-indigo-950/20"
-                      }`}
+                      className={`h-9 w-9 rounded-lg flex items-center justify-center font-bold text-sm transition-all duration-200 hover:scale-105 active:scale-95 shadow-3xs hover:shadow-2xs shrink-0 border ${hasColor
+                        ? "bg-white/60 text-slate-900 border-black/5"
+                        : "bg-indigo-50 dark:bg-indigo-950/40 text-indigo-650 dark:text-indigo-400 border-indigo-100/50 dark:border-indigo-950/20"
+                        }`}
                       style={
                         hasColor
                           ? {
-                              backgroundColor: isHex ? group.color : undefined,
-                              color: group.textColor || "#0f172a",
-                            }
+                            backgroundColor: isHex ? group.color : undefined,
+                            color: group.textColor || "#0f172a",
+                          }
                           : {}
                       }
                     >
@@ -402,8 +423,12 @@ export default async function DashboardPage() {
               return (
                 <div
                   key={match._id}
-                  className="relative overflow-hidden px-4 py-12 sm:p-12 md:p-16 flex flex-col items-center"
+                  className="relative overflow-hidden px-4 py-8 sm:p-12 md:p-16 flex flex-col items-center"
                 >
+                  <div className="mb-8">
+                    <MatchCountdown kickOff={match.kickOff} />
+                  </div>
+
                   {/* Background light glow effects */}
                   <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-72 h-72 bg-orange-500/10 rounded-full blur-3xl pointer-events-none"></div>
                   <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-72 h-72 bg-red-500/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -416,7 +441,7 @@ export default async function DashboardPage() {
                       style={{ animationDelay: `${index * 150 + 200}ms` }}
                     >
                       <div
-                        className={`fiery-border-wrapper ${stageTheme.glowClass} w-full max-w-[110px] sm:max-w-[200px] md:max-w-[260px] aspect-[3/4] relative`}
+                        className={`fiery-border-wrapper ${stageTheme.glowClass} w-full min-w-[100px] max-w-[135px] sm:max-w-[200px] md:max-w-[260px] aspect-[3/4] relative`}
                       >
                         <div className="fiery-border-content relative w-full h-full overflow-hidden rounded-[calc(1.5rem-3px)]">
                           <img
@@ -486,13 +511,12 @@ export default async function DashboardPage() {
                             showDate={false}
                           />
                         </div>
-                        <MatchCountdown kickOff={match.kickOff} />
                         <p className="text-[7px] sm:text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5 sm:mt-1 hidden xs:block">
                           {match.venue}
                         </p>
                       </div>
 
-                      <div className="mt-4 sm:mt-8">
+                      <div className="mt-4 sm:mt-8 flex flex-col items-center gap-3">
                         <Link
                           href="/dashboard/matches"
                           className="relative inline-flex group items-center justify-center p-0.5 overflow-hidden text-[9px] sm:text-sm font-bold text-white rounded-full group bg-gradient-to-br from-orange-500 to-red-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-red-800 shadow-lg shadow-red-500/30 hover:shadow-red-500/50 transition-all duration-300"
@@ -501,6 +525,7 @@ export default async function DashboardPage() {
                             Predict
                           </span>
                         </Link>
+
                       </div>
                     </div>
 
@@ -510,7 +535,7 @@ export default async function DashboardPage() {
                       style={{ animationDelay: `${index * 150 + 300}ms` }}
                     >
                       <div
-                        className={`fiery-border-wrapper ${stageTheme.glowClass} w-full max-w-[110px] sm:max-w-[200px] md:max-w-[260px] aspect-[3/4] relative`}
+                        className={`fiery-border-wrapper ${stageTheme.glowClass} w-full min-w-[100px]  max-w-[135px] sm:max-w-[300px] md:max-w-[260px] aspect-[3/4] relative`}
                       >
                         <div className="fiery-border-content relative w-full h-full overflow-hidden rounded-[calc(1.5rem-3px)]">
                           <img
@@ -542,6 +567,16 @@ export default async function DashboardPage() {
                       </div>
                     </div>
                   </div>
+
+                  {/* Match Highlights & Insights */}
+                  {match.matchHighlights && (
+                    <div className="relative z-10 mt-8 w-full max-w-xl mx-auto text-center bg-slate-900/60 backdrop-blur-md border border-slate-800 rounded-2xl p-4 shadow-xl">
+                      <span className="font-extrabold text-orange-500 block mb-1 uppercase tracking-wider text-[10px] sm:text-xs">💡 Match Insights & Highlights</span>
+                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
+                        {match.matchHighlights}
+                      </p>
+                    </div>
+                  )}
                 </div>
               );
             })}

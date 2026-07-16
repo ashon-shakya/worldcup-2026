@@ -61,6 +61,8 @@ const MatchSchema = new Schema(
         spInGamePenalty: { type: Boolean, default: null },
         spOwnGoal: { type: Boolean, default: null },
         spFirstTeamToScore: { type: Schema.Types.ObjectId, ref: "Team", default: null },
+        matchHighlights: { type: String, default: "" },
+        priority: { type: String, enum: ["normal", "high"], default: "normal" },
     },
     { timestamps: true },
 );
@@ -134,7 +136,7 @@ if (models.Team && !models.Team.schema.paths.championImageUrl) {
 }
 export const Team = models.Team || model("Team", TeamSchema);
 // Force schema update if hot reload kept old version without new fields
-if (models.Match && (!models.Match.schema.paths.wentToPenalties || !models.Match.schema.paths.isKnockout || !models.Match.schema.paths.penaltyWinner || !models.Match.schema.paths.winner || !models.Match.schema.paths.scoreUpdatedBy || !models.Match.schema.paths.spRedCards)) {
+if (models.Match && (!models.Match.schema.paths.wentToPenalties || !models.Match.schema.paths.isKnockout || !models.Match.schema.paths.penaltyWinner || !models.Match.schema.paths.winner || !models.Match.schema.paths.scoreUpdatedBy || !models.Match.schema.paths.spRedCards || !models.Match.schema.paths.matchHighlights || !models.Match.schema.paths.priority)) {
     delete models.Match;
 }
 export const Match = models.Match || model("Match", MatchSchema);

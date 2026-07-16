@@ -201,6 +201,11 @@ export default function GroupDashboardView({ groupId, leaderboard, group, curren
                                                             </span>
                                                         </div>
                                                     </div>
+                                                    {match.matchHighlights && (
+                                                        <p className="text-[11px] text-gray-500 dark:text-gray-400 font-medium line-clamp-1 italic mt-1 bg-gray-100/50 dark:bg-slate-900/40 px-2 py-0.5 rounded border border-gray-200/30 dark:border-slate-800/40 w-fit">
+                                                            {match.matchHighlights}
+                                                        </p>
+                                                    )}
                                                 </div>
 
                                                 {/* Score / Chevron */}

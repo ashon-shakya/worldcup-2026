@@ -476,6 +476,13 @@ export default function UserPredictionsDropdown({ userId, isExpanded, allowedSta
                                             )}
                                         </div>
                                     )}
+
+                                    {match.matchHighlights && (
+                                        <div className="border-t border-gray-150 dark:border-slate-850 pt-2.5 mt-0.5 text-xs text-gray-550 dark:text-gray-400 italic bg-gray-50/50 dark:bg-slate-950/20 p-2.5 rounded-lg border border-gray-150/30 dark:border-slate-800/40">
+                                            <span className="font-semibold text-gray-700 dark:text-gray-300 block mb-0.5 not-italic text-[10px] uppercase">💡 Match Insights:</span>
+                                            {match.matchHighlights}
+                                        </div>
+                                    )}
                                 </div>
                             );
                         })}

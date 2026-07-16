@@ -144,7 +144,7 @@ export default function TeamMatchesModal({ teamId, teamName, onClose }: TeamMatc
                                                         </div>
 
                                                         {/* Metadata row under the teams */}
-                                                        <div className="flex items-center justify-center gap-1.5 md:gap-2 mt-2 md:mt-2.5 text-[9px] md:text-[11px] font-bold text-gray-400 dark:text-gray-500 text-center uppercase tracking-wider flex-wrap">
+                                                        <div className="flex items-center justify-center gap-1.5 md:gap-2 mt-2 md:mt-2.5 text-[9px] md:text-[11px] font-bold text-gray-400 dark:text-gray-550 text-center uppercase tracking-wider flex-wrap">
                                                             <span>{match.stage}</span>
                                                             <span>•</span>
                                                             <span className="flex items-center gap-0.5">

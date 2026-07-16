@@ -116,7 +116,7 @@ export default function MatchForm({ onClose, match }: { onClose?: () => void; ma
             </div>
 
             <div>
-                <label htmlFor="venue" className="block text-sm font-medium leading-6 text-gray-900">
+                <label htmlFor="venue" className="block text-sm font-medium leading-6 text-gray-900 font-semibold">
                     Venue
                 </label>
                 <div className="mt-2">
@@ -130,15 +130,48 @@ export default function MatchForm({ onClose, match }: { onClose?: () => void; ma
                 </div>
             </div>
 
+            <div>
+                <label htmlFor="matchHighlights" className="block text-sm font-medium leading-6 text-gray-900 font-semibold">
+                    Match Highlights / Insights (Text description)
+                </label>
+                <div className="mt-2">
+                    <textarea
+                        name="matchHighlights"
+                        id="matchHighlights"
+                        rows={2}
+                        defaultValue={match?.matchHighlights || ""}
+                        placeholder="Write dynamic info (e.g. Rivalry history, key player out, stage context)..."
+                        className="block w-full rounded-md border border-gray-300 py-1.5 text-gray-900 shadow-sm focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-2 pr-2"
+                    />
+                </div>
+            </div>
+
+            <div>
+                <label htmlFor="priority" className="block text-sm font-medium leading-6 text-gray-900 font-semibold">
+                    Match Priority
+                </label>
+                <div className="mt-2">
+                    <select
+                        name="priority"
+                        id="priority"
+                        defaultValue={match?.priority || "normal"}
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    >
+                        <option value="normal">Normal</option>
+                        <option value="high">High (Feature on top of homepage)</option>
+                    </select>
+                </div>
+            </div>
+
             <div className="flex items-center gap-2">
                 <input
                     type="checkbox"
                     id="isKnockout"
                     name="isKnockout"
                     defaultChecked={match?.isKnockout || false}
-                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600 cursor-pointer"
                 />
-                <label htmlFor="isKnockout" className="text-sm font-medium leading-6 text-gray-900">
+                <label htmlFor="isKnockout" className="text-sm font-medium leading-6 text-gray-900 cursor-pointer">
                     Knockout Round (Enable Penalty Predictions)
                 </label>
             </div>

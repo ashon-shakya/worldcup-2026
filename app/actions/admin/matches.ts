@@ -17,6 +17,8 @@ const MatchSchema = z.object({
     venue: z.string().optional(),
     stage: z.string().min(1, "Stage required"),
     isKnockout: z.coerce.boolean().optional(),
+    matchHighlights: z.string().optional().default(""),
+    priority: z.enum(["normal", "high"]).optional().default("normal"),
 });
 
 export async function createMatch(prevState: any, formData: FormData) {
@@ -27,7 +29,7 @@ export async function createMatch(prevState: any, formData: FormData) {
         return { message: "Invalid input", errors: parsed.error.flatten().fieldErrors };
     }
 
-    const { homeTeam, awayTeam, kickOff, venue, stage, isKnockout } = parsed.data;
+    const { homeTeam, awayTeam, kickOff, venue, stage, isKnockout, matchHighlights, priority } = parsed.data;
 
     try {
         await connectToDatabase();
@@ -38,6 +40,8 @@ export async function createMatch(prevState: any, formData: FormData) {
             venue,
             stage,
             isKnockout: isKnockout || false,
+            matchHighlights,
+            priority,
         });
         revalidatePath("/admin/matches");
         return { message: "success" };
@@ -55,7 +59,7 @@ export async function updateMatch(id: string, prevState: any, formData: FormData
         return { message: "Invalid input", errors: parsed.error.flatten().fieldErrors };
     }
 
-    const { homeTeam, awayTeam, kickOff, venue, stage, isKnockout } = parsed.data;
+    const { homeTeam, awayTeam, kickOff, venue, stage, isKnockout, matchHighlights, priority } = parsed.data;
 
     try {
         await connectToDatabase();
@@ -66,6 +70,8 @@ export async function updateMatch(id: string, prevState: any, formData: FormData
             venue,
             stage,
             isKnockout: isKnockout || false,
+            matchHighlights,
+            priority,
         });
         revalidatePath("/admin/matches");
         return { message: "success" };
